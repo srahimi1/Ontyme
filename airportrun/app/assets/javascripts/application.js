@@ -14,3 +14,9 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+
+function openForm() {
+  document.getElementById('sign-up-form').style.display = "block"
+}
+
+document.addEventListener('click', openForm);
