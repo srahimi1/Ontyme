@@ -1,24 +1,30 @@
-# README
+# AirportRun
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Hotels need people to take their clients to airports and far-distances.  
 
-Things you may want to cover:
+The front desk people need transportation providers to take their clients to these locations. 
 
-* Ruby version
+This app provides hotel front desk workers an easy way to request a driver for their clients.
 
-* System dependencies
+<br>
+<br>
+User stories:
 
-* Configuration
+As a driver:
 
-* Database creation
+1. I want to to be able to sign in and hit an active button to let local hotel workers know I'm available to pickup customers
 
-* Database initialization
+2. I want to receive a pickup request milliseconds after it is sent out by the worker.
 
-* How to run the test suite
+3. I want to know the destination of the passenger and the hotel they are at when I receive the request.
 
-* Services (job queues, cache servers, search engines, etc.)
+4. i want to know how much I owe each worker and how much I have paid each worker.
 
-* Deployment instructions
 
-* ...
+As a front-desk worker:
+
+1. I want to be able to sign up quickly without enternig a password, only a username and choosing an icon, no password
+
+2. I want to be able to make sure no one else has my icon or username
+
+3. I want to see how many driver requests I've made and how many I've been paid for.
