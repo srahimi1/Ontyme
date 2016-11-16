@@ -1,28 +1,125 @@
-<h1 class="main-header">Airport<span class="logo-2">Run</span> <%= image_tag('airplane-3') %></h1>
-<h3>New User Sign-Up - it's quick & easy</h3>
+<!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
 
-<div class="sign-up">
-  <button class="sign-up-button">Sign Up</button>
-  <form id="sign-up-form">
-    <select>
-      <option value="select">Select Hotel</option>
-      <option value=">Marriott">Marriott</option>
-      <option value="Sheraton">Sheraton</option>
-      <option value="Hilton">Hilton</option>
-      <option value="Hyatt Regency">Hyatt Regency</option>
-      <option value="Crowne Plaza">Crowne Plaza</option>
-      <option value="Holiday Inn">Holiday Inn</option>
-    </select>
-    <br>
-    <select>
-      <option value="select">Choose an Icon</option>
-    </select>
-    <br>
-    Nickname: <input type="text" name="nickname" placeholder="choose your nickname">
-    <button type="submit">Submit</button>
-  </form>
-</div>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
-<div class="users">
-  <p>Current Users:</p>
-</div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top navbar-styles" role="navigation">
+        <div class="container">
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top"><%= image_tag('plane-2') %><span class="logo">AirportRun</span></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden">
+                        <a class="page-scroll" href="#page-top"></a>
+                    </li>
+                    <!-- <li>
+                        <a class="page-scroll" href="#about">Sign up</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#services">Current Users</a>
+                    </li> -->
+                    <!-- <li>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Main Section -->
+    <section id="intro" class="home-section home">
+        <div class="container">
+          <table class="main">
+            <tbody>
+              <tr>
+                <td>
+                  <span class="pull">Refer Hotel Guests.  Get Cash</span>
+                </td>
+              </tr>
+              <tr id="buttons-row">
+                <td>
+                  <a href="#sign-up-page" class="ghost-button">Sign-Up<a>
+                </td>
+                <td id="users-button">
+                  <a href="#current-users-page" class="ghost-button">Current Users<a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </section>
+
+    <!-- Sign Up Section -->
+    <section id="sign-up-page" class="sign-up-section">
+        <div class="container">
+          <h3 class="headline">New User Sign-Up - It's Quick & Easy</h3>
+            <div class="row">
+                <div class="col-lg-12">
+                  <div class="sign-up">
+                    <form id="sign-up-form">
+                      <div class="form-group">
+                        <select class="custom-select form-control">
+                          <option value="select">Select Your Hotel</option>
+                          <option value=">Marriott">Marriott</option>
+                          <option value="Sheraton">Sheraton</option>
+                          <option value="Hilton">Hilton</option>
+                          <option value="Hyatt Regency">Hyatt Regency</option>
+                          <option value="Crowne Plaza">Crowne Plaza</option>
+                          <option value="Holiday Inn">Holiday Inn</option>
+                        </select>
+                      </div>
+                        <div class="form-group">
+                          <select class="custom-select form-control">
+                            <option value="select">Choose Your Icon</option>
+                          </select>
+                        </div>
+                      <div class="form-group">
+                        <input class="form-control" type="text" name="nickname" placeholder="Choose A Nickname">
+                      </div>
+                      <button class="btn btn-block btn-lg btn-success" type="submit">Submit</button>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Current Users Section -->
+    <section id="current-users" class="current-users-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                  <div class="users">
+                    <p>Current Users:</p>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Contact Section</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
