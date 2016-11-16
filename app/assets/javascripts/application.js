@@ -11,12 +11,8 @@
 // about supported directives.
 //
 //= require jquery
+//= require tether
 //= require jquery_ujs
+//= require bootstrap
 //= require turbolinks
 //= require_tree .
-
-function openForm() {
-  document.getElementById('sign-up-form').style.display = "block"
-}
-
-document.addEventListener('click', openForm);
