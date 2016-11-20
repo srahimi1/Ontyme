@@ -83,10 +83,14 @@
                         <div class="form-group">
                           <select class="custom-select form-control">
                             <option value="select">Choose Your Icon</option>
+                            <% @home_appliances_dir.each_child do |icon_path| %>
+                            <option value=""><%= image_tag(icon_path) %></option>
+                            <% end %>
                           </select>
                         </div>
-                      <div class="form-group">
-                        <input class="form-control" type="text" name="nickname" placeholder="Choose A Nickname">
+                      <div class="form-group position-relative">
+                        <label id="nickNameLabel" for="nickname" class="control-label-hide">Choose A Nickname</label>
+                        <input id="nickname-input" class="form-control" type="text" name="nickname" placeholder="Choose A Nickname">
                       </div>
                       <button class="btn btn-block btn-lg btn-success" type="submit">Submit</button>
                     </div>

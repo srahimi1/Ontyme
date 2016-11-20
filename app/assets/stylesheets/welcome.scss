@@ -67,3 +67,33 @@ a {
 #users-button {
   padding-left: 80px;
 }
+
+.position-relative {
+  position: relative;
+}
+
+.control-label-in {
+  position: absolute;
+  left: 1.4em;
+  top:0.45em;
+  letter-spacing: .03em;
+  white-space: nowrap;
+  font-weight: 300;
+  font-size: 0.70em;
+  color: #009cde;
+}
+
+.control-label-hide {
+  position: absolute;
+  left: 1.1em;
+  top: 2.4em;
+  letter-spacing: .03em;
+  white-space: nowrap;
+  font-weight: 300;
+  font-size: 0.85em;
+  visibility: hidden;
+}
+
+#nickname-input {
+  height: 48px;
+}

@@ -16,3 +16,14 @@
 //= require bootstrap
 //= require turbolinks
 //= require_tree .
+
+$(document).on('turbolinks:load', function() {
+  $( "#nickname-input" ).keyup( function(e) {
+    var nickNameLabel = document.getElementById('nickNameLabel');
+    if (e.target.value.length > 0) {
+      nickNameLabel.className = "control-label-in"
+    } else {
+      nickNameLabel.className = "control-label-hide"
+    }
+  });
+});
