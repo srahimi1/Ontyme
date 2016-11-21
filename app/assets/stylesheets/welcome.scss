@@ -15,12 +15,15 @@
   text-shadow: 0 1px 0 black;
   color: white;
   margin-left: 8px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
 }
 
 .pull {
   font-size: 40px;
   text-shadow: 0 1px 0 black;
   color: white;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .headline {
@@ -96,4 +99,19 @@ a {
 
 #nickname-input {
   height: 48px;
+}
+
+.homepage_copy {
+  width: 550px;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  font-weight:lighter;
+}
+
+.signup-page-copy {
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  text-align: center;
 }

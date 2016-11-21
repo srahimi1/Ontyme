@@ -48,6 +48,11 @@
                   <span class="pull">Refer Hotel Guests.  Get Cash</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                  <p class="homepage_copy">AirportRun is a fast ride service to help hotel guests get to the airport.  You make money for each guest that you refer.</p>
+                </td>
+              </tr>
               <tr id="buttons-row">
                 <td>
                   <a href="#sign-up-page" class="ghost-button">Sign-Up<a>
@@ -65,6 +70,7 @@
     <section id="sign-up-page" class="sign-up-section">
         <div class="container">
           <h3 class="headline">New User Sign-Up - It's Quick & Easy</h3>
+          <p class="text-center signup-page-copy">No Passwords or complex registration.  To get started choose the hotel you work at, an icon and nickname.</p>
             <div class="row">
                 <div class="col-lg-12">
                   <div class="sign-up">
@@ -84,7 +90,7 @@
                           <select class="custom-select form-control">
                             <option value="select">Choose Your Icon</option>
                             <% @home_appliances_dir.each_child do |icon_path| %>
-                            <option value=""><%= image_tag(icon_path) %></option>
+                            <option value=""><img src="#{icon_path}"></option>
                             <% end %>
                           </select>
                         </div>
