@@ -39,7 +39,7 @@
 }
 
 .ghost-button {
-  display: block;
+  display: inline-block;
   width: 200px;
   border: 1px solid white;
   background-color: transparent;
@@ -62,15 +62,13 @@ a {
   color: white;
 }
 
-#buttons-row {
-  position:absolute;
-  bottom: 216px;
+a:hover {
+  text-decoration: none;
 }
-
-#users-button {
-  padding-left: 80px;
+#homepage-button-row {
+  position: relative;
+  top: 100px;
 }
-
 .position-relative {
   position: relative;
 }
@@ -102,7 +100,6 @@ a {
 }
 
 .homepage_copy {
-  width: 550px;
   color: white;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
@@ -174,15 +171,11 @@ a {
   text-align: center;
 }
 
-
-
-:hov
-
-.cls
-
-element.style {
-}
-
 input#nickname-input {
   font-size: 16px;
+}
+
+.close {
+  color: red;
+  opacity: 100;
 }

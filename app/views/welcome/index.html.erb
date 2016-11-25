@@ -40,30 +40,22 @@
 
     <!-- Main Section -->
     <section id="intro" class="home-section home">
-        <div class="container">
-          <table class="main">
-            <tbody>
-              <tr>
-                <td>
-                  <span class="pull">Refer Hotel Guests.  Get Cash</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <p class="homepage_copy">AirportRun is a fast ride service to help hotel guests get to the airport.  You make money for each guest that you refer.</p>
-                </td>
-              </tr>
-              <tr id="buttons-row">
-                <td>
-                  <a href="#sign-up-page" class="ghost-button">Sign-Up<a>
-                </td>
-                <td id="users-button">
-                  <a href="#current-users-page" class="ghost-button">Current Users<a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      <div class="container">
+        <div class="row">
+          <span class="col-xs-8 pull">Refer Hotel Guests.  Get Cash</span>
         </div>
+        <div class="row">
+          <div class="col-md-8 homepage_copy">AirportRun is a fast ride service to help hotel guests get to the airport.  You make money for each guest that you refer.</div>
+        </div>
+        <div class="row" id="homepage-button-row">
+          <div class="col-md-3">
+            <a href="#sign-up-page" class="ghost-button">Sign-Up<a>
+          </div>
+          <div class="col-md-3">
+            <a href="#current-users-page" class="ghost-button">Current Users<a>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Sign Up Section -->
@@ -131,7 +123,7 @@
 <div class="modal-content">
   <div class="modal-header" id="icon-modal">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
+      <span aria-hidden="true" id="close-button">&times;</span>
     </button>
     <h4 class="modal-title" id="myModalLabel">Select an Icon</h4>
   </div>
