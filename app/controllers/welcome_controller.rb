@@ -5,6 +5,4 @@ class WelcomeController < ApplicationController
     findIcons
   end
 
-
-
 end

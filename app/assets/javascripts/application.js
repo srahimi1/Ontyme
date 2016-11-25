@@ -18,6 +18,10 @@
 //= require_tree .
 
 $(document).on('turbolinks:load', function() {
+  init();
+});
+
+var init = function() {
   $( "#nickname-input" ).keyup( function(e) {
     var nickNameLabel = document.getElementById('nickNameLabel');
     if (e.target.value.length > 0) {
@@ -26,4 +30,17 @@ $(document).on('turbolinks:load', function() {
       nickNameLabel.className = "control-label-hide"
     }
   });
-});
+
+  var iconsNodeList = document.getElementsByClassName('icons');
+
+  function convertNodeListToJSArray(nodeList) {
+    return Array.from(nodeList);
+  }
+
+  var iconsArray = convertNodeListToJSArray(iconsNodeList);
+  iconsArray.map( function(node) {
+    $(node).on('click', function(e) {
+      console.log(e.target.currentSrc)
+    })
+  })
+}
