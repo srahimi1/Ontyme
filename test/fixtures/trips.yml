@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  destination: MyString
+  number_passengers: 1
+  number_luggage: 1
+
+two:
+  destination: MyString
+  number_passengers: 1
+  number_luggage: 1
