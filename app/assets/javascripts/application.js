@@ -55,7 +55,11 @@ var init = function() {
     var iconDiv = document.getElementById('show-user-icon');
     iconDiv.style.display = "inline-block";
     var imgDiv = document.getElementById('user-icon');
-    imgDiv.append(img)
+    if (imgDiv.childElementCount < 1) {
+      imgDiv.append(img);
+    } else {
+      $(imgDiv.firstChild).replaceWith(img)
+    }
   }
 
   function hideElementById(id) {
