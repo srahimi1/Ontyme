@@ -38,9 +38,32 @@ var init = function() {
   }
 
   var iconsArray = convertNodeListToJSArray(iconsNodeList);
+
   iconsArray.map( function(node) {
     $(node).on('click', function(e) {
       console.log(e.target.currentSrc)
+      hideElementById('select-icon-btn');
+      showImage(e.target.currentSrc);
+      $("[data-dismiss=modal]").trigger({ type: "click" });
     })
   })
+
+  function showImage(src) {
+    var img = document.createElement("img");
+    img.src = src;
+    img.height = '75';
+    var iconDiv = document.getElementById('show-user-icon');
+    iconDiv.style.display = "inline-block";
+    var imgDiv = document.getElementById('user-icon');
+    if (imgDiv.childElementCount < 1) {
+      imgDiv.append(img);
+    } else {
+      $(imgDiv.firstChild).replaceWith(img)
+    }
+  }
+
+  function hideElementById(id) {
+    var element = document.getElementById(id);
+    $(element).hide();
+  }
 }
