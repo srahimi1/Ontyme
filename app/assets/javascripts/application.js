@@ -66,4 +66,21 @@ var init = function() {
     var element = document.getElementById(id);
     $(element).hide();
   }
+
+  //make more secure, possibly think about using button_to helper
+  $('#submitUser').click(function() {
+    var nickName = $('#nickname-input').val();
+    var icon = $('#user-icon').children()[0].src;
+    $.ajax({
+        method: "POST",
+        url: "users/create",
+        data: {
+          nickname: nickName,
+          icon: icon
+        }
+    })
+    .done(function( msg ) {
+      alert( "Data Saved: " + msg );
+    });
+  });
 }
