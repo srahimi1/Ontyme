@@ -67,9 +67,9 @@ var init = function() {
     $(element).hide();
   }
 
-  $("#create_new_user").bind('ajax:beforeSend', function(event, xhr, settings){
-    console.log('apple')
-  });
+  // $("#create_new_user").bind('ajax:beforeSend', function(event, xhr, settings){
+  //   console.log('apple')
+  // });
 
   //make more secure, possibly think about using button_to helper
   $('#submitUser').click(function() {

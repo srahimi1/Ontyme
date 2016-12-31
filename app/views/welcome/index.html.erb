@@ -66,7 +66,7 @@
             <div class="row">
                 <div class="col-lg-12">
                   <div class="sign-up" id="sign-up-form">
-                <%= form_for @user, :url => users_path, :remote=>true, :id => 'create_new_user' do |f| %>
+                <%= form_for User.new, :url => users_path, :remote=>true, :id => 'create_new_user' do |f| %>
                   <div class="form-group">
                     <select class="custom-select form-control">
                       <option value="select">Select Your Hotel</option>
@@ -79,22 +79,22 @@
                     </select>
                   </div>
                   <div class="form-group position-relative">
-                    <label id="nickNameLabel" for="nickname" class="control-label-hide">Choose A Nickname</label>
-                    <input id="nickname-input" class="form-control" type="text" name="nickname" placeholder="Choose A Nickname">
+                    <%= f.label :nickname, "Choose A Nickname", class: "control-label-hide", id: "nickNameLabel" %>
+                    <%= f.text_field :nickname, { id: "nickname-input", class: "form-control", type: "text", placeholder: "Choose A Nickname" } %>
                   </div>
-                  <% end %>
-                  <button class="btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#myModal" id="select-icon-btn">Select An Icon</button>
+                  <button type="button" class="btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#myModal" id="select-icon-btn">Select An Icon</button>
                   <div id="show-user-icon">
                       <div class="row">
                         <div class="col-sm-3">
                           <span id="user-icon"></span>
                         </div>
                         <div class="col-sm-9">
-                          <button class="btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#myModal" id="select-icon-btn">Choose A New Icon</button>
+                          <button type="button" class="btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#myModal" id="select-icon-btn">Choose A New Icon</button>
                         </div>
                       </div>
                       </div>
-                      <button id="submitUser" class="btn btn-block btn-lg btn-success" type="submit">Submit</button>
+                      <%= f.submit 'user', { value: "Submit", id: "submitUser", class: "btn btn-block btn-lg btn-success" }%>
+                      <% end %>
                     </div>
                   </div>
                 </div>
