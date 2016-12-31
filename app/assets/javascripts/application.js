@@ -67,20 +67,24 @@ var init = function() {
     $(element).hide();
   }
 
+  $("#create_new_user").bind('ajax:beforeSend', function(event, xhr, settings){
+    console.log('apple')
+  });
+
   //make more secure, possibly think about using button_to helper
   $('#submitUser').click(function() {
-    var nickName = $('#nickname-input').val();
-    var icon = $('#user-icon').children()[0].src;
-    $.ajax({
-        method: "POST",
-        url: "users/create",
-        data: {
-          nickname: nickName,
-          icon: icon
-        }
-    })
-    .done(function( msg ) {
-      alert( "Data Saved: " + msg );
-    });
+    // var nickName = $('#nickname-input').val();
+    // var icon = $('#user-icon').children()[0].src;
+    $('form#new_user.new_user').submit()
+  //   $.ajax({
+  //       url: "users/create",
+  //       data: {
+  //         nickname: nickName,
+  //         icon: icon
+  //       }
+  //   })
+  //   .done(function( msg ) {
+  //     alert( "Data Saved: " + msg );
+  //   });
   });
 }

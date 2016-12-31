@@ -3,6 +3,7 @@ class WelcomeController < ApplicationController
 
   def index
     findIcons
+    @user = User.new
   end
 
 end
