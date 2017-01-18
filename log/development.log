@@ -632,3 +632,269 @@ Processing by Rails::InfoController#routes as HTML
 Completed 200 OK in 2675ms (Views: 2032.2ms | ActiveRecord: 0.0ms)
 
 
+Started GET "/" for ::1 at 2016-12-17 16:13:58 -0500
+Started GET "/rails/info/routes" for ::1 at 2016-12-17 16:13:59 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (116.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (120.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+  Rendered welcome/index.html.erb within layouts/application (10701.7ms)
+Completed 200 OK in 12541ms (Views: 12395.8ms | ActiveRecord: 0.0ms)
+
+
+Processing by Rails::InfoController#routes as HTML
+  Parameters: {"internal"=>true}
+  Rendering c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/railties-5.0.0.1/lib/rails/templates/rails/info/routes.html.erb within layouts/application
+  Rendered collection of c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/routes/_route.html.erb [25 times] (68.1ms)
+  Rendered c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/routes/_table.html.erb (394.6ms)
+  Rendered c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/railties-5.0.0.1/lib/rails/templates/rails/info/routes.html.erb within layouts/application (1171.7ms)
+Completed 200 OK in 2571ms (Views: 2210.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for ::1 at 2016-12-17 16:14:31 -0500
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+Started GET "/" for ::1 at 2016-12-17 16:14:32 -0500
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+  Rendered welcome/index.html.erb within layouts/application (3403.7ms)
+  Rendered welcome/index.html.erb within layouts/application (2535.7ms)
+Completed 200 OK in 4840ms (Views: 4752.8ms | ActiveRecord: 0.0ms)
+
+
+Completed 200 OK in 4592ms (Views: 4381.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for ::1 at 2016-12-26 13:44:22 -0500
+Started GET "/" for ::1 at 2016-12-26 13:44:22 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (9.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (10.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by WelcomeController#index as HTML
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+  Rendering welcome/index.html.erb within layouts/application
+Started GET "/rails/info/routes" for ::1 at 2016-12-26 13:44:33 -0500
+  Rendered welcome/index.html.erb within layouts/application (3266.8ms)
+Completed 500 Internal Server Error in 4496ms (ActiveRecord: 0.0ms)
+
+
+  
+ActionView::Template::Error (Permission denied @ utime_failed - c:/Sites/AirportRun/tmp/cache/assets/sprockets/v3.0/zX/zXCIgQKlBXo8ASU80TJyoOAcL-30PyLAO77b5312cQQ.cache):
+    12:                     <span class="icon-bar"></span>
+    13:                     <span class="icon-bar"></span>
+    14:                 </button>
+    15:                 <a class="navbar-brand page-scroll" href="#page-top"><%= image_tag('plane-2') %><span class="logo">AirportRun</span></a>
+    16:             </div>
+    17: 
+    18:             <!-- Collect the nav links, forms, and other content for toggling -->
+  
+app/views/welcome/index.html.erb:15:in `_app_views_welcome_index_html_erb__982135096_37828800'
+  Rendering c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout
+  Rendering c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (129.2ms)
+  Rendering c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (66.1ms)
+  Rendering c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (22.0ms)
+  Rendered c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (8603.6ms)
+  Rendered welcome/index.html.erb within layouts/application (42253.1ms)
+Completed 200 OK in 45411ms (Views: 45133.0ms | ActiveRecord: 0.0ms)
+
+
+Processing by Rails::InfoController#routes as HTML
+  Parameters: {"internal"=>true}
+  Rendering c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/railties-5.0.0.1/lib/rails/templates/rails/info/routes.html.erb within layouts/application
+  Rendered collection of c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/routes/_route.html.erb [25 times] (91.1ms)
+  Rendered c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/routes/_table.html.erb (444.7ms)
+  Rendered c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/railties-5.0.0.1/lib/rails/templates/rails/info/routes.html.erb within layouts/application (1241.8ms)
+Completed 200 OK in 2671ms (Views: 2301.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for ::1 at 2016-12-31 12:55:47 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (52.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+Started GET "/" for ::1 at 2016-12-31 12:55:58 -0500
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+  Rendered welcome/index.html.erb within layouts/application (2628.8ms)
+Completed 500 Internal Server Error in 4029ms (ActiveRecord: 292.1ms)
+
+
+  
+ActionView::Template::Error (Permission denied @ utime_failed - c:/Sites/AirportRun/tmp/cache/assets/sprockets/v3.0/MK/MKSwZ3qGW4WnRHnuNC2qM9L0GqJxfaLxDdMEqVqJmvg.cache):
+    12:                     <span class="icon-bar"></span>
+    13:                     <span class="icon-bar"></span>
+    14:                 </button>
+    15:                 <a class="navbar-brand page-scroll" href="#page-top"><%= image_tag('plane-2') %><span class="logo">AirportRun</span></a>
+    16:             </div>
+    17: 
+    18:             <!-- Collect the nav links, forms, and other content for toggling -->
+  
+app/views/welcome/index.html.erb:15:in `_app_views_welcome_index_html_erb__394672494_26713956'
+  Rendering c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout
+  Rendering c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (96.0ms)
+  Rendering c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (72.0ms)
+  Rendering c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.0ms)
+  Rendered c:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (8242.6ms)
+  Rendered welcome/index.html.erb within layouts/application (40200.8ms)
+Completed 200 OK in 41737ms (Views: 41508.9ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/users" for ::1 at 2016-12-31 12:57:37 -0500
+Processing by UsersController#create as JS
+  Parameters: {"utf8"=>"✓", "nickname"=>";l;l;l;l;l"}
+  [1m[35m (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (62.5ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"[0m  [["created_at", 2016-12-31 17:57:38 UTC], ["updated_at", 2016-12-31 17:57:38 UTC]]
+  [1m[35m (31.3ms)[0m  [1m[35mCOMMIT[0m
+  Rendering text template
+  Rendered text template (0.0ms)
+Completed 200 OK in 141ms (Views: 15.7ms | ActiveRecord: 93.8ms)
+
+
+Started POST "/users" for ::1 at 2016-12-31 12:57:40 -0500
+Processing by UsersController#create as JS
+  Parameters: {"utf8"=>"✓", "nickname"=>";l;l;l;l;l"}
+  [1m[35m (171.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (78.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"[0m  [["created_at", 2016-12-31 17:57:40 UTC], ["updated_at", 2016-12-31 17:57:40 UTC]]
+  [1m[35m (93.8ms)[0m  [1m[35mCOMMIT[0m
+  Rendering text template
+  Rendered text template (0.0ms)
+Completed 200 OK in 563ms (Views: 78.0ms | ActiveRecord: 343.8ms)
+
+
+Started POST "/users" for ::1 at 2016-12-31 12:57:52 -0500
+Processing by UsersController#create as JS
+  Parameters: {"utf8"=>"✓", "nickname"=>";l;l;l;l;l"}
+  [1m[35m (62.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (15.6ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"[0m  [["created_at", 2016-12-31 17:57:52 UTC], ["updated_at", 2016-12-31 17:57:52 UTC]]
+  [1m[35m (31.3ms)[0m  [1m[35mCOMMIT[0m
+  Rendering text template
+  Rendered text template (0.0ms)
+Completed 200 OK in 109ms (Views: 1.9ms | ActiveRecord: 109.4ms)
+
+
+Started POST "/users" for ::1 at 2016-12-31 12:57:53 -0500
+Processing by UsersController#create as JS
+  Parameters: {"utf8"=>"✓", "nickname"=>";l;l;l;l;l"}
+  [1m[35m (163.8ms)[0m  [1m[35mBEGIN[0m
+Started POST "/users" for ::1 at 2016-12-31 12:57:54 -0500
+Processing by UsersController#create as JS
+  [1m[35mSQL (159.4ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"[0m  [["created_at", 2016-12-31 17:57:54 UTC], ["updated_at", 2016-12-31 17:57:54 UTC]]
+Started POST "/users" for ::1 at 2016-12-31 12:57:54 -0500
+  Parameters: {"utf8"=>"✓", "nickname"=>";l;l;l;l;l"}
+Started POST "/users" for ::1 at 2016-12-31 12:57:54 -0500
+Processing by UsersController#create as JS
+  [1m[35m (123.5ms)[0m  [1m[35mCOMMIT[0m
+Processing by UsersController#create as JS
+  [1m[35m (79.4ms)[0m  [1m[35mBEGIN[0m
+Started POST "/users" for ::1 at 2016-12-31 12:57:54 -0500
+  Parameters: {"utf8"=>"✓", "nickname"=>";l;l;l;l;l"}
+  Rendering text template
+  Parameters: {"utf8"=>"✓", "nickname"=>";l;l;l;l;l"}
+Processing by UsersController#create as JS
+  [1m[35mSQL (78.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"[0m  [["created_at", 2016-12-31 17:57:54 UTC], ["updated_at", 2016-12-31 17:57:54 UTC]]
+  Rendered text template (0.0ms)
+  [1m[35m (79.4ms)[0m  [1m[35mBEGIN[0m
+  Parameters: {"utf8"=>"✓", "nickname"=>";l;l;l;l;l"}
+  [1m[35m (71.4ms)[0m  [1m[35mBEGIN[0m
+Completed 200 OK in 1419ms (Views: 488.1ms | ActiveRecord: 446.7ms)
+
+
+  [1m[35m (135.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35mSQL (84.8ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"[0m  [["created_at", 2016-12-31 17:57:55 UTC], ["updated_at", 2016-12-31 17:57:55 UTC]]
+  [1m[35m (102.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (158.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"[0m  [["created_at", 2016-12-31 17:57:55 UTC], ["updated_at", 2016-12-31 17:57:55 UTC]]
+  Rendering text template
+Started POST "/users" for ::1 at 2016-12-31 12:57:55 -0500
+  [1m[35m (184.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35mSQL (165.9ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"[0m  [["created_at", 2016-12-31 17:57:55 UTC], ["updated_at", 2016-12-31 17:57:55 UTC]]
+  Rendered text template (0.0ms)
+  [1m[35m (187.5ms)[0m  [1m[35mCOMMIT[0m
+Processing by UsersController#create as JS
+  Rendering text template
+Completed 200 OK in 1822ms (Views: 704.6ms | ActiveRecord: 292.5ms)
+
+
+  [1m[35m (0.0ms)[0m  [1m[35mCOMMIT[0m
+  Rendering text template
+  Parameters: {"utf8"=>"✓", "nickname"=>";l;l;l;l;l"}
+  Rendered text template (0.0ms)
+  Rendering text template
+  Rendered text template (0.0ms)
+Completed 200 OK in 1437ms (Views: 16.4ms | ActiveRecord: 348.8ms)
+
+
+  [1m[35m (0.0ms)[0m  [1m[35mBEGIN[0m
+  Rendered text template (0.0ms)
+Completed 200 OK in 1331ms (Views: 15.8ms | ActiveRecord: 417.0ms)
+
+
+Completed 200 OK in 1031ms (Views: 18.1ms | ActiveRecord: 268.5ms)
+
+
+Started POST "/users" for ::1 at 2016-12-31 12:57:56 -0500
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"[0m  [["created_at", 2016-12-31 17:57:56 UTC], ["updated_at", 2016-12-31 17:57:56 UTC]]
+Started POST "/users" for ::1 at 2016-12-31 12:57:56 -0500
+Processing by UsersController#create as JS
+Started POST "/users" for ::1 at 2016-12-31 12:57:56 -0500
+Started POST "/users" for ::1 at 2016-12-31 12:57:56 -0500
+Processing by UsersController#create as JS
+  [1m[35m (15.6ms)[0m  [1m[35mCOMMIT[0m
+  Parameters: {"utf8"=>"✓", "nickname"=>";l;l;l;l;l"}
+Processing by UsersController#create as JS
+Processing by UsersController#create as JS
+  Parameters: {"utf8"=>"✓", "nickname"=>";l;l;l;l;l"}
+  Rendering text template
+  Parameters: {"utf8"=>"✓", "nickname"=>";l;l;l;l;l"}
+  [1m[35m (0.0ms)[0m  [1m[35mBEGIN[0m
+  Parameters: {"utf8"=>"✓", "nickname"=>";l;l;l;l;l"}
+  Rendered text template (0.0ms)
+  [1m[35m (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"[0m  [["created_at", 2016-12-31 17:57:56 UTC], ["updated_at", 2016-12-31 17:57:56 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mBEGIN[0m
+Completed 200 OK in 78ms (Views: 21.9ms | ActiveRecord: 15.6ms)
+
+
+  [1m[35mSQL (15.6ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"[0m  [["created_at", 2016-12-31 17:57:56 UTC], ["updated_at", 2016-12-31 17:57:56 UTC]]
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"[0m  [["created_at", 2016-12-31 17:57:56 UTC], ["updated_at", 2016-12-31 17:57:56 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"[0m  [["created_at", 2016-12-31 17:57:56 UTC], ["updated_at", 2016-12-31 17:57:56 UTC]]
+  [1m[35m (15.6ms)[0m  [1m[35mCOMMIT[0m
+  Rendering text template
+  [1m[35m (0.0ms)[0m  [1m[35mCOMMIT[0m
+  Rendering text template
+  [1m[35m (0.0ms)[0m  [1m[35mCOMMIT[0m
+  Rendered text template (0.0ms)
+  Rendering text template
+  Rendered text template (0.0ms)
+  Rendering text template
+Completed 200 OK in 47ms (Views: 10.9ms | ActiveRecord: 0.0ms)
+
+
+  Rendered text template (0.0ms)
+Completed 200 OK in 63ms (Views: 9.0ms | ActiveRecord: 31.3ms)
+
+
+  Rendered text template (0.0ms)
+Completed 200 OK in 63ms (Views: 8.7ms | ActiveRecord: 0.0ms)
+
+
+Completed 200 OK in 47ms (Views: 10.3ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/users" for ::1 at 2016-12-31 12:57:56 -0500
+Processing by UsersController#create as JS
+  Parameters: {"utf8"=>"✓", "nickname"=>";l;l;l;l;l"}
+  [1m[35m (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at") VALUES ($1, $2) RETURNING "id"[0m  [["created_at", 2016-12-31 17:57:56 UTC], ["updated_at", 2016-12-31 17:57:56 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mCOMMIT[0m
+  Rendering text template
+  Rendered text template (0.0ms)
+Completed 200 OK in 16ms (Views: 1.9ms | ActiveRecord: 0.0ms)
+
+
