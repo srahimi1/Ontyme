@@ -6,10 +6,10 @@ class UsersController < ApplicationController
 	def create
 		#render plain: params[:user].inspect
 		
-		@user = User.new(params.require(:user).permit(:nickname, :hotel, :icon))
+		@user = User.new(params.require(:user).permit(:nickname, :hotel_name, :icon))
 
 		if @user.save
-			render plain: "OK"
+			render plain: "GOOD"
 		else 
 			render plain: "FAIL"
 		end
