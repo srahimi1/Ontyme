@@ -68,15 +68,7 @@
                   <div class="sign-up" id="sign-up-form">
                 <%= form_for :user, :url => users_path, :remote=>true, :id => 'create_new_user' do |f| %>
                   <div class="form-group">
-                    <select class="custom-select form-control">
-                      <option value="select">Select Your Hotel</option>
-                      <option value=">Marriott">Marriott</option>
-                      <option value="Sheraton">Sheraton</option>
-                      <option value="Hilton">Hilton</option>
-                      <option value="Hyatt Regency">Hyatt Regency</option>
-                      <option value="Crowne Plaza">Crowne Plaza</option>
-                      <option value="Holiday Inn">Holiday Inn</option>
-                    </select>
+                    <%= f.select(:hotel_name, options_for_select([["Select Your Hotel",""],["Marriott","Marriott"],["Sheraton","Sheraton"],["Hilton","Hilton"],["Hyatt Regency","Hyatt Regency"],["Crowne Plaza","Crowne Plaza"],["Holiday Inn","Holiday Inn"]]), class: "custom-select form-control") %>
                   </div>
                   <div class="form-group position-relative">
                     <%= f.label :nickname, "Choose A Nickname", class: "control-label-hide", id: "nickNameLabel" %>
