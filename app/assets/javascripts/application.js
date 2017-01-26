@@ -17,9 +17,62 @@
 //= require turbolinks
 //= require_tree .
 
+
 $(document).on('turbolinks:load', function() {
+  // findLatLng(); // added to get google location;
   init();
 });
+
+function initMap() {
+  var geocoder = new google.maps.Geocoder;
+  var infowindow = new google.maps.InfoWindow;
+  findLatLng(geocoder, infowindow);
+}
+
+function geocodeLatLng(geocoder,latlng,infowindow) {
+  geocoder.geocode({'location': {lat: latlng.location.lat, lng: latlng.location.lng}}, function(results, status) {
+    if (status=== 'OK'){ 
+      if (results[1]) {
+        console.log(results);
+        alert(results[0].formatted_address);
+      }
+    }
+  });
+} // end function geocodeLatLng
+
+
+function findLatLng(geocoder,infowindow) {
+    var ajaxRequest = new XMLHttpRequest();
+    var url = "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBR4VVlIs3tREWzRrxd0j6BquoEU-yUFGg"
+    ajaxRequest.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var response = JSON.parse(this.responseText);
+        console.log(response); // lat, lng will be returned;
+        geocodeLatLng(geocoder,response,infowindow);
+        //reverseGeocode(response.location);
+      } // end readyState && status
+    }; // end onreadystatechange
+    ajaxRequest.open("POST", url, true);
+    ajaxRequest.setRequestHeader("Content-type","application/json");
+    ajaxRequest.send();
+  } // end FindLocation()
+
+
+function reverseGeocode(latlng) {
+    console.log(latlng);
+    var ajaxRequest = new XMLHttpRequest();
+    //var url2 = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+latlng.lat+","+latlng.lng+"&key=AIzaSyBR4VVlIs3tREWzRrxd0j6BquoEU-yUFGg"
+    var url2 = "/users/getaddress"
+    ajaxRequest.onreadystatechange = function() {
+      if(this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText); // address will be returned
+      } // end this.readyState ...
+    } // end onreadystatechange
+    ajaxRequest.open("POST", url2, true);
+    ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
+    ajaxRequest.send();
+}
+
 
 var init = function() {
   $( "#nickname-input" ).keyup( function(e) {
