@@ -66,7 +66,7 @@
             <div class="row">
                 <div class="col-lg-12">
                   <div class="sign-up" id="sign-up-form">
-                <%= form_for :user, :url => users_path, :remote=>true, :id => 'create_new_user' do |f| %>
+                <%= form_for :user, :url => users_path, :remote => true, html: { :id => 'create_new_user' } do |f| %>
                   <div class="form-group">
                     <%= f.select(:hotel_name, options_for_select([["Select Your Hotel",""],["Marriott","Marriott"],["Sheraton","Sheraton"],["Hilton","Hilton"],["Hyatt Regency","Hyatt Regency"],["Crowne Plaza","Crowne Plaza"],["Holiday Inn","Holiday Inn"]]), {}, class: "custom-select form-control") %>
                   </div>
@@ -84,7 +84,7 @@
                           <button type="button" class="btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#myModal" id="select-icon-btn">Choose A New Icon</button>
                         </div>
                       </div>
-                      </div>
+                  </div>
                       <%= f.submit 'user', { value: "Submit", id: "submitUser", class: "btn btn-block btn-lg btn-success" }%>
                       <% end %>
                     </div>
@@ -101,6 +101,11 @@
                 <div class="col-lg-12">
                   <div class="users">
                     <p>Current Users:</p>
+                    <% @users.each do |user| %>
+                      <%= user.nickname %>
+                      <%= user.hotel_name %>
+                      <%= image_tag(user.icon) %>
+                    <% end %>
                   </div>
                 </div>
             </div>

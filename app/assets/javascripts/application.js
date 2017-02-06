@@ -31,7 +31,7 @@ function initMap() {
 
 function geocodeLatLng(geocoder,latlng,infowindow) {
   geocoder.geocode({'location': {lat: latlng.location.lat, lng: latlng.location.lng}}, function(results, status) {
-    if (status=== 'OK'){ 
+    if (status=== 'OK'){
       if (results[1]) {
         console.log(results);
         alert(results[0].formatted_address);
@@ -109,6 +109,7 @@ var init = function() {
     iconDiv.style.display = "inline-block";
     var imgDiv = document.getElementById('user-icon');
     if (imgDiv.childElementCount < 1) {
+      img.id = 'user-img';
       imgDiv.append(img);
     } else {
       $(imgDiv.firstChild).replaceWith(img)
@@ -120,24 +121,13 @@ var init = function() {
     $(element).hide();
   }
 
-  // $("#create_new_user").bind('ajax:beforeSend', function(event, xhr, settings){
-  //   console.log('apple')
-  // });
+  $('#create_new_user').on('ajax:beforeSend', function(event, xhr, settings) {
+      var imgSrc = $('#user-img')[0].src
+      settings.data += encodeURI('&user[icon]=' + imgSrc);
+  });
 
-  //make more secure, possibly think about using button_to helper
-  $('#submitUser').click(function() {
-    // var nickName = $('#nickname-input').val();
-    // var icon = $('#user-icon').children()[0].src;
-    $('form#new_user.new_user').submit()
-  //   $.ajax({
-  //       url: "users/create",
-  //       data: {
-  //         nickname: nickName,
-  //         icon: icon
-  //       }
-  //   })
-  //   .done(function( msg ) {
-  //     alert( "Data Saved: " + msg );
-  //   });
+  $('#submitUser').click( function(e) {
+    $('#create_new_user').submit();
+    e.preventDefault();
   });
 }
