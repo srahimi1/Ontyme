@@ -19,7 +19,7 @@
 
 
 $(document).on('turbolinks:load', function() {
-  // findLatLng(); // added to get google location;
+  findLatLng(); // added to get google location;
   init();
 });
 
