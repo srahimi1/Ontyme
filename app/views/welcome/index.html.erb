@@ -105,6 +105,21 @@
                       <%= user.nickname %>
                       <%= user.hotel_name %>
                       <%= image_tag(user.icon) %>
+                      <button type="button" class="btn btn-primary">Submit Ride Request</button>
+                      <%= form_for :trip, :url => trips_path, :remote => true, html: { :id => 'create_new_trip' } do |f| %>
+                      <div class="form-group">
+                        <%= f.select(:destination, options_for_select([["Select Your Destination",""],["JFK","JFK"],["LaGuardia","LaGuardia"],["Newark","Newark"]]), {}, class: "custom-select form-control") %>
+                      <div class="form-group position-relative">
+                        <%= f.label :number_passengers, "How Many Passengers?", class: "control-label-hide", id: "nickNameLabel" %>
+                        <%= f.text_field :number_passengers, { id: "nickname-input", class: "form-control", type: "text", placeholder: "How Many Passengers?" } %>
+                      </div>
+                      <div class="form-group position-relative">
+                        <%= f.label :number_luggage, "How much Luggage?", class: "control-label-hide", id: "nickNameLabel" %>
+                        <%= f.text_field :number_luggage, { id: "nickname-input", class: "form-control", type: "text", placeholder: "How much Luggage?" } %>
+                      </div>
+                      </div>
+                      <%= f.submit 'trip', { value: "Submit", id: "submitTrip", class: "btn btn-lg btn-success" }%>
+                      <% end %>
                     <% end %>
                   </div>
                 </div>
@@ -117,7 +132,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>Contact Section</h1>
+                    <h1>FAQ</h1>
                 </div>
             </div>
         </div>
@@ -129,26 +144,26 @@
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-<div class="modal-content">
-  <div class="modal-header" id="icon-modal">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true" id="close-button">&times;</span>
-    </button>
-    <h4 class="modal-title" id="myModalLabel">Select an Icon</h4>
+  <div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header" id="icon-modal">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" id="close-button">&times;</span>
+      </button>
+      <h4 class="modal-title" id="myModalLabel">Select an Icon</h4>
+    </div>
+    <div class="modal-body">
+      <% @icons.each do |icon| %>
+      <a class="icons" href="javascript:void(0);">
+        <%= image_tag(icon.gsub("app/assets/images/", ""), size: 85, class: 'icon-box' ) %>
+      </a>
+      <% end %>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-block btn-lg btn-danger" data-dismiss="modal">Exit</button>
+    </div>
   </div>
-  <div class="modal-body">
-    <% @icons.each do |icon| %>
-    <a class="icons" href="javascript:void(0);">
-      <%= image_tag(icon.gsub("app/assets/images/", ""), size: 85, class: 'icon-box' ) %>
-    </a>
-    <% end %>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-block btn-lg btn-danger" data-dismiss="modal">Exit</button>
-  </div>
-</div>
-</div>
 </div>
 
 </html>
