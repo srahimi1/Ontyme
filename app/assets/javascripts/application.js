@@ -45,7 +45,7 @@ function findLatLng(geocoder,infowindow) {
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position){
         geocodeLatLng(geocoder,position,infowindow);
-      }, geolocateError);
+      }, geolocateError, {enableHighAccuracy: true});
     }
     else 
       alert("Browser does not support geolocating");
@@ -67,7 +67,6 @@ function findLatLng(geocoder,infowindow) {
 function geolocateError(error) {
   if(error.code == 1) {
     alert("You must allow AirportRun access to your location for the site to operate, or, if you don't want to use the site, close this browser window");
-   // initMap();
   }
 
 
