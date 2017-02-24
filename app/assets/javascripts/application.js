@@ -19,7 +19,7 @@
 
 
 $(document).on('turbolinks:load', function() {
-  findLatLng(); // added to get google location;
+  initMap(); // added to get google location;
   init();
 });
 
@@ -30,7 +30,7 @@ function initMap() {
 }
 
 function geocodeLatLng(geocoder,latlng,infowindow) {
-  geocoder.geocode({'location': {lat: latlng.location.lat, lng: latlng.location.lng}}, function(results, status) {
+  geocoder.geocode({'location': {lat: latlng.coords.latitude, lng: latlng.coords.longitude}}, function(results, status) {
     if (status=== 'OK'){
       if (results[1]) {
         console.log(results);
@@ -42,7 +42,14 @@ function geocodeLatLng(geocoder,latlng,infowindow) {
 
 
 function findLatLng(geocoder,infowindow) {
-    var ajaxRequest = new XMLHttpRequest();
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position){
+        geocodeLatLng(geocoder,position,infowindow);
+      });
+    }
+    else 
+      alert("Browser does not support geolocating");
+  /*  var ajaxRequest = new XMLHttpRequest();
     var url = "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBR4VVlIs3tREWzRrxd0j6BquoEU-yUFGg"
     ajaxRequest.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -54,7 +61,7 @@ function findLatLng(geocoder,infowindow) {
     }; // end onreadystatechange
     ajaxRequest.open("POST", url, true);
     ajaxRequest.setRequestHeader("Content-type","application/json");
-    ajaxRequest.send();
+    ajaxRequest.send(); */
   } // end FindLocation()
 
 
