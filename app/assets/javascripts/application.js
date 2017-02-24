@@ -19,13 +19,13 @@
 
 
 $(document).on('turbolinks:load', function() {
-  initMap(); // added to get google location;
+  //initMap(); // added to get google location;
   init();
 });
 
 function initMap() {
-  var geocoder = 1; //new google.maps.Geocoder;
-  var infowindow = 1;//new google.maps.InfoWindow;
+  var geocoder = new google.maps.Geocoder;
+  var infowindow = new google.maps.InfoWindow;
   findLatLng(geocoder, infowindow);
 }
 
@@ -45,7 +45,7 @@ function findLatLng(geocoder,infowindow) {
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position){
         geocodeLatLng(geocoder,position,infowindow);
-      });
+      }, geolocateError);
     }
     else 
       alert("Browser does not support geolocating");
@@ -63,6 +63,15 @@ function findLatLng(geocoder,infowindow) {
     ajaxRequest.setRequestHeader("Content-type","application/json");
     ajaxRequest.send(); */
   } // end FindLocation()
+
+function geolocateError(error) {
+  if(error.code == 1) {
+    alert("You must allow AirportRun access to your location for the site to operate, or, if you don't want to use the site, close this browser window");
+   // initMap();
+  }
+
+
+}
 
 
 function reverseGeocode(latlng) {
