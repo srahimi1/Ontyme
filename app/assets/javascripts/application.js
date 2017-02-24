@@ -24,8 +24,8 @@ $(document).on('turbolinks:load', function() {
 });
 
 function initMap() {
-  var geocoder = new google.maps.Geocoder;
-  var infowindow = new google.maps.InfoWindow;
+  var geocoder = 1; //new google.maps.Geocoder;
+  var infowindow = 1;//new google.maps.InfoWindow;
   findLatLng(geocoder, infowindow);
 }
 
