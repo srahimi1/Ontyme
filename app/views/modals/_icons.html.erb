@@ -1,0 +1,22 @@
+<div class="modal fade" id="iconsModal" tabindex="-1" role="dialog" aria-labelledby="iconsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" id="icon-modal">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" id="close-button">&times;</span>
+        </button>
+      <h4 class="modal-title" id="iconsModallLabel">Select an Icon</h4>
+      </div>
+      <div class="modal-body">
+        <% @icons.each do |icon| %>
+        <a class="icons" href="javascript:void(0);">
+          <%= image_tag(icon.gsub("app/assets/images/", ""), size: 85, class: 'icon-box' ) %>
+        </a>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-block btn-lg btn-danger" data-dismiss="modal">Exit</button>
+      </div>
+    </div>
+  </div>
+</div>

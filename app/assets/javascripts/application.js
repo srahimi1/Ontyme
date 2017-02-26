@@ -43,11 +43,12 @@ function geocodeLatLng(geocoder,latlng,infowindow) {
 
 function findLatLng(geocoder,infowindow) {
     if(navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position){
-        geocodeLatLng(geocoder,position,infowindow);
-      }, geolocateError, {enableHighAccuracy: true});
+      $('#locationRequestModal').modal('toggle');
+      // navigator.geolocation.getCurrentPosition(function(position){
+      //   geocodeLatLng(geocoder,position,infowindow);
+      // }, geolocateError, {enableHighAccuracy: true});
     }
-    else 
+    else
       alert("Browser does not support geolocating");
   /*  var ajaxRequest = new XMLHttpRequest();
     var url = "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBR4VVlIs3tREWzRrxd0j6BquoEU-yUFGg"

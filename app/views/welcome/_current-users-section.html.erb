@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="users">
+        <p>Current Users:</p>
+        <div class="row flexcontainer-row">
+          <% @users.each do |user| %>
+            <%= user.nickname %>
+            <%= image_tag(user.icon) %>
+            <%= user.hotel_name %>
+          <button type="button" class="btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#rideRequestFromHotelModal" id="select-icon-btn">Request a ride</button>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
