@@ -166,7 +166,7 @@ a:hover {
   background-color: black;
 }
 
-#myModalLabel {
+#iconsModalLabel {
   color: orange;
   text-align: center;
 }
@@ -182,4 +182,17 @@ input#nickname-input {
 
 #show-user-icon {
   display: none;
+}
+
+.flexcontainer-row {
+   display: -webkit-flex;
+   display: flex;
+   flex-wrap: wrap;
+}
+
+.flexcontainer-display-column {
+   display: -webkit-flex;
+   display: flex;
+   -webkit-flex-direction: column;
+   flex-direction: column;
 }
