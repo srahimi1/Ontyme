@@ -22,7 +22,9 @@ $(document).on('turbolinks:load', function() {
   init();
 });
 
-$(document).ready( function() {$("#reloada").click(alert("in"))  });
+$(document).on('click', "#reloada", function(e) {
+  console.log(1);
+});
 
 function initMap() {
   var geocoder = new google.maps.Geocoder;
@@ -56,8 +58,8 @@ function geolocateError(error) {
   if(error.code == 1) {
     $('#locationRequestModal').modal('toggle');
     //alert("You must allow AirportRun access to your location for the site to operate, or, if you don't want to use the site, close this browser window");
-  } 
-} // end function geolocateError 
+  }
+} // end function geolocateError
 
 
 function reverseGeocode(latlng) {
