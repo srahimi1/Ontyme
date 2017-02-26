@@ -19,15 +19,16 @@
 
 
 $(document).on('turbolinks:load', function() {
-  //initMap(); // added to get google location;
   init();
 });
+
+$(document).ready( function() {$("#reloada").click(alert("in"))  });
 
 function initMap() {
   var geocoder = new google.maps.Geocoder;
   var infowindow = new google.maps.InfoWindow;
   findLatLng(geocoder, infowindow);
-}
+} // end function initMap
 
 function geocodeLatLng(geocoder,latlng,infowindow) {
   geocoder.geocode({'location': {lat: latlng.coords.latitude, lng: latlng.coords.longitude}}, function(results, status) {
@@ -43,35 +44,20 @@ function geocodeLatLng(geocoder,latlng,infowindow) {
 
 function findLatLng(geocoder,infowindow) {
     if(navigator.geolocation) {
-      $('#locationRequestModal').modal('toggle');
-      // navigator.geolocation.getCurrentPosition(function(position){
-      //   geocodeLatLng(geocoder,position,infowindow);
-      // }, geolocateError, {enableHighAccuracy: true});
+       navigator.geolocation.getCurrentPosition(function(position){
+         geocodeLatLng(geocoder,position,infowindow);
+       }, geolocateError, {enableHighAccuracy: true});
     }
     else
       alert("Browser does not support geolocating");
-  /*  var ajaxRequest = new XMLHttpRequest();
-    var url = "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBR4VVlIs3tREWzRrxd0j6BquoEU-yUFGg"
-    ajaxRequest.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        var response = JSON.parse(this.responseText);
-        console.log(response); // lat, lng will be returned;
-        geocodeLatLng(geocoder,response,infowindow);
-        //reverseGeocode(response.location);
-      } // end readyState && status
-    }; // end onreadystatechange
-    ajaxRequest.open("POST", url, true);
-    ajaxRequest.setRequestHeader("Content-type","application/json");
-    ajaxRequest.send(); */
-  } // end FindLocation()
+} // end FindLocation()
 
 function geolocateError(error) {
   if(error.code == 1) {
-    alert("You must allow AirportRun access to your location for the site to operate, or, if you don't want to use the site, close this browser window");
-  }
-
-
-}
+    $('#locationRequestModal').modal('toggle');
+    //alert("You must allow AirportRun access to your location for the site to operate, or, if you don't want to use the site, close this browser window");
+  } 
+} // end function geolocateError 
 
 
 function reverseGeocode(latlng) {
@@ -99,6 +85,7 @@ var init = function() {
       nickNameLabel.className = "control-label-hide"
     }
   });
+
 
   var iconsNodeList = document.getElementsByClassName('icons');
 
@@ -146,4 +133,4 @@ var init = function() {
     $('#create_new_user').submit();
     e.preventDefault();
   });
-}
+} // end function init
