@@ -1,0 +1,2 @@
+class ActiveTrip < ApplicationRecord
+end
