@@ -23,7 +23,7 @@ $(document).on('turbolinks:load', function() {
 });
 
 $(document).on('click', "#reloada", function(e) {
-  console.log(1);
+  window.location.reload();
 });
 
 function initMap() {
