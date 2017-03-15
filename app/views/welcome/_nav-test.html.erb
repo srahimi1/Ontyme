@@ -1,0 +1,122 @@
+<nav class="navbar navbar-default navbar-fixed-top navbar-styles" role="navigation">
+  <div class="container">
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+        <a class="navbar-brand page-scroll" href="#page-top">
+        <div class="logo">
+        <svg width="800" height="800">
+<rect x="0" y="0" width="145" height="100" fill="#20b7af" />
+
+<circle id="letterO" cx="50" cy="50" r="25" stroke="white" stroke-width="6" fill="#20b7af"/>
+
+<path id="letterN" d="M100 75 v-35 m0 8 c9 -7 28 -15 25 27" stroke-width="6" stroke="white" fill="none"/>
+
+<path id="letterT" d="M145 45 h36 m-18 -15 c0 50 -2 40 20 42" stroke-linejoin="round" stroke="#20b7af" stroke-width="6" fill="none" />
+
+<path id="letterY" d="M205 45 l15 30 m10 -30 l-20 50" stroke-width="6" stroke="#20b7af" />
+
+<path id="letterM" d="M257 40 v35 m0 -25 c1 -12 27 -20 23 25 m-3 -25 c1 -12 27 -18 23 25" stroke="#20b7af" stroke-width="6" fill="none" />
+
+<path id="letterE" d="M330 52 h32 a2 2 0 0 0 -35 1 a2 2 0 0 0 35 8" stroke="#20b7af" stroke-width="6" fill="none" />
+
+<g id="clock" style="visibility:hidden">
+<line id="secondHand" x1="50" y1="50" x2="50" y2="33" stroke="#666666" stroke-width="2" transform="rotate(45 50 50)"/>
+<line id="minuteHand" x1="50" y1="50" x2="50" y2="30" stroke="#666666" stroke-width="2" />
+<circle cx="50" cy="50" r="3" stroke="white" fill="white" />
+</g>
+
+
+
+
+
+</svg>
+
+
+<script>
+var letters = ["O","N","T","Y","M","E"];
+var letterPaths = [];
+var animsCompleted = 0;
+var rotateDeg = 0;
+var rotateAnimID;
+for (var i=0; i< letters.length; i++) {
+letterPaths.push(document.getElementById("letter"+letters[i]));
+}
+
+for (var i=0; i< letters.length; i++) {
+if (typeof letterPaths[i].getTotalLength != "undefined" ) {
+var l = letterPaths[i].getTotalLength();
+} else {
+var l = letterPaths[i].r.baseVal.value * Math.PI * 2 + 1;
+}
+letterPaths[i].length = l;
+letterPaths[i].style.strokeDasharray = l+" "+l;
+letterPaths[i].style.strokeDashoffset = l;
+letterPaths[i].current = 1;
+letterPaths[i].animID;
+}
+
+function anim(letter) {
+letter.style.strokeDashoffset = letter.length-letter.current;
+letter.current = letter.current+letter.current*.11;
+clearInterval(letter.animID);
+if (letter.current > letter.length){
+letter.style.strokeDashoffset = 0;
+clearInterval(letter.animID); 
+animsCompleted++;
+if (animsCompleted == 6 ) {
+document.getElementById("letterO").style.fill = "#b7e7b7";
+document.getElementById("clock").style.visibility = "visible";
+animClock(document.getElementById("minuteHand")); }
+}
+else
+letter.animID = setInterval(function () {anim(letter)}, 45);
+}
+
+function animClock(hand) {
+ clearInterval(rotateAnimID);
+ rotateDeg+=1;
+ hand.setAttribute("transform","rotate("+rotateDeg+",50,50)")
+ rotateAnimID = setInterval(function() {animClock(hand)},45);
+ if (rotateDeg >= 363) {
+  rotateDeg = 0;}
+}
+
+
+
+
+for (var i=0; i < letterPaths.length; i++)
+{
+  anim(letterPaths[i]);
+
+}
+
+</script></div></a>
+    </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+      <ul class="nav navbar-nav">
+      <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+        <li class="hidden">
+          <a class="page-scroll" href="#page-top"></a>
+        </li>
+  <!-- <li>
+          <a class="page-scroll" href="#about">Sign up</a>
+        </li>
+        <li>
+          <a class="page-scroll" href="#services">Current Users</a>
+        </li> -->
+  <!-- <li>
+          <a class="page-scroll" href="#contact">Contact</a>
+        </li> -->
+      </ul>
+    </div>
+  <!-- /.navbar-collapse -->
+  </div>
+    <!-- /.container -->
+</nav>
