@@ -29,7 +29,7 @@ $(document).on('click', "#reloada", function(e) {
 function initMap() {
   var geocoder = new google.maps.Geocoder;
   var infowindow = new google.maps.InfoWindow;
-  findLatLng(geocoder, infowindow);
+  //findLatLng(geocoder, infowindow);
 } // end function initMap
 
 function geocodeLatLng(geocoder,latlng,infowindow) {
