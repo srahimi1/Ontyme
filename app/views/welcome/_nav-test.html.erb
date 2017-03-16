@@ -88,12 +88,13 @@ function animClock(hand) {
 
 
 
-
-for (var i=0; i < letterPaths.length; i++)
-{
-  anim(letterPaths[i]);
-
+function startAnim() {
+  for (var i=0; i < letterPaths.length; i++) {
+    anim(letterPaths[i]); 
+  }
 }
+
+setTimeout(startAnim,500);  
 
 </script></div></a>
     </div>
