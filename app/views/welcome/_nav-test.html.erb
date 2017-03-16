@@ -8,101 +8,34 @@
         <span class="icon-bar"></span>
       </button>
         <a class="navbar-brand page-scroll" href="#page-top">
-        <div class="logo">
-<svg width="400" height="100">
-<rect x="0" y="0" width="135" height="100" fill="#606060" />
+          <div class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="400" height="100">
+              <rect x="0" y="0" width="135" height="100" fill="#606060" />
 
-<circle id="ds1" cx="54" cy="54" r="25" stroke="#505050" stroke-width="4" fill="#505050" stroke-dasharray="1 1" style="visibility:hidden"/>  
+              <circle id="ds1" cx="54" cy="54" r="25" stroke="#505050" stroke-width="4" fill="#505050" stroke-dasharray="1 1" style="visibility:hidden"/>  
   
-<circle id="letterO" cx="50" cy="50" r="25" stroke="white" stroke-width="4" fill="#20b7af"/>
+              <circle id="letterO" cx="50" cy="50" r="25" stroke="white" stroke-width="4" fill="#20b7af"/>
   
-<path id="ds2" d="M93 76 v-30 m0 30 v-20 a2 2 0 0 1 20 0 v21" stroke-width="4" stroke="#505050" stroke-linecap="round" stroke-dasharray="1 3" fill="none" style="visibility:hidden"/>  
+              <path id="ds2" d="M93 76 v-30 m0 30 v-20 a2 2 0 0 1 20 0 v21" stroke-width="4" stroke="#505050" stroke-linecap="round" stroke-dasharray="1 3" fill="none" style="visibility:hidden"/>  
 
-<path id="letterN" d="M90 72 v-30 m0 30 v-20 a2 2 0 0 1 20 0 v21" stroke-width="4" stroke="white" stroke-linecap="round" fill="none"/>
+              <path id="letterN" d="M90 72 v-30 m0 30 v-20 a2 2 0 0 1 20 0 v21" stroke-width="4" stroke="white" stroke-linecap="round" fill="none"/>
 
-<path id="letterT" d="M142 30 h36 m-18 0 v 45" stroke-linejoin="round" stroke="#606060" stroke-width="4" stroke-linecap="round" fill="none" />
+              <path id="letterT" d="M142 30 h36 m-18 0 v 45" stroke-linejoin="round" stroke="#606060" stroke-width="4" stroke-linecap="round" fill="none" />
 
-<path id="letterY" d="M191 45 l13 26 m14 -26 l-23 48" stroke-width="4" stroke-linecap="round" stroke="#606060" />
+              <path id="letterY" d="M191 45 l13 26 m14 -26 l-23 48" stroke-width="4" stroke-linecap="round" stroke="#606060" />
 
-<path id="letterM" d="M240 40 v35 m0 -25 a2 2 0 0 1 20 0 v25 m0 -25 a2 2 0 0 1 20 0 v25" stroke="#606060" stroke-width="4" stroke-linecap="round" fill="none" />
+              <path id="letterM" d="M240 40 v35 m0 -25 a2 2 0 0 1 20 0 v25 m0 -25 a2 2 0 0 1 20 0 v25" stroke="#606060" stroke-width="4" stroke-linecap="round" fill="none" />
 
-<path id="letterE" d="M308 52 h32 a2 2 0 0 0 -35 1 a2 2 0 0 0 35 8" stroke="#606060" stroke-width="4" stroke-linecap="round" fill="none" />
+              <path id="letterE" d="M308 52 h32 a2 2 0 0 0 -35 1 a2 2 0 0 0 35 8" stroke="#606060" stroke-width="4" stroke-linecap="round" fill="none" />
 
-<g id="clock" style="visibility:hidden">
-<line id="secondHand" x1="50" y1="50" x2="50" y2="33" stroke="#666666" stroke-width="2" transform="rotate(45 50 50)"/>
-<line id="minuteHand" x1="50" y1="50" x2="50" y2="30" stroke="#666666" stroke-width="2" />
-<circle cx="50" cy="50" r="3" stroke="white" fill="white" />
-</g>
-
-
-
-
-
-</svg>
-
-
-<script>
-var letters = ["O","N","T","Y","M","E"];
-var letterPaths = [];
-var animsCompleted = 0;
-var rotateDeg = 0;
-var rotateAnimID;
-for (var i=0; i< letters.length; i++) {
-letterPaths.push(document.getElementById("letter"+letters[i]));
-}
-
-for (var i=0; i< letters.length; i++) {
-if (typeof letterPaths[i].getTotalLength != "undefined" ) {
-var l = letterPaths[i].getTotalLength();
-} else {
-var l = letterPaths[i].r.baseVal.value * Math.PI * 2 + 1;
-}
-letterPaths[i].length = l;
-letterPaths[i].style.strokeDasharray = l+" "+l;
-letterPaths[i].style.strokeDashoffset = l;
-letterPaths[i].current = 1;
-letterPaths[i].animID;
-}
-
-function anim(letter) {
-letter.style.strokeDashoffset = letter.length-letter.current;
-letter.current = letter.current+letter.current*.11;
-clearInterval(letter.animID);
-if (letter.current > letter.length){
-letter.style.strokeDashoffset = 0;
-clearInterval(letter.animID); 
-animsCompleted++;
-if (animsCompleted == 6 ) {
-document.getElementById("letterO").style.fill = "#aaeeff";
-document.getElementById("ds1").style.visibility = "visible";
-document.getElementById("ds2").style.visibility = "visible";
-document.getElementById("clock").style.visibility = "visible";
-animClock(document.getElementById("minuteHand")); }
-}
-else
-letter.animID = setInterval(function () {anim(letter)}, 22);
-}
-
-function animClock(hand) {
- clearInterval(rotateAnimID);
- rotateDeg+=1;
- hand.setAttribute("transform","rotate("+rotateDeg+",50,50)")
- rotateAnimID = setInterval(function() {animClock(hand)},45);
- if (rotateDeg >= 363) {
-  rotateDeg = 0;}
-}
-
-
-
-function startAnim() {
-  for (var i=0; i < letterPaths.length; i++) {
-    anim(letterPaths[i]); 
-  }
-}
-
-setTimeout(startAnim,1200);  
-
-</script></div></a>
+              <g id="clock" style="visibility:hidden">
+                <line id="secondHand" x1="50" y1="50" x2="50" y2="33" stroke="#666666" stroke-width="2" transform="rotate(45 50 50)"/>
+                <line id="minuteHand" x1="50" y1="50" x2="50" y2="30" stroke="#666666" stroke-width="2" />
+                <circle cx="50" cy="50" r="3" stroke="white" fill="white" />
+              </g>
+            </svg>
+          </div>
+        </a>
     </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->

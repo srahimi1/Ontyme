@@ -17,6 +17,12 @@
 //= require turbolinks
 //= require_tree .
 
+// Global variable declarations
+var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID;
+
+$(window).load(function() {
+  initLogoAnim();
+});
 
 $(document).on('turbolinks:load', function() {
   init();
@@ -26,6 +32,67 @@ $(document).on('click', "#reloada", function(e) {
   console.log(1);
 });
 
+
+// for logo animation
+function initLogoAnim() {  
+  for (var i=0; i< letters.length; i++) {
+    letterPaths.push(document.getElementById("letter"+letters[i]));
+  }
+
+  for (var i=0; i< letters.length; i++) {
+    if (typeof letterPaths[i].getTotalLength != "undefined" ) {
+      var l = letterPaths[i].getTotalLength();
+    } else {
+      var l = letterPaths[i].r.baseVal.value * Math.PI * 2 + 1; 
+    }
+
+    letterPaths[i].length = l;
+    letterPaths[i].style.strokeDasharray = l+" "+l;
+    letterPaths[i].style.strokeDashoffset = l;
+    letterPaths[i].currentOffset = 1;
+    letterPaths[i].animID;
+  }
+  setTimeout(startAnim,1200);
+}
+
+function anim(letter) {
+  letter.style.strokeDashoffset = letter.length-letter.currentOffset;
+  letter.currentOffset = letter.currentOffset+letter.currentOffset*.11;
+  clearInterval(letter.animID);
+  if (letter.currentOffset > letter.length) {
+    letter.style.strokeDashoffset = 0;
+    clearInterval(letter.animID); 
+    animsCompleted++;
+    if (animsCompleted == 6 ) {
+      document.getElementById("letterO").style.fill = "#aaeeff";
+      document.getElementById("ds1").style.visibility = "visible";
+      document.getElementById("ds2").style.visibility = "visible";
+      document.getElementById("clock").style.visibility = "visible";
+      animClock(document.getElementById("minuteHand")); 
+    }
+  } else {
+    letter.animID = setInterval(function () {anim(letter)}, 22);
+  }
+}
+
+function animClock(hand) {
+ clearInterval(rotateAnimID);
+ rotateDeg+=1;
+ hand.setAttribute("transform","rotate("+rotateDeg+",50,50)")
+ rotateAnimID = setInterval(function() {animClock(hand)},45);
+ if (rotateDeg >= 363) {
+    rotateDeg = 0;
+  }
+}
+
+function startAnim() {
+  for (var i=0; i < letterPaths.length; i++) {
+    anim(letterPaths[i]); 
+  }
+}  
+
+
+// for google maps and geolocating api
 function initMap() {
   var geocoder = new google.maps.Geocoder;
   var infowindow = new google.maps.InfoWindow;
@@ -60,7 +127,6 @@ function geolocateError(error) {
     //alert("You must allow AirportRun access to your location for the site to operate, or, if you don't want to use the site, close this browser window");
   }
 } // end function geolocateError
-
 
 function reverseGeocode(latlng) {
     console.log(latlng);
