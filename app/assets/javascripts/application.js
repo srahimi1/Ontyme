@@ -87,17 +87,21 @@ function animClock(hand) {
 }
 
 function animBox(box) {
-  var newWidth = box.width.baseVal.value * 1.5;
-  var newHeight = box.height.baseVal.value * 1.5;
-  if ((newWidth >= 135) || (newHeight >= 100)) {
+  var newWidth = Math.ceil(box.width.baseVal.value * 1.67);
+  var newHeight = Math.ceil(box.height.baseVal.value * 1.67);
+  if ((newWidth >= 136) || (newHeight >= 100)) {
     clearInterval(boxAnimID);
-    box.width.baseVal.value = 135;
+    box.width.baseVal.value = 136;
     box.height.baseVal.value = 100;
+    box.x.baseVal.value = 0;
+    box.y.baseVal.value = 0;
   }
   else {
     clearInterval(boxAnimID);
     box.width.baseVal.value = newWidth;
     box.height.baseVal.value = newHeight;
+    box.x.baseVal.value = box.x.baseVal.value - newWidth;
+    box.y.baseVal.value = box.y.baseVal.value - newHeight;
     boxAnimID = setInterval(function(){animBox(box)}, 45);
   }
 }
