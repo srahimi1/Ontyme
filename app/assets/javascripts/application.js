@@ -98,8 +98,8 @@ function animBox(box) {
   }
   else {
     clearInterval(boxAnimID);
-    box.width.baseVal.value = newWidth;
-    box.height.baseVal.value = newHeight;
+    box.width.baseVal.value = box.width.baseVal.value + newWidth;
+    box.height.baseVal.value = box.height.baseVal.value + newHeight;
     box.x.baseVal.value = box.x.baseVal.value - newWidth;
     box.y.baseVal.value = box.y.baseVal.value - newHeight;
     boxAnimID = setInterval(function(){animBox(box)}, 45);
