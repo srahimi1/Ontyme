@@ -51,11 +51,12 @@ function initLogoAnim() {
     letterPaths[i].style.strokeDashoffset = l;
     letterPaths[i].currentOffset = 1;
     letterPaths[i].animID;
+    letterPaths[i].frameCount = 0;
   }
   setTimeout(startAnim,1200);
 }
 
-function anim(letter) {
+function animLetter(letter) {
   letter.style.strokeDashoffset = letter.length-letter.currentOffset;
   letter.currentOffset = letter.currentOffset+letter.currentOffset*.11;
   clearInterval(letter.animID);
@@ -71,7 +72,7 @@ function anim(letter) {
       animClock(document.getElementById("minuteHand")); 
     }
   } else {
-    letter.animID = setInterval(function () {anim(letter)}, 22);
+    letter.animID = setInterval(function () {animLetter(letter)}, 22);
   }
 }
 
@@ -87,7 +88,7 @@ function animClock(hand) {
 
 function startAnim() {
   for (var i=0; i < letterPaths.length; i++) {
-    anim(letterPaths[i]); 
+    animLetter(letterPaths[i]); 
   }
 }  
 
