@@ -18,7 +18,7 @@
 //= require_tree .
 
 // Global variable declarations
-var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID;
+var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID;
 
 $(window).load(function() {
   initLogoAnim();
@@ -86,10 +86,31 @@ function animClock(hand) {
   }
 }
 
-function startAnim() {
-  for (var i=0; i < letterPaths.length; i++) {
-    animLetter(letterPaths[i]); 
+function animBox(box) {
+  var newWidth = box.width.baseVal.value * 1.5;
+  var newHeight = box.height.baseVal.value * 1.5;
+  if ((newWidth >= 135) || (newHeight >= 100)) {
+    clearInterval(boxAnimID);
+    box.width.baseVal.value = 135;
+    box.height.baseVal.value = 100;
   }
+  else {
+    clearInterval(boxAnimID);
+    box.width.baseVal.value = newWidth;
+    box.height.baseVal.value = newHeight;
+    boxAnimID = setInterval(function(){animBox(box)}, 45);
+  }
+}
+
+
+function startAnim() {
+  var box = document.getElementById("logoBox");
+  box.width.baseVal.value=1.5;
+  box.height.baseVal.value=1;
+  animBox(box);
+ // for (var i=0; i < letterPaths.length; i++) {
+   // animLetter(letterPaths[i]); 
+  //}
 }  
 
 
