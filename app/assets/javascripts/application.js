@@ -30,7 +30,6 @@ $(document).on('turbolinks:load', function() {
 });
 
 $(document).on('click', "#reloada", function(e) {
-  console.log(1);
 });
 
 
@@ -77,7 +76,6 @@ function animLetter(letter) {
       currentLetter++;
       animLetter(letterPaths[currentLetter]);
     }
-    console.log(letters[currentLetter]);
     letter.frameCount++;
     letter.animID = setInterval(function () {animLetter(letter)}, 45);
   }
@@ -95,11 +93,12 @@ function animClock(hand) {
 
 function animBox(box) {
  var newWidth = 15 * Math.sin(boxAnimCounter);
- var newHeight = 15 * Math.sin(boxAnimCounter);
-  if (( (box.width.baseVal.value + newWidth) >= 132) || ( (box.width.baseVal.value + newHeight) >= 132)) {
+ var newHeight = 12 * Math.sin(boxAnimCounter);
+// console.log(boxAnimCounter/boxAnimIncrement+"  "+box.height.baseVal.value+newHeight+"  "+box.width.baseVal.value+newWidth);
+  if (( (box.width.baseVal.value + newWidth) >= 132) || ( (box.height.baseVal.value + newHeight) >= 97)) {
     clearInterval(boxAnimID);
-    box.width.baseVal.value = 136;
-    box.height.baseVal.value = 136;
+    box.width.baseVal.value = 130;
+    box.height.baseVal.value = 100;
     box.x.baseVal.value = 0;
     box.y.baseVal.value = 0;
     document.getElementById("logoLetters").style.visibility = "visible";
@@ -119,10 +118,10 @@ function animBox(box) {
 
 function startAnim() {
   var box = document.getElementById("logoBox");
-  box.width.baseVal.value=68;
-  box.height.baseVal.value=68;
-  box.x.baseVal.value = 34;
-  box.y.baseVal.value = 34;
+  box.width.baseVal.value=50;
+  box.height.baseVal.value=50;
+  box.x.baseVal.value = 25;
+  box.y.baseVal.value = 25;
   boxAnimCounter += boxAnimIncrement;
   animBox(box);
 }  
@@ -139,7 +138,6 @@ function geocodeLatLng(geocoder,latlng,infowindow) {
   geocoder.geocode({'location': {lat: latlng.coords.latitude, lng: latlng.coords.longitude}}, function(results, status) {
     if (status=== 'OK'){
       if (results[1]) {
-        console.log(results);
         alert(results[0].formatted_address);
       }
     }
@@ -165,13 +163,11 @@ function geolocateError(error) {
 } // end function geolocateError
 
 function reverseGeocode(latlng) {
-    console.log(latlng);
     var ajaxRequest = new XMLHttpRequest();
     //var url2 = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+latlng.lat+","+latlng.lng+"&key=AIzaSyBR4VVlIs3tREWzRrxd0j6BquoEU-yUFGg"
     var url2 = "/users/getaddress"
     ajaxRequest.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
-        console.log(this.responseText); // address will be returned
       } // end this.readyState ...
     } // end onreadystatechange
     ajaxRequest.open("POST", url2, true);
@@ -201,7 +197,7 @@ var init = function() {
 
   iconsArray.map( function(node) {
     $(node).on('click', function(e) {
-      console.log(e.target.currentSrc)
+//      console.log(e.target.currentSrc);
       hideElementById('select-icon-btn');
       showImage(e.target.currentSrc);
       $("[data-dismiss=modal]").trigger({ type: "click" });
