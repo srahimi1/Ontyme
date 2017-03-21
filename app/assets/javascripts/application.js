@@ -48,13 +48,13 @@ function initLogoAnim() {
     }
 
     letterPaths[i].length = l;
-    letterPaths[i].style.strokeDasharray = l+" "+l;
-    letterPaths[i].style.strokeDashoffset = l;
+    letterPaths[i].style.strokeDasharray = l+" "+(l+2);
+    letterPaths[i].style.strokeDashoffset = l+1;
     letterPaths[i].currentOffset = 1;
     letterPaths[i].animID;
     letterPaths[i].frameCount = 0;
   }
-  setTimeout(startAnim,100);
+  setTimeout(startAnim,45);
 }
 
 function animLetter(letter) {
@@ -66,11 +66,11 @@ function animLetter(letter) {
     clearInterval(letter.animID); 
     animsCompleted++;
     if (animsCompleted == 6 ) {
-      document.getElementById("letterO").style.fill = "#aaeeff";
+      document.getElementById("letterO").style.fill = "#cccccc";
       document.getElementById("ds1").style.visibility = "visible";
       document.getElementById("ds2").style.visibility = "visible";
       document.getElementById("clock").style.visibility = "visible";
-      animClock(document.getElementById("minuteHand")); 
+      animClock(document.getElementById("secondHand")); 
     }
   } else {
     if ((letter.frameCount == 4) && (currentLetter != 5)) {
