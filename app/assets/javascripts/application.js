@@ -18,7 +18,8 @@
 //= require_tree .
 
 // Global variable declarations
-var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID;
+var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
+currentLetter = 0;
 
 $(window).load(function() {
   initLogoAnim();
@@ -53,12 +54,12 @@ function initLogoAnim() {
     letterPaths[i].animID;
     letterPaths[i].frameCount = 0;
   }
-  setTimeout(startAnim,1200);
+  setTimeout(startAnim,100);
 }
 
 function animLetter(letter) {
   letter.style.strokeDashoffset = letter.length-letter.currentOffset;
-  letter.currentOffset = letter.currentOffset+letter.currentOffset*.11;
+  letter.currentOffset = letter.currentOffset+letter.currentOffset*.91;
   clearInterval(letter.animID);
   if (letter.currentOffset > letter.length) {
     letter.style.strokeDashoffset = 0;
@@ -72,7 +73,13 @@ function animLetter(letter) {
       animClock(document.getElementById("minuteHand")); 
     }
   } else {
-    letter.animID = setInterval(function () {animLetter(letter)}, 22);
+    if ((letter.frameCount == 4) && (currentLetter != 5)) {
+      currentLetter++;
+      animLetter(letterPaths[currentLetter]);
+    }
+    console.log(letters[currentLetter]);
+    letter.frameCount++;
+    letter.animID = setInterval(function () {animLetter(letter)}, 45);
   }
 }
 
@@ -87,21 +94,24 @@ function animClock(hand) {
 }
 
 function animBox(box) {
-  var newWidth = Math.ceil(box.width.baseVal.value * 1.67);
-  var newHeight = Math.ceil(box.height.baseVal.value * 1.67);
-  if ((newWidth >= 136) || (newHeight >= 100)) {
+ var newWidth = 15 * Math.sin(boxAnimCounter);
+ var newHeight = 15 * Math.sin(boxAnimCounter);
+  if (( (box.width.baseVal.value + newWidth) >= 132) || ( (box.width.baseVal.value + newHeight) >= 132)) {
     clearInterval(boxAnimID);
     box.width.baseVal.value = 136;
-    box.height.baseVal.value = 100;
+    box.height.baseVal.value = 136;
     box.x.baseVal.value = 0;
     box.y.baseVal.value = 0;
+    document.getElementById("logoLetters").style.visibility = "visible";
+    animLetter(letterPaths[currentLetter]);
   }
   else {
     clearInterval(boxAnimID);
     box.width.baseVal.value = box.width.baseVal.value + newWidth;
     box.height.baseVal.value = box.height.baseVal.value + newHeight;
-    box.x.baseVal.value = box.x.baseVal.value - newWidth;
-    box.y.baseVal.value = box.y.baseVal.value - newHeight;
+    box.x.baseVal.value = box.x.baseVal.value - newWidth/2;
+    box.y.baseVal.value = box.y.baseVal.value - newHeight/2;
+    boxAnimCounter += boxAnimIncrement;
     boxAnimID = setInterval(function(){animBox(box)}, 45);
   }
 }
@@ -109,12 +119,12 @@ function animBox(box) {
 
 function startAnim() {
   var box = document.getElementById("logoBox");
-  box.width.baseVal.value=1.5;
-  box.height.baseVal.value=1;
+  box.width.baseVal.value=68;
+  box.height.baseVal.value=68;
+  box.x.baseVal.value = 34;
+  box.y.baseVal.value = 34;
+  boxAnimCounter += boxAnimIncrement;
   animBox(box);
- // for (var i=0; i < letterPaths.length; i++) {
-   // animLetter(letterPaths[i]); 
-  //}
 }  
 
 
