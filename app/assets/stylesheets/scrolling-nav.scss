@@ -10,7 +10,29 @@ html {
     height: 100%;
 }
 
-@media(min-width:767px) {
+@media(min-width: 0px) {
+    #logoPhrase1 {
+        visibility: hidden;
+    }
+
+    #logoPhrase2 {
+        visibility: visible;
+    }
+}
+
+
+@media(min-width: 568px) {
+    #logoPhrase1 {
+        visibility: hidden;
+    }
+
+    #logoPhrase2 {
+        visibility: visible;
+    }
+}
+
+
+@media(min-width: 768px) {
     .navbar {
         padding: 0px 0px 25px 0px;
         margin: 0;
@@ -23,7 +45,38 @@ html {
     .top-nav-collapse {
         padding: 0;
     }
+
+    #logoPhrase1 {
+        visibility: hidden;
+    }
+
+    #logoPhrase2 {
+        visibility: visible;
+    }
+
 }
+
+@media(min-width: 992px) {
+    #logoPhrase1 {
+        visibility: visible;
+    }
+
+    #logoPhrase2 {
+        visibility: hidden;
+    }
+
+}
+
+@media(min-width: 1200px) {
+    #logoPhrase1 {
+        visibility: visible;
+    }
+
+    #logoPhrase2 {
+        visibility: hidden;
+    }
+}
+
 
 /* Demo Sections - You can use these as guides or delete them - the scroller will work with any sort of height, fixed, undefined, or percentage based.
 The padding is very important to make sure the scrollspy picks up the right area when scrolled to. Adjust the margin and padding of sections and children
