@@ -12,22 +12,24 @@ html {
 
 @media(min-width: 0px) {
     #logoPhrase1 {
-        visibility: hidden;
+        display: none;
     }
 
     #logoPhrase2 {
-        visibility: visible;
+        display: block;
+        margin-left: 15px;
     }
 }
 
 
 @media(min-width: 568px) {
     #logoPhrase1 {
-        visibility: hidden;
+        display: none;
     }
 
     #logoPhrase2 {
-        visibility: visible;
+        display: block;
+        margin-left: 15px;
     }
 }
 
@@ -47,33 +49,36 @@ html {
     }
 
     #logoPhrase1 {
-        visibility: hidden;
+        display: none;
     }
 
     #logoPhrase2 {
-        visibility: visible;
+        display: block;
+        margin-left: 15px;
     }
 
 }
 
 @media(min-width: 992px) {
     #logoPhrase1 {
-        visibility: visible;
+        display: block;
+        margin-top: 55px;
     }
 
     #logoPhrase2 {
-        visibility: hidden;
+        display: none;
     }
 
 }
 
 @media(min-width: 1200px) {
     #logoPhrase1 {
-        visibility: visible;
+        display: block;
+        margin-top: 55px;
     }
 
     #logoPhrase2 {
-        visibility: hidden;
+        display: none;
     }
 }
 
