@@ -23,6 +23,12 @@ currentLetter = 0;
 
 $(window).load(function() {
   initLogoAnim();
+  $(window).resize(function () {
+    console.log(document.getElementById("logoPhrase2"));
+
+});
+
+
 });
 
 $(document).on('turbolinks:load', function() {
@@ -65,9 +71,9 @@ function animLetter(letter) {
     clearInterval(letter.animID); 
     animsCompleted++;
     if (animsCompleted == 6 ) {
-      document.getElementById("letterO").style.fill = "#cccccc";
-      document.getElementById("ds1").style.visibility = "visible";
-      document.getElementById("ds2").style.visibility = "visible";
+      document.getElementById("letterO").style.fill = "#cfcfcf";
+      //document.getElementById("ds1").style.visibility = "visible";
+      //document.getElementById("ds2").style.visibility = "visible";
       document.getElementById("clock").style.visibility = "visible";
       animClock(document.getElementById("secondHand")); 
     }
