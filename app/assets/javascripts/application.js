@@ -23,12 +23,14 @@ currentLetter = 0;
 
 $(window).load(function() {
   initLogoAnim();
-  $(window).resize(function () {
-    console.log(document.getElementById("logoPhrase2"));
-
-});
-
-
+  $(window).resize(function() { 
+    var ele = document.getElementById("logoPhrase2");
+    moveLowerLogoPhrase(ele);
+  });
+  var ele = document.getElementById("logoPhrase2");
+  if (!!ele) {
+    moveLowerLogoPhrase(ele);
+  }
 });
 
 $(document).on('turbolinks:load', function() {
@@ -37,6 +39,14 @@ $(document).on('turbolinks:load', function() {
 
 $(document).on('click', "#reloada", function(e) {
 });
+
+
+function moveLowerLogoPhrase(ele) {
+  console.log (ele.offsetWidth +" s "+ ele.childNodes[1].width.baseVal.value)
+  var shiftX = ele.offsetWidth - ele.childNodes[1].width.baseVal.value;
+  shiftX = shiftX / 4;
+  ele.childNodes[1].childNodes[1].dx.baseVal[0].value = shiftX-5;
+}
 
 
 // for logo animation
@@ -49,12 +59,18 @@ function initLogoAnim() {
     if (typeof letterPaths[i].getTotalLength != "undefined" ) {
       var l = letterPaths[i].getTotalLength();
     } else {
-      var l = letterPaths[i].r.baseVal.value * Math.PI * 2 + 1; 
+      var l = letterPaths[i].r.baseVal.value * Math.PI * 2; 
     }
 
-    letterPaths[i].length = l;
-    letterPaths[i].style.strokeDasharray = l+" "+(l+2);
-    letterPaths[i].style.strokeDashoffset = l+1;
+    if (i==0) {
+      letterPaths[i].length = l+1;
+      letterPaths[i].style.strokeDasharray = l+1+" "+(l-1);
+    }
+    else {
+      letterPaths[i].length = l;
+      letterPaths[i].style.strokeDasharray = l+" "+(l); 
+    }
+    letterPaths[i].style.strokeDashoffset = l;
     letterPaths[i].currentOffset = 1;
     letterPaths[i].animID;
     letterPaths[i].frameCount = 0;
@@ -71,7 +87,7 @@ function animLetter(letter) {
     clearInterval(letter.animID); 
     animsCompleted++;
     if (animsCompleted == 6 ) {
-      document.getElementById("letterO").style.fill = "#cfcfcf";
+      //document.getElementById("letterO").style.fill = "#cfcfcf";
       //document.getElementById("ds1").style.visibility = "visible";
       //document.getElementById("ds2").style.visibility = "visible";
       document.getElementById("clock").style.visibility = "visible";
@@ -101,12 +117,12 @@ function animBox(box) {
  var newWidth = 15 * Math.sin(boxAnimCounter);
  var newHeight = 12 * Math.sin(boxAnimCounter);
 // console.log(boxAnimCounter/boxAnimIncrement+"  "+box.height.baseVal.value+newHeight+"  "+box.width.baseVal.value+newWidth);
-  if (( (box.width.baseVal.value + newWidth) >= 132) || ( (box.height.baseVal.value + newHeight) >= 97)) {
+  if (( (box.width.baseVal.value + newWidth) >= 104) || ( (box.height.baseVal.value + newHeight) >= 70)) {
     clearInterval(boxAnimID);
-    box.width.baseVal.value = 130;
-    box.height.baseVal.value = 100;
-    box.x.baseVal.value = 0;
-    box.y.baseVal.value = 0;
+    box.width.baseVal.value = 104;
+    box.height.baseVal.value = 70;
+    box.x.baseVal.value = 15;
+    box.y.baseVal.value = 15;
     document.getElementById("logoLetters").style.visibility = "visible";
     animLetter(letterPaths[currentLetter]);
   }

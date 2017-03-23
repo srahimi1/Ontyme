@@ -10,6 +10,24 @@ html {
     height: 100%;
 }
 
+
+#requestRideBtn {
+    background: #00804f; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#00cc7e, #00804f); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#00cc7e, #00804f); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#00cc7e, #00804f); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#00cc7e, #00804f); /* Standard syntax */
+    border: none;
+    color: white;
+    text-align: center;
+    display: block;
+    font-size: 3em;
+    margin: auto;
+    width: 450px;
+    padding: 10px;
+}
+
+
 @media(min-width: 0px) {
     #doNotShow1, #doNotShow2, #doNotShow3, #doNotShow4, #doNotShow5, #intro, #sign-up-page, #current-users-page, #contact {
         display: none;
@@ -22,6 +40,10 @@ html {
     #logoPhrase2 {
         display: block;
         margin-left: 15px;
+    }
+
+    #requestRideBtnDiv, #rideSafely, #rideComfortably {
+        display: block;
     }
 }
 
@@ -39,6 +61,11 @@ html {
         display: block;
         margin-left: 15px;
     }
+
+    #requestRideBtnDiv, #rideSafely, #rideComfortably {
+        display: block;
+    }
+
 }
 
 
@@ -69,6 +96,10 @@ html {
         margin-left: 15px;
     }
 
+    #requestRideBtnDiv, #rideSafely, #rideComfortably {
+        display: block;
+    }
+
 }
 
 @media(min-width: 992px) {
@@ -82,6 +113,10 @@ html {
     }
 
     #logoPhrase2 {
+        display: none;
+    }
+
+    #requestRideBtnDiv, #rideSafely, #rideComfortably {
         display: none;
     }
 
@@ -100,6 +135,11 @@ html {
     #logoPhrase2 {
         display: none;
     }
+
+    #requestRideBtnDiv, #rideSafely, #rideComfortably {
+        display: none;
+    }
+
 }
 
 
