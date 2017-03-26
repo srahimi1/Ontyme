@@ -30,6 +30,7 @@ $(window).load(function() {
   var ele = document.getElementById("logoPhrase2");
   if (!!ele) {
     moveLowerLogoPhrase(ele);
+    alert(document.getElementById("getWidth").offsetWidth+ " a "+document.getElementById("getWidth").clientWidth);
   }
 });
 
