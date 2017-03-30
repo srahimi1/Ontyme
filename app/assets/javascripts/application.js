@@ -42,20 +42,35 @@ $(document).on('click', "#reloada", function(e) {
 function positionLogo(logo) {
   var element = logo;
   var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-  alert(screenWidth);
   screenWidth = parseInt(screenWidth);
   var midScreen = screenWidth / 2;
+  var scaleX, scaleY, shiftX, shiftY;
   if (screenWidth < 401){
-    var elementWidth = element.getBoundingClientRect().width;
-    var elementHeight = element.getBoundingClientRect().height;
-    var elementXPos = element.getBoundingClientRect().left;
-    var elementYPos = element.getBoundingClientRect().top;    
-    var midElement = elementWidth / 2;
-    var shiftX = midScreen - (midElement + elementXPos);
-    var shiftY = 40 - elementYPos;
-    element.setAttribute("transform","translate("+shiftX+","+shiftY+")");
-    alert("GOha!");
+    scaleX = 1;
+    scaleY = 1;
   } 
+  else if (screenWidth < 601){
+    scaleX = 1.3;
+    scaleY = 1.3;
+  } 
+  else if (screenWidth < 801){
+    scaleX = 1.4;
+    scaleY = 1.4;
+  }
+  else if (screenWidth < 1200){
+    scaleX = 1.5;
+    scaleY = 1.5;
+  }
+  element.setAttribute("transform","scale("+scaleX+","+scaleY+")");
+  var elementWidth = element.getBoundingClientRect().width;
+  var elementHeight = element.getBoundingClientRect().height;
+  var elementXPos = element.getBoundingClientRect().left;
+  var elementYPos = element.getBoundingClientRect().top;    
+  var midElement = elementWidth / 2;
+  shiftX = midScreen - (midElement + elementXPos);
+  shiftY = 30 - elementYPos;
+  element.setAttribute("transform","scale("+scaleX+","+scaleY+") translate("+shiftX+","+shiftY+")");
+  alert("Muchbetter");
  initLogoAnim();
 }
 
