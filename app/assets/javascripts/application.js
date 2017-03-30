@@ -22,18 +22,12 @@ var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, r
 currentLetter = 0;
 
 $(window).load(function() {
-  initLogoAnim();
-  var element = document.getElementById("entireLogo");
-  console.log("getBound " + element.getBoundingClientRect());
-  console.log("bbox " +element.getBBox());
+  var logo = document.getElementById("entireLogo");
   $(window).resize(function() { 
-    var ele = document.getElementById("logoPhrase2");
-    moveLowerLogoPhrase(ele);
+    positionLogo(logo);
   });
-  var ele = document.getElementById("logoPhrase2");
-  if (!!ele) {
-    moveLowerLogoPhrase(ele);
-    alert(document.getElementById("getWidth").offsetWidth+ " a "+document.getElementById("getWidth").clientWidth);
+  if (!!logo) {
+    positionLogo(logo);
   }
 });
 
@@ -45,15 +39,23 @@ $(document).on('click', "#reloada", function(e) {
 });
 
 
-function moveLowerLogoPhrase(ele) {
-  var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-  w = parseInt(w);
-  if (w <780){} 
-  console.log (ele.offsetWidth +" s "+ ele.childNodes[1].width.baseVal.value);
-
-  var shiftX = ele.offsetWidth - ele.childNodes[1].width.baseVal.value;
-  shiftX = shiftX / 4;
-  ele.childNodes[1].childNodes[1].dx.baseVal[0].value = shiftX-5;
+function positionLogo(logo) {
+  var element = logo;
+  var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  screenWidth = parseInt(screenWidth);
+  var midScreen = screenWidth / 2;
+  if (screenWidth < 401){
+    var elementWidth = element.getBoundingClientRect().width;
+    var elementHeight = element.getBoundingClientRect().height;
+    var elementXPos = element.getBoundingClientRect().left;
+    var elementYPos = element.getBoundingClientRect().top;    
+    var midElement = elementWidth / 2;
+    var shiftX = midScreen - (midElement + elementXPos);
+    var shiftY = 0 - (elementYPos - 5);
+    element.setAttribute("transform","translate("+shiftX+","+shiftY+")");
+    alert("GO!");
+  } 
+ initLogoAnim();
 }
 
 
