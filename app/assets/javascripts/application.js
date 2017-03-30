@@ -38,13 +38,13 @@ $(document).on('turbolinks:load', function() {
 $(document).on('click', "#reloada", function(e) {
 });
 
-
 function positionLogo(logo) {
   var element = logo;
+  alert(element);
   var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
   screenWidth = parseInt(screenWidth);
   var midScreen = screenWidth / 2;
-  var scaleX, scaleY, shiftX, shiftY;
+  var scaleX, scaleY, shiftX = 0, shiftY = 0;
   if (screenWidth < 401){
     scaleX = 1;
     scaleY = 1;
@@ -57,7 +57,7 @@ function positionLogo(logo) {
     scaleX = 1.4;
     scaleY = 1.4;
   }
-  else if (screenWidth < 1200){
+  else if (screenWidth >= 801){
     scaleX = 1.5;
     scaleY = 1.5;
   }
@@ -67,11 +67,12 @@ function positionLogo(logo) {
   var elementXPos = element.getBoundingClientRect().left;
   var elementYPos = element.getBoundingClientRect().top;    
   var midElement = elementWidth / 2;
-  shiftX = midScreen - (midElement + elementXPos);
-  shiftY = 30 - elementYPos;
+  if (screenWidth < 601){
+    shiftX = midScreen - (midElement + elementXPos);
+    shiftY = 30 - elementYPos;
+  } 
   element.setAttribute("transform","scale("+scaleX+","+scaleY+") translate("+shiftX+","+shiftY+")");
-  alert("Muchbetter");
- initLogoAnim();
+  initLogoAnim();
 }
 
 
