@@ -40,7 +40,6 @@ $(document).on('click', "#reloada", function(e) {
 
 function positionLogo(logo) {
   var element = logo;
-  alert(element);
   var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
   screenWidth = parseInt(screenWidth);
   var midScreen = screenWidth / 2;
@@ -72,6 +71,8 @@ function positionLogo(logo) {
     shiftY = 30 - elementYPos;
   } 
   element.setAttribute("transform","scale("+scaleX+","+scaleY+") translate("+shiftX+","+shiftY+")");
+  element.parentNode.setAttribute("width", element.getBoundingClientRect().right + 10);
+  element.parentNode.setAttribute("height", element.getBoundingClientRect().bottom + 10);
   initLogoAnim();
 }
 
