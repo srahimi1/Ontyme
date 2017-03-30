@@ -23,6 +23,9 @@ currentLetter = 0;
 
 $(window).load(function() {
   initLogoAnim();
+  var element = document.getElementById("entireLogo");
+  console.log("getBound " + element.getBoundingClientRect());
+  console.log("bbox " +element.getBBox());
   $(window).resize(function() { 
     var ele = document.getElementById("logoPhrase2");
     moveLowerLogoPhrase(ele);
@@ -43,7 +46,11 @@ $(document).on('click', "#reloada", function(e) {
 
 
 function moveLowerLogoPhrase(ele) {
-  console.log (ele.offsetWidth +" s "+ ele.childNodes[1].width.baseVal.value)
+  var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  w = parseInt(w);
+  if (w <780){} 
+  console.log (ele.offsetWidth +" s "+ ele.childNodes[1].width.baseVal.value);
+
   var shiftX = ele.offsetWidth - ele.childNodes[1].width.baseVal.value;
   shiftX = shiftX / 4;
   ele.childNodes[1].childNodes[1].dx.baseVal[0].value = shiftX-5;
