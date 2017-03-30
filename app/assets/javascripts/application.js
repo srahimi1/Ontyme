@@ -74,7 +74,7 @@ function positionLogo(logo) {
   element.parentNode.setAttribute("width", element.getBoundingClientRect().right + 10);
   element.parentNode.setAttribute("height", element.getBoundingClientRect().bottom + 10);
   var logoPhrase1 = document.getElementById("logoPhrase1");
-  logoPhrase1.parentNode.setAttribute("width",logoPhrase1.getBoundingClientRect().right + 10)
+  logoPhrase1.parentNode.setAttribute("width",logoPhrase1.getBoundingClientRect().right + 10);
   logoPhrase1.parentNode.setAttribute("height", element.getBoundingClientRect().bottom + 10);
   logoPhrase1.setAttribute("dy", element.getBoundingClientRect().bottom - 30);
   initLogoAnim();
