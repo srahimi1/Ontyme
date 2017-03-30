@@ -42,6 +42,7 @@ $(document).on('click', "#reloada", function(e) {
 function positionLogo(logo) {
   var element = logo;
   var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  alert(screenWidth);
   screenWidth = parseInt(screenWidth);
   var midScreen = screenWidth / 2;
   if (screenWidth < 401){
@@ -51,9 +52,9 @@ function positionLogo(logo) {
     var elementYPos = element.getBoundingClientRect().top;    
     var midElement = elementWidth / 2;
     var shiftX = midScreen - (midElement + elementXPos);
-    var shiftY = 10 - elementYPos;
+    var shiftY = 40 - elementYPos;
     element.setAttribute("transform","translate("+shiftX+","+shiftY+")");
-    alert("GO22!");
+    alert("GOha!");
   } 
  initLogoAnim();
 }
