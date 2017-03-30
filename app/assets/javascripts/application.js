@@ -51,9 +51,9 @@ function positionLogo(logo) {
     var elementYPos = element.getBoundingClientRect().top;    
     var midElement = elementWidth / 2;
     var shiftX = midScreen - (midElement + elementXPos);
-    var shiftY = 0 - (elementYPos - 5);
+    var shiftY = 5 - elementYPos;
     element.setAttribute("transform","translate("+shiftX+","+shiftY+")");
-    alert("GO!");
+    alert("GO22!");
   } 
  initLogoAnim();
 }
