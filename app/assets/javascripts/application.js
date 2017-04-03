@@ -103,17 +103,21 @@ function positionLogo(logo) {
     logoPhrase2.setAttribute("dx",logoShiftX-7);
   }
  document.getElementById("rideComfortably").childNodes[1].setAttribute("width",screenWidth);
+ var height = document.getElementById("rideComfortably").childNodes[1].childNodes[1].getBoundingClientRect().height;
+ height += 10;
+ document.getElementById("rideComfortably").childNodes[1].setAttribute("height", height);
  document.getElementById("rideSafely").childNodes[1].setAttribute("width",screenWidth);
+ document.getElementById("rideSafely").childNodes[1].setAttribute("height", height);
  var car = document.getElementById("car");
  car.parentNode.parentNode.setAttribute("width",screenWidth); 
- document.getElementById("carGroup").setAttribute("transform","scale(.70 .70)");
+ document.getElementById("carGroup").setAttribute("transform","scale(.65 .65)");
  var carWidth = car.getBoundingClientRect().width;
  var carHeight = car.getBoundingClientRect().height;
  var midCarWidth = carWidth / 2;
  var carLeft = car.getBoundingClientRect().left;
  var shiftCar = midScreen-(carLeft+midCarWidth);
  car.parentNode.parentNode.setAttribute("height",carHeight);
- document.getElementById("carGroup").setAttribute("transform","translate("+shiftCar+" 0) scale(.70 .70)");
+ document.getElementById("carGroup").setAttribute("transform","translate("+shiftCar+" 0) scale(.65 .65)");
  initLogoAnim();
 }
 
