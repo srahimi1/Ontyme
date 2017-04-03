@@ -86,8 +86,8 @@ function positionLogo(logo) {
     logoPhrase2.parentNode.setAttribute("height",logoPhrase2.getBoundingClientRect().height + 25);
     var logoPhraseWidth = logoPhrase2.getBoundingClientRect().width;
     var logoPhraseXPos = logoPhrase2.getBoundingClientRect().left;
-    var midLogoPhrase = logoPhraseWidth / 2;
-    var logoShiftX = midScreen - (midLogoPhrase + logoPhraseXPos);
+    var logoShiftX = screenWidth - logoPhraseWidth;
+    logoShiftX -= logoPhraseXPos;
     logoPhrase2.setAttribute("dx",logoShiftX);
   }
   else if (screenWidth < 601) {
@@ -98,8 +98,8 @@ function positionLogo(logo) {
     logoPhrase2.parentNode.setAttribute("height",logoPhrase2.getBoundingClientRect().height + 25);
     var logoPhraseWidth = logoPhrase2.getBoundingClientRect().width;
     var logoPhraseXPos = logoPhrase2.getBoundingClientRect().left;
-    var midLogoPhrase = logoPhraseWidth / 2;
-    var logoShiftX = midScreen - (midLogoPhrase + logoPhraseXPos);
+    var logoShiftX = screenWidth - logoPhraseWidth;
+    logoShiftX -= logoPhraseXPos;
     logoPhrase2.setAttribute("dx",logoShiftX);
   }
  document.getElementById("rideComfortably").childNodes[1].setAttribute("width",screenWidth);
