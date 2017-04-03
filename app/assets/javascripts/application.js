@@ -106,12 +106,13 @@ function positionLogo(logo) {
  document.getElementById("rideSafely").childNodes[1].setAttribute("width",screenWidth);
  var car = document.getElementById("car");
  car.parentNode.setAttribute("width",screenWidth);
+ car.parentNode.parentNode.setAttribute("width",screenWidth); 
  var carWidth = car.getBoundingClientRect().width;
  var midCarWidth = carWidth / 2;
  var carLeft = car.getBoundingClientRect().left;
  alert(midScreen-(carLeft+midCarWidth));
  var shiftCar = midScreen-(carLeft+midCarWidth);
- document.getElementById("carGroup").setAttribute("transform","translate("+shiftCar+" 0)");
+ document.getElementById("carGroup").setAttribute("transform","translate("+shiftCar+" 0) scale(.70 .70)");
  initLogoAnim();
 }
 
