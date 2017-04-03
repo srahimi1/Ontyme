@@ -79,12 +79,14 @@ function positionLogo(logo) {
   parent.setAttribute("height", element.getBoundingClientRect().bottom + 10);
   logoPhrase1.setAttribute("dy", element.getBoundingClientRect().bottom - 30);
   if (screenWidth < 401) {
-    logoPhrase1.setAttribute("font-size","16");
-    logoPhrase1.setAttribute("dy", element.getBoundingClientRect().bottom - 18);
+    logoPhrase2 = document.getElementById("logoPhrase2");
+    logoPhrase2.setAttribute("font-size","16");
+    logoPhrase2.setAttribute("dy", element.getBoundingClientRect().bottom - 18);
   }
   if (screenWidth < 601) {
-    logoPhrase1.setAttribute("font-size","22");
-    logoPhrase1.setAttribute("dy", element.getBoundingClientRect().bottom - 24);
+    logoPhrase2 = document.getElementById("logoPhrase2");
+    logoPhrase2.setAttribute("font-size","22");
+    logoPhrase2.setAttribute("dy", element.getBoundingClientRect().bottom - 24);
   }
 
 
