@@ -87,6 +87,7 @@ function positionLogo(logo) {
     var logoPhraseWidth = logoPhrase2.getBoundingClientRect().width;
     var logoPhraseXPos = logoPhrase2.getBoundingClientRect().left;
     var logoShiftX = screenWidth - logoPhraseWidth;
+    logoShiftX /= 2; 
     logoShiftX -= logoPhraseXPos;
     logoPhrase2.setAttribute("dx",logoShiftX);
   }
@@ -99,6 +100,7 @@ function positionLogo(logo) {
     var logoPhraseWidth = logoPhrase2.getBoundingClientRect().width;
     var logoPhraseXPos = logoPhrase2.getBoundingClientRect().left;
     var logoShiftX = screenWidth - logoPhraseWidth;
+    logoShiftX /= 2; 
     logoShiftX -= logoPhraseXPos;
     logoPhrase2.setAttribute("dx",logoShiftX);
   }
