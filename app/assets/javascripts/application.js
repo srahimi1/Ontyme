@@ -68,10 +68,10 @@ function positionLogo(logo) {
   var midElement = elementWidth / 2;
   alert("a "+elementWidth+" b "+elementHeight+" c "+elementXPos+" d "+elementYPos+ " e "+midElement);
   if (screenWidth < 601){
-    shiftX = midScreen - (midElement);
+    shiftX = midScreen - (midElement + elementXPos);
     shiftY = 30 - elementYPos;
   } 
-  element.setAttribute("transform","scale("+scaleX+","+scaleY+") translate("+shiftX+","+shiftY+")");
+  element.setAttribute("transform","translate("+shiftX+","+shiftY+") scale("+scaleX+","+scaleY+")");
   element.parentNode.setAttribute("width", element.getBoundingClientRect().right + 10);
   element.parentNode.setAttribute("height", element.getBoundingClientRect().bottom + 10);
   var logoPhrase1 = document.getElementById("logoPhrase1");
