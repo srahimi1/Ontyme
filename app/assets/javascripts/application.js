@@ -80,12 +80,11 @@ function positionLogo(logo) {
   logoPhrase1.setAttribute("dy", element.getBoundingClientRect().bottom - 30);
   if (screenWidth < 401) {
     logoPhrase2 = document.getElementById("logoPhrase2");
-    logoPhrase2.setAttribute("font-size","16");
+    logoPhrase2.setAttribute("font-size","14");
     logoPhrase2.setAttribute("dy", "18");
     logoPhrase2.parentNode.setAttribute("width",element.getBoundingClientRect().right);
     logoPhrase2.parentNode.setAttribute("height",logoPhrase2.getBoundingClientRect().height + 25);
     logoPhrase2.setAttribute("dx",shiftX+elementXPos);
-    alert("done2");
   }
   else if (screenWidth < 601) {
     logoPhrase2 = document.getElementById("logoPhrase2");
