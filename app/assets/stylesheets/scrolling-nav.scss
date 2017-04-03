@@ -30,6 +30,9 @@ html {
     -webkit-border-radius: 7px;
 }
 
+#logoPhrase1Div {
+    display: inline-block;
+}
 
 @media(min-width: 0px) {
     #doNotShow1, #doNotShow2, #doNotShow3, #doNotShow4, #doNotShow5, #intro, #sign-up-page, #current-users-page, #contact {

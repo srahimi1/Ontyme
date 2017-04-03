@@ -66,7 +66,6 @@ function positionLogo(logo) {
   var elementXPos = element.getBoundingClientRect().left;
   var elementYPos = element.getBoundingClientRect().top;    
   var midElement = elementWidth / 2;
-  alert("a "+elementWidth+" b "+elementHeight+" c "+elementXPos+" d "+elementYPos+ " e "+midElement);
   if (screenWidth < 601){
     shiftX = midScreen - (midElement + elementXPos);
     shiftY = 30 - elementYPos;
@@ -75,8 +74,9 @@ function positionLogo(logo) {
   element.parentNode.setAttribute("width", element.getBoundingClientRect().right + 10);
   element.parentNode.setAttribute("height", element.getBoundingClientRect().bottom + 10);
   var logoPhrase1 = document.getElementById("logoPhrase1");
-  logoPhrase1.parentNode.setAttribute("width",logoPhrase1.getBoundingClientRect().right + 10);
-  logoPhrase1.parentNode.setAttribute("height", element.getBoundingClientRect().bottom + 10);
+  var parent = logoPhrase1.parentNode;
+  parent.setAttribute("width",logoPhrase1.getBoundingClientRect().right + 10);
+  parent.setAttribute("height", element.getBoundingClientRect().bottom + 10);
   logoPhrase1.setAttribute("dy", element.getBoundingClientRect().bottom - 30);
   initLogoAnim();
 }
