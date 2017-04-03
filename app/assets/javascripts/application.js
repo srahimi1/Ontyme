@@ -60,7 +60,7 @@ function positionLogo(logo) {
     scaleX = 1.5;
     scaleY = 1.5;
   }
-  element.setAttribute("transform","scale("+scaleX+","+scaleY+")");
+  element.setAttribute("transform","scale("+scaleX+" "+scaleY+")");
   var elementWidth = element.getBoundingClientRect().width;
   var elementHeight = element.getBoundingClientRect().height;
   var elementXPos = element.getBoundingClientRect().left;
@@ -70,7 +70,7 @@ function positionLogo(logo) {
     shiftX = midScreen - (midElement + elementXPos);
     shiftY = 30 - elementYPos;
   } 
-  element.setAttribute("transform","translate("+shiftX+","+shiftY+") scale("+scaleX+","+scaleY+")");
+  element.setAttribute("transform","translate("+shiftX+" "+shiftY+") scale("+scaleX+" "+scaleY+")");
   element.parentNode.setAttribute("width", element.getBoundingClientRect().right + 10);
   element.parentNode.setAttribute("height", element.getBoundingClientRect().bottom + 10);
   var logoPhrase1 = document.getElementById("logoPhrase1");
@@ -109,7 +109,8 @@ function positionLogo(logo) {
  var carWidth = car.getBoundingClientRect().width;
  var midCarWidth = carWidth / 2;
  var carLeft = car.getBoundingClientRect().left;
- car.setAttribute("transform","translate("+midScreen-(carLeft+midCarWidth)+",0)");
+ alert(midScreen-(carLeft+midCarWidth));
+ car.setAttribute("transform","translate("+midScreen-(carLeft+midCarWidth)+" 0)");
  initLogoAnim();
 }
 
