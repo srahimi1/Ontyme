@@ -66,8 +66,9 @@ function positionLogo(logo) {
   var elementXPos = element.getBoundingClientRect().left;
   var elementYPos = element.getBoundingClientRect().top;    
   var midElement = elementWidth / 2;
+  alert("a "+elementWidth+" b "+elementHeight+" c "+elementXPos+" d "+elementYPos+ " e "+midElement);
   if (screenWidth < 601){
-    shiftX = midScreen - (midElement + elementXPos);
+    shiftX = midScreen - (midElement);
     shiftY = 30 - elementYPos;
   } 
   element.setAttribute("transform","scale("+scaleX+","+scaleY+") translate("+shiftX+","+shiftY+")");
