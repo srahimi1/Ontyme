@@ -108,14 +108,14 @@ function positionLogo(logo) {
     var logoPhraseXPos = logoPhrase2.getBoundingClientRect().left;
     var midLogoPhrase = logoPhraseWidth / 2;
     var logoShiftX = midScreen - (midLogoPhrase + logoPhraseXPos);
-    logoPhrase2.setAttribute("dx",logoShiftX-7);
+   // logoPhrase2.setAttribute("dx",logoShiftX-7);
  document.getElementById("rideSafely").childNodes[1].setAttribute("width",screenWidth);
     logoPhrase2 = document.getElementById("rideSafely").childNodes[1].childNodes[1];;
   var logoPhraseWidth = logoPhrase2.getBoundingClientRect().width;
     var logoPhraseXPos = logoPhrase2.getBoundingClientRect().left;
     var midLogoPhrase = logoPhraseWidth / 2;
     var logoShiftX = midScreen - (midLogoPhrase + logoPhraseXPos);
-    logoPhrase2.setAttribute("dx",logoShiftX-7);
+  //  logoPhrase2.setAttribute("dx",logoShiftX-7);
  initLogoAnim();
 }
 
