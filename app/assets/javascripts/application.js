@@ -78,6 +78,16 @@ function positionLogo(logo) {
   parent.setAttribute("width",logoPhrase1.getBoundingClientRect().right + 10);
   parent.setAttribute("height", element.getBoundingClientRect().bottom + 10);
   logoPhrase1.setAttribute("dy", element.getBoundingClientRect().bottom - 30);
+  if (screenWidth < 401) {
+    logoPhrase1.setAttribute("font-size","16");
+    logoPhrase1.setAttribute("dy", element.getBoundingClientRect().bottom - 18);
+  }
+  if (screenWidth < 601) {
+    logoPhrase1.setAttribute("font-size","22");
+    logoPhrase1.setAttribute("dy", element.getBoundingClientRect().bottom - 24);
+  }
+
+
   initLogoAnim();
 }
 
