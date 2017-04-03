@@ -110,7 +110,8 @@ function positionLogo(logo) {
  var midCarWidth = carWidth / 2;
  var carLeft = car.getBoundingClientRect().left;
  alert(midScreen-(carLeft+midCarWidth));
- car.setAttribute("transform","translate("+midScreen-(carLeft+midCarWidth)+" 0)");
+ var shiftCar = midScreen-(carLeft+midCarWidth);
+ document.getElementById("carGroup").setAttribute("transform","translate("+shiftCar+" 0)");
  initLogoAnim();
 }
 
