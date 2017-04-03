@@ -103,19 +103,13 @@ function positionLogo(logo) {
     logoPhrase2.setAttribute("dx",logoShiftX-7);
   }
  document.getElementById("rideComfortably").childNodes[1].setAttribute("width",screenWidth);
-      logoPhrase2 = document.getElementById("rideComfortably").childNodes[1].childNodes[1];
-  var logoPhraseWidth = logoPhrase2.getBoundingClientRect().width;
-    var logoPhraseXPos = logoPhrase2.getBoundingClientRect().left;
-    var midLogoPhrase = logoPhraseWidth / 2;
-    var logoShiftX = midScreen - (midLogoPhrase + logoPhraseXPos);
-   // logoPhrase2.setAttribute("dx",logoShiftX-7);
  document.getElementById("rideSafely").childNodes[1].setAttribute("width",screenWidth);
-    logoPhrase2 = document.getElementById("rideSafely").childNodes[1].childNodes[1];;
-  var logoPhraseWidth = logoPhrase2.getBoundingClientRect().width;
-    var logoPhraseXPos = logoPhrase2.getBoundingClientRect().left;
-    var midLogoPhrase = logoPhraseWidth / 2;
-    var logoShiftX = midScreen - (midLogoPhrase + logoPhraseXPos);
-  //  logoPhrase2.setAttribute("dx",logoShiftX-7);
+ var car = document.getElementById("car");
+ car.parentNode.setAttribute("width",screenWidth);
+ var carWidth = car.getBoundingClientRect().width;
+ var midCarWidth = carWidth / 2;
+ var carLeft = car.getBoundingClientRect().left;
+ car.setAttribute("transform","translate("+midScreen-(carLeft+midCarWidth)+",0)");
  initLogoAnim();
 }
 
