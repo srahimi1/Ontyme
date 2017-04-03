@@ -82,25 +82,25 @@ function positionLogo(logo) {
     logoPhrase2 = document.getElementById("logoPhrase2");
     logoPhrase2.setAttribute("font-size","15");
     logoPhrase2.setAttribute("dy", "18");
-    logoPhrase2.parentNode.setAttribute("width",element.getBoundingClientRect().right);
+    logoPhrase2.parentNode.setAttribute("width",screenWidth);
     logoPhrase2.parentNode.setAttribute("height",logoPhrase2.getBoundingClientRect().height + 25);
     var logoPhraseWidth = logoPhrase2.getBoundingClientRect().width;
     var logoPhraseXPos = logoPhrase2.getBoundingClientRect().left;
     var midLogoPhrase = logoPhraseWidth / 2;
     var logoShiftX = midScreen - (midLogoPhrase + logoPhraseXPos);
-    //logoPhrase2.setAttribute("dx",logoShiftX);
+    logoPhrase2.setAttribute("dx",logoShiftX-7);
   }
   else if (screenWidth < 601) {
     logoPhrase2 = document.getElementById("logoPhrase2");
     logoPhrase2.setAttribute("font-size","20");
     logoPhrase2.setAttribute("dy","24");
-    logoPhrase2.parentNode.setAttribute("width",element.getBoundingClientRect().right);
+    logoPhrase2.parentNode.setAttribute("width",screenWidth);
     logoPhrase2.parentNode.setAttribute("height",logoPhrase2.getBoundingClientRect().height + 25);
     var logoPhraseWidth = logoPhrase2.getBoundingClientRect().width;
     var logoPhraseXPos = logoPhrase2.getBoundingClientRect().left;
     var midLogoPhrase = logoPhraseWidth / 2;
     var logoShiftX = midScreen - (midLogoPhrase + logoPhraseXPos);
-   // logoPhrase2.setAttribute("dx",logoShiftX);
+    logoPhrase2.setAttribute("dx",logoShiftX-10);
   }
 
 
