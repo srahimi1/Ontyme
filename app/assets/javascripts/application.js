@@ -88,7 +88,7 @@ function positionLogo(logo) {
     var logoPhraseXPos = logoPhrase2.getBoundingClientRect().left;
     var midLogoPhrase = logoPhraseWidth / 2;
     var logoShiftX = midScreen - (midLogoPhrase + logoPhraseXPos);
-    logoPhrase2.setAttribute("dx",logoShiftX-4);
+    logoPhrase2.setAttribute("dx",logoShiftX);
   }
   else if (screenWidth < 601) {
     logoPhrase2 = document.getElementById("logoPhrase2");
@@ -100,7 +100,7 @@ function positionLogo(logo) {
     var logoPhraseXPos = logoPhrase2.getBoundingClientRect().left;
     var midLogoPhrase = logoPhraseWidth / 2;
     var logoShiftX = midScreen - (midLogoPhrase + logoPhraseXPos);
-    logoPhrase2.setAttribute("dx",logoShiftX-7);
+    logoPhrase2.setAttribute("dx",logoShiftX);
   }
  document.getElementById("rideComfortably").childNodes[1].setAttribute("width",screenWidth);
  var height = document.getElementById("rideComfortably").childNodes[1].childNodes[1].getBoundingClientRect().height;
