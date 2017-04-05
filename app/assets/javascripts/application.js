@@ -122,7 +122,7 @@ function positionLogo(logo) {
  carTop = 0 - carTop; 
  var shiftCar = midScreen-(carLeft+midCarWidth);
  car.parentNode.setAttribute("height",carHeight+15);
- car.setAttribute("transform","scale(2.7 2.7) translate("+shiftCar+" "+carTop")");
+ car.setAttribute("transform","scale(2.7 2.7) translate("+shiftCar+" "+carTop+")");
  initLogoAnim();
 }
 
