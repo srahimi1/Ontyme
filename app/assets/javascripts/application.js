@@ -110,17 +110,16 @@ function positionLogo(logo) {
  document.getElementById("rideComfortably").childNodes[1].setAttribute("height", height);
  document.getElementById("rideSafely").childNodes[1].setAttribute("width",screenWidth);
  document.getElementById("rideSafely").childNodes[1].setAttribute("height", height);
- var car = document.getElementById("car");
- car.parentNode.parentNode.setAttribute("width",screenWidth); 
+ var car = document.getElementById("carGroup");
+ car.parentNode.setAttribute("width",screenWidth); 
+ car.setAttribute("transform","scale(2.7 2.7)");
  var carWidth = car.getBoundingClientRect().width;
  var carHeight = car.getBoundingClientRect().height;
  var midCarWidth = carWidth / 2;
  var carLeft = car.getBoundingClientRect().left;
  var shiftCar = midScreen-(carLeft+midCarWidth);
- car.parentNode.parentNode.setAttribute("height",carHeight);
- document.getElementById("carGroup").setAttribute("transform","scale(.55 .55) translate("+shiftCar+")");
- shiftX = document.getElementById("car").getBoundingClientRect().left;
- document.getElementById("driverGroup").setAttribute("transform","scale(0.12 0.08) translate("+shiftX+")");
+ car.parentNode.setAttribute("height",carHeight+5);
+ car.setAttribute("transform","scale(2.7 2.7) translate("+shiftCar+")");
  initLogoAnim();
 }
 
