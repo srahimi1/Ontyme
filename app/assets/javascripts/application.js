@@ -58,7 +58,7 @@ function positionSVGS() {
   }
   var logo = document.getElementById("entireLogo");
   if (screenWidth < 601){
-    shiftY = 30 - elementYPos;
+    shiftY = 30 - logo.getBoundingClientRect().top;
     centerSVG(logo, midScreen, shiftY, scaleX, scaleY);
   }
   var logoPhrase1 = document.getElementById("logoPhrase1");
