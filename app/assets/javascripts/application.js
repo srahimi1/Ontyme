@@ -25,9 +25,7 @@ $(window).load(function() {
   $(window).resize(function() { 
     positionSVGS();
   });
-  if (!!logo) {
     positionSVGS();
-  }
 });
 
 $(document).on('turbolinks:load', function() {
@@ -59,11 +57,8 @@ function positionSVGS() {
     scaleY = 1.5;
   }
   var logo = document.getElementById("entireLogo");
-  alert(logo);
   if (screenWidth < 601){
     shiftY = 30 - elementYPos;
-    alert("2");
-    alert(logo);
     centerSVG(logo, midScreen, shiftY, scaleX, scaleY);
   }
   var logoPhrase1 = document.getElementById("logoPhrase1");
