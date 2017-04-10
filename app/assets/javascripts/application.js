@@ -72,13 +72,13 @@ function positionSVGS() {
     logoPhrase2.setAttribute("font-size","20");
     logoPhrase2.setAttribute("dy","24");
   }
- centerSVG(logoPhrase2, midScreen, 0, 0, 0); 
- /*var rideComfortably = document.getElementById("rideComfortably").childNodes[1].childNodes[1];
- centerSVG(rideComfortably, midScreen, 0, 0, 0);
+ centerSVG(logoPhrase2, midScreen, 0, 1, 1); 
+ var rideComfortably = document.getElementById("rideComfortably").childNodes[1].childNodes[1];
+ centerSVG(rideComfortably, midScreen, 0, 1, 1);
  var rideSafely = document.getElementById("rideSafely").childNodes[1].childNodes[1];
- centerSVG(rideSafely, midScreen, 0, 0, 0);
+ centerSVG(rideSafely, midScreen, 0, 1, 1);
  var car = document.getElementById("carGroup");
- centerSVG(car, midScreen, 0, 0, 0); */
+ centerSVG(car, midScreen, 0, .75, .75);
  initLogoAnim();
 }
 
