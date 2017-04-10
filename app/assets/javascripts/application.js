@@ -80,7 +80,6 @@ function positionSVGS() {
  var car = document.getElementById("carGroup");
  centerSVG(car, midScreen, 0, 0, 0);
  initLogoAnim();
- alert("do");
 }
 
 
@@ -88,8 +87,7 @@ function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+")");
     var width = element.getBoundingClientRect().width;
     var height = element.getBoundingClientRect().height;
-    var left = element.getBoundingClientRect().left;
-    var right = element.getBoundingClientRect().top;    
+    var left = element.getBoundingClientRect().left;   
     var mid = width / 2; 
     var shiftX = midScreen-(left+mid);
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+")");
@@ -98,7 +96,7 @@ function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     shiftX += shiftNew;
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+" "+shiftY+")");
     element.parentNode.setAttribute("width", window.innerWidth);
-    var ySize = element.getBoundingClientRect().bottom - element.getBoundingClientRect().top;
+    var ySize = element.getBoundingClientRect().height + element.getBoundingClientRect().top;
     element.parentNode.setAttribute("height", ySize + 10);
     return 1;
 }
