@@ -121,8 +121,9 @@ function positionLogo(logo) {
  carTop -= 5;
  carTop = 0 - carTop; 
  var shiftCar = midScreen-(carLeft+midCarWidth);
+ alert(shiftCar);
  car.parentNode.setAttribute("height",carHeight+15);
- car.setAttribute("transform","scale(.75 .75) translate("+shiftCar+")");
+ //car.setAttribute("transform","scale(.75 .75) translate("+shiftCar+")");
  initLogoAnim();
 }
 
