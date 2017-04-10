@@ -61,7 +61,7 @@ function positionSVGS() {
     shiftY = 30 - logo.getBoundingClientRect().top;
     centerSVG(logo, midScreen, shiftY, scaleX, scaleY);
   }
-  var logoPhrase1 = document.getElementById("logoPhrase1");
+/*  var logoPhrase1 = document.getElementById("logoPhrase1");
   logoPhrase1.setAttribute("dy", logo.getBoundingClientRect().bottom - 30);
   var logoPhrase2 = document.getElementById("logoPhrase2");
   if (screenWidth < 401) {
@@ -78,7 +78,7 @@ function positionSVGS() {
  var rideSafely = document.getElementById("rideSafely").childNodes[1].childNodes[1];
  centerSVG(rideSafely, midScreen, 0, 0, 0);
  var car = document.getElementById("carGroup");
- centerSVG(car, midScreen, 0, 0, 0);
+ centerSVG(car, midScreen, 0, 0, 0); */
  initLogoAnim();
 }
 
