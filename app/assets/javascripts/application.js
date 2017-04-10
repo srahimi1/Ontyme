@@ -94,12 +94,13 @@ function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+")");
     left = element.getBoundingClientRect().left;
     var shiftNew = shiftX - left;
-    shiftX += shiftNew;
+    console.log("shiftx n"+ shiftX+"  left "+left+"   shiftNew"+shiftNew);
+  /*  shiftX += shiftNew;
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+" "+shiftY+")");
     element.parentNode.setAttribute("width", window.innerWidth);
     var ySize = element.getBoundingClientRect().height + element.getBoundingClientRect().top;
     element.parentNode.setAttribute("height", ySize + 10);
-    return 1;
+    return 1; */
 }
 
 
