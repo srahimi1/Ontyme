@@ -22,12 +22,11 @@ var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, r
 currentLetter = 0;
 
 $(window).load(function() {
-  var logo = document.getElementById("entireLogo");
   $(window).resize(function() { 
-    positionLogo(logo);
+    positionSVGS();
   });
   if (!!logo) {
-    positionLogo(logo);
+    positionSVGS();
   }
 });
 
@@ -38,8 +37,7 @@ $(document).on('turbolinks:load', function() {
 $(document).on('click', "#reloada", function(e) {
 });
 
-function positionLogo(logo) {
-  var element = logo;
+function positionSVGS() {
   var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
   screenWidth = parseInt(screenWidth);
   var midScreen = screenWidth / 2;
@@ -60,76 +58,53 @@ function positionLogo(logo) {
     scaleX = 1.5;
     scaleY = 1.5;
   }
-  element.setAttribute("transform","scale("+scaleX+" "+scaleY+")");
-  var elementWidth = element.getBoundingClientRect().width;
-  var elementHeight = element.getBoundingClientRect().height;
-  var elementXPos = element.getBoundingClientRect().left;
-  var elementYPos = element.getBoundingClientRect().top;    
-  var midElement = elementWidth / 2;
+  var logo = document.getElementById("entireLogo");
   if (screenWidth < 601){
-    shiftX = midScreen - (midElement + elementXPos);
     shiftY = 30 - elementYPos;
-  } 
-  element.setAttribute("transform","translate("+shiftX+" "+shiftY+") scale("+scaleX+" "+scaleY+")");
-  element.parentNode.setAttribute("width", element.getBoundingClientRect().right + 10);
-  element.parentNode.setAttribute("height", element.getBoundingClientRect().bottom + 10);
+    centerSVG(logo, midScreen, shiftY, scaleX, scaleY);
+  }
   var logoPhrase1 = document.getElementById("logoPhrase1");
-  var parent = logoPhrase1.parentNode;
-  parent.setAttribute("width",logoPhrase1.getBoundingClientRect().right + 10);
-  parent.setAttribute("height", element.getBoundingClientRect().bottom + 10);
-  logoPhrase1.setAttribute("dy", element.getBoundingClientRect().bottom - 30);
+  logoPhrase1.setAttribute("dy", logo.getBoundingClientRect().bottom - 30);
+  var logoPhrase2 = document.getElementById("logoPhrase2");
   if (screenWidth < 401) {
-    logoPhrase2 = document.getElementById("logoPhrase2");
     logoPhrase2.setAttribute("font-size","15");
     logoPhrase2.setAttribute("dy", "18");
-    logoPhrase2.parentNode.setAttribute("width",screenWidth);
-    logoPhrase2.parentNode.setAttribute("height",logoPhrase2.getBoundingClientRect().height + 25);
-    var logoPhraseWidth = logoPhrase2.getBoundingClientRect().width;
-    var logoPhraseXPos = logoPhrase2.getBoundingClientRect().left;
-    var logoShiftX = screenWidth - logoPhraseWidth;
-    logoShiftX /= 2; 
-    logoShiftX -= logoPhraseXPos;
-    logoPhrase2.setAttribute("dx",logoShiftX);
   }
   else if (screenWidth < 601) {
-    logoPhrase2 = document.getElementById("logoPhrase2");
     logoPhrase2.setAttribute("font-size","20");
     logoPhrase2.setAttribute("dy","24");
-    logoPhrase2.parentNode.setAttribute("width",screenWidth);
-    logoPhrase2.parentNode.setAttribute("height",logoPhrase2.getBoundingClientRect().height + 25);
-    var logoPhraseWidth = logoPhrase2.getBoundingClientRect().width;
-    var logoPhraseXPos = logoPhrase2.getBoundingClientRect().left;
-    var logoShiftX = screenWidth - logoPhraseWidth;
-    logoShiftX /= 2; 
-    logoShiftX -= logoPhraseXPos;
-    logoPhrase2.setAttribute("dx",logoShiftX);
   }
- document.getElementById("rideComfortably").childNodes[1].setAttribute("width",screenWidth);
- var height = document.getElementById("rideComfortably").childNodes[1].childNodes[1].getBoundingClientRect().height;
- height += 10;
- document.getElementById("rideComfortably").childNodes[1].setAttribute("height", height);
- document.getElementById("rideSafely").childNodes[1].setAttribute("width",screenWidth);
- document.getElementById("rideSafely").childNodes[1].setAttribute("height", height);
+ centerSVG(logoPhrase2, midScreen, 0, 0, 0); 
+ var rideComfortably = document.getElementById("rideComfortably").childNodes[1].childNodes[1];
+ centerSVG(rideComfortably, midScreen, 0, 0, 0);
+ var rideSafely = document.getElementById("rideSafely").childNodes[1].childNodes[1];
+ centerSVG(rideSafely, midScreen, 0, 0, 0);
  var car = document.getElementById("carGroup");
- car.parentNode.setAttribute("width",screenWidth); 
- car.setAttribute("transform","scale(.75 .75)");
- var carWidth = car.getBoundingClientRect().width;
- var carHeight = car.getBoundingClientRect().height;
- var midCarWidth = carWidth / 2;
- var carLeft = car.getBoundingClientRect().left;
- var carTop = car.getBoundingClientRect().top;
- carTop -= 5;
- carTop = 0 - carTop; 
- var shiftCar = midScreen-(carLeft+midCarWidth);
- car.parentNode.setAttribute("height",carHeight+15);
- car.setAttribute("transform","scale(.75 .75) translate("+shiftCar+")");
- carLeft = car.getBoundingClientRect().left;
- var shiftNew = shiftCar - carLeft;
- shiftCar += shiftNew;
-car.setAttribute("transform","scale(.75 .75) translate("+shiftCar+")");
+ centerSVG(car, midScreen, 0, 0, 0);
  initLogoAnim();
- alert("done 2");
+ alert("do");
 }
+
+
+function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
+    element.setAttribute("transform","scale("+scaleX+" "+scaleY+")");
+    var width = element.getBoundingClientRect().width;
+    var height = element.getBoundingClientRect().height;
+    var left = element.getBoundingClientRect().left;
+    var right = element.getBoundingClientRect().top;    
+    var mid = elementWidth / 2; 
+    var shiftX = midScreen-(left+mid);
+    element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+")");
+    left = element.getBoundingClientRect().left;
+    var shiftNew = shiftX - Left;
+    shiftX += shiftNew;
+    element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+" "+shiftY+")");
+    element.parentNode.setAttribute("width", window.innerWidth);
+    var ySize = element.getBoundingClientRect().bottom - element.getBoundingClientRect().top;
+    element.parentNode.setAttribute("height", ySize + 10);
+    return 1;
+}
+
 
 
 // for logo animation
