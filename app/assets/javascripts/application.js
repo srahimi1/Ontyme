@@ -121,10 +121,16 @@ function positionLogo(logo) {
  carTop -= 5;
  carTop = 0 - carTop; 
  var shiftCar = midScreen-(carLeft+midCarWidth);
- alert(shiftCar);
+ var shiftNew = shiftCar - carLeft;
+ shiftCar += shiftNew;
  car.parentNode.setAttribute("height",carHeight+15);
- //car.setAttribute("transform","scale(.75 .75) translate("+shiftCar+")");
+ car.setAttribute("transform","scale(.75 .75) translate("+shiftCar+")");
+ carLeft = car.getBoundingClientRect().left;
+ var shiftNew = shiftCar - carLeft;
+ shiftCar += shiftNew;
+car.setAttribute("transform","scale(.75 .75) translate("+shiftCar+")");
  initLogoAnim();
+ alert("done'");
 }
 
 
