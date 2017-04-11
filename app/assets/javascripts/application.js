@@ -83,8 +83,6 @@ function positionSVGS() {
  centerSVG(rideSafely, midScreen, 0, 1, 1);
  var car = document.getElementById("carGroup");
  centerSVG(car, midScreen, 0, .65, .65);
- var termsOfService = document.getElementById("termsOfService").childNodes[1].childNodes[1];
- centerSVG(termsOfService, midScreen, 0, 1, 1);
  initLogoAnim();
 }
 
