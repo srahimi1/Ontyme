@@ -87,10 +87,10 @@ function positionSVGS() {
 
 function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     var top = element.getBoundingClientRect().top;
+    var left = element.getBoundingClientRect().left;
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+")");
     var width = element.getBoundingClientRect().width;
-    var height = element.getBoundingClientRect().height;
-    var left = element.getBoundingClientRect().left;   
+    var height = element.getBoundingClientRect().height;   
     var mid = width / 2; 
     var shiftX = midScreen-(left+mid);
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+")");
