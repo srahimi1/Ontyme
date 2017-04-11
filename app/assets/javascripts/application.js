@@ -99,7 +99,8 @@ function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     var shiftNew = midScreen-(left+mid);
     shiftX += shiftNew;
    // shiftY = top - element.parentNode.getBoundingClientRect().top;
-    shiftY = 0 - (element.getBBox().y) + 5;
+    var shiftY = 0 - (element.getBBox().y) + 5;
+    console.log(shiftY+" "+element.getBBox().y);
     //shiftY += 5;
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+" "+shiftY+")");
     element.parentNode.setAttribute("width", window.innerWidth);
