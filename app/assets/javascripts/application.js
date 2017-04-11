@@ -122,6 +122,7 @@ function initCarAnim() {
 function carAnim() {
   clearInterval(carAnimID);
   for (i = 0; i < car.length; i++) {
+     console.log(car[i].strokeDasharray+" "+car[i].strokeDashoffset);
     car[i].style.strokeDashoffset = car[i].getTotalLength()-car[i].carCurrentOffset;
     car[i].carCurrentOffset = car[i].carCurrentOffset+car[i].carCurrentOffset*.91;
     if (car[i].carCurrentOffset > car[i].getTotalLength()) {
