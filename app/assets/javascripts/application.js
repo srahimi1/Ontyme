@@ -80,7 +80,7 @@ function positionSVGS() {
  var rideSafely = document.getElementById("rideSafely").childNodes[1].childNodes[1];
  centerSVG(rideSafely, midScreen, 0, 1, 1);
  var car = document.getElementById("carGroup");
- centerSVG(car, midScreen, 0, .75, .75);
+ centerSVG(car, midScreen, 0, .70, .70);
  initLogoAnim();
 }
 
