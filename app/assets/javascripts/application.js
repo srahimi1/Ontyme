@@ -44,22 +44,21 @@ function positionSVGS() {
     scaleX = 1.0;
     scaleY = 1.0;
   } 
-  else if (screenWidth < 601){
+  else if (screenWidth < 768){
     scaleX = 1.1;
     scaleY = 1.1;
   } 
-  else if (screenWidth < 801){
+  else if (screenWidth < 992){
     scaleX = 1.4;
     scaleY = 1.4;
   }
-  else if (screenWidth >= 801){
+  else if (screenWidth >= 1200){
     scaleX = 1.5;
     scaleY = 1.5;
   }
   var logo = document.getElementById("entireLogo");
-  if (screenWidth < 601){
-    shiftY = 30 - logo.getBoundingClientRect().top;
-    centerSVG(logo, midScreen, shiftY, scaleX, scaleY);
+  if (screenWidth < 768){
+    centerSVG(logo, midScreen, 0, scaleX, scaleY);
   }
   var logoPhrase1 = document.getElementById("logoPhrase1");
   logoPhrase1.setAttribute("dy", logo.getBoundingClientRect().bottom - 30);
@@ -70,7 +69,7 @@ function positionSVGS() {
     logoPhrase1.parentNode.style="display:none";
     document.getElementById("rideComfortably").style="display:none";
   }
-  else if (screenWidth < 601) {
+  else if (screenWidth < 768) {
     logoPhrase2.setAttribute("font-size","20");
     logoPhrase2.setAttribute("dy","24");
     logoPhrase1.parentNode.style="display:none";
