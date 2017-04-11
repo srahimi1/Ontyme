@@ -19,7 +19,7 @@
 
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
-currentLetter = 0, car, carCurrentOffset, carAnimID;
+currentLetter = 0, car = [], carAnimID;
 
 $(window).load(function() {
   $(window).resize(function() { 
@@ -108,25 +108,28 @@ function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     return 1;
 }
 
-
-
-
 function initCarAnim() {
-  car = document.getElementById("carGroup");
-  var l = car.getTotalLength();
-  car.style.strokeDasharray = l;
-  car.style.strokeDashoffset = l;
-  carCurrentOffset = 1;
+  car = [document.getElementById("carPart1"), document.getElementById("carPart2"), document.getElementById("carPart3")];
+  for (i = 0; i < car.length; i++) {
+    car[i].length = car[i].getTotalLength();
+    car[i].style.strokeDasharray = car[i].length;
+    car[i].style.strokeDashoffset = car[i].length;
+    car[i].carCurrentOffset = 1;
+  }
   setTimeout(carAnim, 90);
 }
 
 function carAnim() {
-  car.style.strokeDashoffset = car.getTotalLength()-carCurrentOffset;
-  carCurrentOffset = carCurrentOffset+carCurrentOffset*.91;
   clearInterval(carAnimID);
-  if (carCurrentOffset > car.getTotalLength()) {
-    car.style.strokeDashoffset = 0;
-    clearInterval(carAnimID); 
+  for (i = 0; i < car.length; i++) {
+    car[i].style.strokeDashoffset = car[i].getTotalLength()-car[i].carCurrentOffset;
+    car[i].carCurrentOffset = car[i].carCurrentOffset+car[i].carCurrentOffset*.91;
+    if (car[i].carCurrentOffset > car[i].getTotalLength()) {
+      for (i = 0; i < car.length; i++) {
+        car[i].style.strokeDashoffset = 0;
+      }
+      clearInterval(carAnimID); 
+    }
   }
   carAnimID = setInterval(carAnim, 45);
 }
