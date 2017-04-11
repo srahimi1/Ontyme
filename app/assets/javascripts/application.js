@@ -67,12 +67,12 @@ function positionSVGS() {
   if (screenWidth < 401) {
     logoPhrase2.setAttribute("font-size","15");
     logoPhrase2.setAttribute("dy", "18");
-    logoPhrase1.style="display:none";
+    logoPhrase1.parentNode.style="display:none";
   }
   else if (screenWidth < 601) {
     logoPhrase2.setAttribute("font-size","20");
     logoPhrase2.setAttribute("dy","24");
-    logoPhrase1.style="display:none";
+    logoPhrase1.parentNode.style="display:none";
   }
  centerSVG(logoPhrase2, midScreen, 0, 1, 1); 
  var rideComfortably = document.getElementById("rideComfortably").childNodes[1].childNodes[1];
@@ -98,8 +98,8 @@ function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     var shiftNew = midScreen-(left+mid);
     shiftX += shiftNew;
     shiftY = top - element.parentNode.getBoundingClientRect().top;
-    shiftY += 5;
     shiftY = 0 - shiftY; 
+    shiftY += 5;
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+" "+shiftY+")");
     element.parentNode.setAttribute("width", window.innerWidth);
     var ySize = element.getBoundingClientRect().height + 10;
