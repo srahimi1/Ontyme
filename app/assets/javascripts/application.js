@@ -19,7 +19,7 @@
 
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
-currentLetter = 0;
+currentLetter = 0, car, carCurrentOffset, carAnimID;
 
 $(window).load(function() {
   $(window).resize(function() { 
@@ -79,9 +79,10 @@ function positionSVGS() {
  centerSVG(logoPhrase2, midScreen, 0, 1, 1); 
  var rideSafely = document.getElementById("rideSafely").childNodes[1].childNodes[1];
  centerSVG(rideSafely, midScreen, 0, 1, 1);
- var car = document.getElementById("carGroup");
- centerSVG(car, midScreen, 0, .65, .65);
+ var car1 = document.getElementById("carGroup");
+ centerSVG(car1, midScreen, 0, .65, .65);
  initLogoAnim();
+ initCarAnim();
 }
 
 
@@ -97,16 +98,38 @@ function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     var shiftNew = midScreen-(left+mid);
     shiftX += shiftNew;
    // shiftY = top - element.parentNode.getBoundingClientRect().top;
-    var shiftY = 0 - (element.getBBox().y) + 15;
+    var shiftY = 0 - (element.getBBox().y) + 12;
     console.log(shiftY+" "+element.getBBox().y);
     //shiftY += 5;
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+" "+shiftY+")");
     element.parentNode.setAttribute("width", window.innerWidth);
-    var ySize = element.getBoundingClientRect().height + 22;
+    var ySize = element.getBoundingClientRect().height + 20;
     element.parentNode.setAttribute("height", ySize);
     return 1;
 }
 
+
+
+
+function initCarAnim() {
+  car = document.getElementById("carGroup");
+  var l = car.getTotalLength();
+  car.style.strokeDasharray = l;
+  car.style.strokeDashoffset = l;
+  carCurrentOffset = 1;
+  setTimeout(carAnim, 90);
+}
+
+function carAnim() {
+  car.style.strokeDashoffset = car.getTotalLength()-carCurrentOffset;
+  carCurrentOffset = carCurrentOffset+carCurrentOffset*.91;
+  clearInterval(carAnimID);
+  if (carCurrentOffset > car.getTotalLength()) {
+    car.style.strokeDashoffset = 0;
+    clearInterval(carAnimID); 
+  }
+  carAnimID = setInterval(carAnim, 45);
+}
 
 
 // for logo animation
@@ -152,9 +175,6 @@ function animLetter(letter) {
     clearInterval(letter.animID); 
     animsCompleted++;
     if (animsCompleted == 6 ) {
-      //document.getElementById("letterO").style.fill = "#cfcfcf";
-      //document.getElementById("ds1").style.visibility = "visible";
-      //document.getElementById("ds2").style.visibility = "visible";
       document.getElementById("clock").style.visibility = "visible";
       animClock(document.getElementById("secondHand")); 
     }
@@ -190,6 +210,7 @@ function animBox(box) {
     box.x.baseVal.value = 15;
     box.y.baseVal.value = 15;
     document.getElementById("logoLetters").style.visibility = "visible";
+    letterPaths[currentLetter].style.visibility = "visible";
     animLetter(letterPaths[currentLetter]);
   }
   else {
