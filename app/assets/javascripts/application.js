@@ -41,12 +41,12 @@ function positionSVGS() {
   var midScreen = screenWidth / 2;
   var scaleX, scaleY, shiftX = 0, shiftY = 0;
   if (screenWidth < 401){
-    scaleX = 1;
-    scaleY = 1;
+    scaleX = 0.85;
+    scaleY = 0.85;
   } 
   else if (screenWidth < 601){
-    scaleX = 1.3;
-    scaleY = 1.3;
+    scaleX = 1;
+    scaleY = 1;
   } 
   else if (screenWidth < 801){
     scaleX = 1.4;
@@ -80,7 +80,7 @@ function positionSVGS() {
  var rideSafely = document.getElementById("rideSafely").childNodes[1].childNodes[1];
  centerSVG(rideSafely, midScreen, 0, 1, 1);
  var car = document.getElementById("carGroup");
- centerSVG(car, midScreen, 0, .70, .70);
+ centerSVG(car, midScreen, 0, .65, .65);
  initLogoAnim();
 }
 
@@ -99,7 +99,7 @@ function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     shiftX += shiftNew;
     shiftY = top - element.parentNode.getBoundingClientRect().top;
     shiftY = 0 - shiftY; 
-    shiftY += 5;
+    //shiftY += 5;
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+" "+shiftY+")");
     element.parentNode.setAttribute("width", window.innerWidth);
     var ySize = element.getBoundingClientRect().height + 10;
