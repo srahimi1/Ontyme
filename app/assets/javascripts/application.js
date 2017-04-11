@@ -41,12 +41,12 @@ function positionSVGS() {
   var midScreen = screenWidth / 2;
   var scaleX, scaleY, shiftX = 0, shiftY = 0;
   if (screenWidth < 401){
-    scaleX = 0.85;
-    scaleY = 0.85;
+    scaleX = 0.90;
+    scaleY = 0.90;
   } 
   else if (screenWidth < 601){
-    scaleX = 1;
-    scaleY = 1;
+    scaleX = 1.1;
+    scaleY = 1.1;
   } 
   else if (screenWidth < 801){
     scaleX = 1.4;
