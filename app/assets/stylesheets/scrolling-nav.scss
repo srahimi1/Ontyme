@@ -33,6 +33,10 @@ html {
     -webkit-border-radius: 7px;
 }
 
+#letterO, #letterN, #letterT, #letterY, #letterM, #letterE {
+    visibility: hidden;
+}
+
 #termsOfService {
     margin: auto;
     font-family: Arial, Helvetica, sans-serif;
