@@ -41,8 +41,8 @@ function positionSVGS() {
   var midScreen = screenWidth / 2;
   var scaleX, scaleY, shiftX = 0, shiftY = 0;
   if (screenWidth < 401){
-    scaleX = 0.90;
-    scaleY = 0.90;
+    scaleX = 1.0;
+    scaleY = 1.0;
   } 
   else if (screenWidth < 601){
     scaleX = 1.1;
@@ -68,19 +68,23 @@ function positionSVGS() {
     logoPhrase2.setAttribute("font-size","15");
     logoPhrase2.setAttribute("dy", "18");
     logoPhrase1.parentNode.style="display:none";
+    document.getElementById("rideComfortably").style="display:none";
   }
   else if (screenWidth < 601) {
     logoPhrase2.setAttribute("font-size","20");
     logoPhrase2.setAttribute("dy","24");
     logoPhrase1.parentNode.style="display:none";
+    document.getElementById("rideComfortably").style="display:none";
   }
  centerSVG(logoPhrase2, midScreen, 0, 1, 1); 
- var rideComfortably = document.getElementById("rideComfortably").childNodes[1].childNodes[1];
- centerSVG(rideComfortably, midScreen, 0, 1, 1);
+/* var rideComfortably = document.getElementById("rideComfortably").childNodes[1].childNodes[1];
+ centerSVG(rideComfortably, midScreen, 0, 1, 1);*/
  var rideSafely = document.getElementById("rideSafely").childNodes[1].childNodes[1];
  centerSVG(rideSafely, midScreen, 0, 1, 1);
  var car = document.getElementById("carGroup");
  centerSVG(car, midScreen, 0, .65, .65);
+ var termsOfService = document.getElementById("termsOfService").childNodes[1].childNodes[1];
+ centerSVG(termsOfService, midScreen, 0, 1, 1);
  initLogoAnim();
 }
 
