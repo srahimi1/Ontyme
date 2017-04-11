@@ -84,11 +84,11 @@ function positionSVGS() {
 
 
 function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
+    var top = element.getBoundingClientRect().top;
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+")");
     var width = element.getBoundingClientRect().width;
     var height = element.getBoundingClientRect().height;
     var left = element.getBoundingClientRect().left;   
-    var top = element.getBoundingClientRect().top;   
     var mid = width / 2; 
     var shiftX = midScreen-(left+mid);
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+")");
@@ -96,7 +96,8 @@ function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     var shiftNew = midScreen-(left+mid);
     shiftX += shiftNew;
     shiftY = top - element.parentNode.getBoundingClientRect().top;
-    shiftY -= 5; 
+    shiftY -= 5;
+    shiftY = 0 - shiftY; 
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+" "+shiftY+")");
     element.parentNode.setAttribute("width", window.innerWidth);
     var ySize = element.parentNode.getBoundingClientRect().height + 10;
