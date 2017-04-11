@@ -77,8 +77,6 @@ function positionSVGS() {
     document.getElementById("rideComfortably").style="display:none";
   }
  centerSVG(logoPhrase2, midScreen, 0, 1, 1); 
-/* var rideComfortably = document.getElementById("rideComfortably").childNodes[1].childNodes[1];
- centerSVG(rideComfortably, midScreen, 0, 1, 1);*/
  var rideSafely = document.getElementById("rideSafely").childNodes[1].childNodes[1];
  centerSVG(rideSafely, midScreen, 0, 1, 1);
  var car = document.getElementById("carGroup");
@@ -99,12 +97,12 @@ function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     var shiftNew = midScreen-(left+mid);
     shiftX += shiftNew;
    // shiftY = top - element.parentNode.getBoundingClientRect().top;
-    var shiftY = 0 - (element.getBBox().y) + 10;
+    var shiftY = 0 - (element.getBBox().y) + 15;
     console.log(shiftY+" "+element.getBBox().y);
     //shiftY += 5;
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+" "+shiftY+")");
     element.parentNode.setAttribute("width", window.innerWidth);
-    var ySize = element.getBoundingClientRect().height + 15;
+    var ySize = element.getBoundingClientRect().height + 22;
     element.parentNode.setAttribute("height", ySize);
     return 1;
 }
@@ -116,6 +114,11 @@ function initLogoAnim() {
   for (var i=0; i< letters.length; i++) {
     letterPaths.push(document.getElementById("letter"+letters[i]));
   }
+
+  for (var i=0; i< letters.length; i++) {
+    letterPaths[i].style.visibility = "hidden";
+  }
+
 
   for (var i=0; i< letters.length; i++) {
     if (typeof letterPaths[i].getTotalLength != "undefined" ) {
@@ -158,6 +161,7 @@ function animLetter(letter) {
   } else {
     if ((letter.frameCount == 4) && (currentLetter != 5)) {
       currentLetter++;
+      letterPaths[currentLetter].style.visibility = "visible";
       animLetter(letterPaths[currentLetter]);
     }
     letter.frameCount++;
