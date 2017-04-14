@@ -115,7 +115,7 @@ function initCarAnim() {
     car[i].style.strokeDashoffset = car[i].length;
     car[i].carCurrentOffset = 1;
   }
-  //setTimeout(carAnim, 90);
+  setTimeout(carAnim, 90);
 }
 
 function carAnim() {
@@ -131,7 +131,7 @@ function carAnim() {
       clearInterval(carAnimID); 
     }
   }
- // carAnimID = setInterval(carAnim, 45);
+  carAnimID = setInterval(carAnim, 45);
 }
 
 
