@@ -45,8 +45,8 @@ function positionSVGS() {
     scaleY = 1.0;
   } 
   else if (screenWidth < 768){
-    scaleX = 1.1;
-    scaleY = 1.1;
+    scaleX = 1.0;
+    scaleY = 1.0;
   } 
   else if (screenWidth < 992){
     scaleX = 1.4;
@@ -74,7 +74,7 @@ function positionSVGS() {
     var rideSafely = document.getElementById("rideSafely").childNodes[1].childNodes[1];
     centerSVG(rideSafely, midScreen, 0, 1, 1);
     var car1 = document.getElementById("carGroup");
-    centerSVG(car1, midScreen, 0, .65, .65);
+    centerSVG(car1, midScreen, 0, .50, .50);
   }
   else if (screenWidth < 992) {
     logoPhrase2.setAttribute("font-size","20");
