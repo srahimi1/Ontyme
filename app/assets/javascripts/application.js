@@ -57,35 +57,42 @@ function positionSVGS() {
     scaleY = 1.5;
   }
   var logo = document.getElementById("entireLogo");
-  if (screenWidth < 768){
-    centerSVG(logo, midScreen, 0, scaleX, scaleY);
-  }
-  var logoPhrase1 = document.getElementById("logoPhrase1");
-  logoPhrase1.setAttribute("dy", logo.getBoundingClientRect().bottom - 30);
   var logoPhrase2 = document.getElementById("logoPhrase2");
-  if (screenWidth < 401) {
+  var logoPhrase1 = document.getElementById("logoPhrase1");
+  console.log(screenWidth);
+  if (screenWidth < 768){
+    console.log("small screen");
+    centerSVG(logo, midScreen, 0, scaleX, scaleY);
+    console.log("phone screen");
     logoPhrase2.setAttribute("font-size","15");
     logoPhrase2.setAttribute("dy", "18");
-    logoPhrase1.parentNode.style="display:none";
-    document.getElementById("rideComfortably").style="display:none";
+    console.log(" this is");
+    console.log(logoPhrase1.parentNode);
+    logoPhrase1.parentNode.style.display="none";
+    document.getElementById("rideComfortably").style.display="none";
+    centerSVG(logoPhrase2, midScreen, 0, 1, 1); 
+    var rideSafely = document.getElementById("rideSafely").childNodes[1].childNodes[1];
+    centerSVG(rideSafely, midScreen, 0, 1, 1);
+    var car1 = document.getElementById("carGroup");
+    centerSVG(car1, midScreen, 0, .65, .65);
   }
-  else if (screenWidth < 768) {
+  else if (screenWidth < 992) {
     logoPhrase2.setAttribute("font-size","20");
     logoPhrase2.setAttribute("dy","24");
-    logoPhrase1.parentNode.style="display:none";
-    document.getElementById("rideComfortably").style="display:none";
+    logoPhrase1.parentNode.style.display="none";
+    document.getElementById("rideComfortably").style.display="none";
   }
- centerSVG(logoPhrase2, midScreen, 0, 1, 1); 
- var rideSafely = document.getElementById("rideSafely").childNodes[1].childNodes[1];
- centerSVG(rideSafely, midScreen, 0, 1, 1);
- var car1 = document.getElementById("carGroup");
- centerSVG(car1, midScreen, 0, .65, .65);
+  else {
+  var logoPhrase1 = document.getElementById("logoPhrase1");
+  logoPhrase1.setAttribute("dy", logo.getBoundingClientRect().bottom - 30);
+  }
  initLogoAnim();
  initCarAnim();
 }
 
 
 function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
+    console.log("in centerSVG");
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+")");
     var left = element.getBoundingClientRect().left;
     var width = element.getBoundingClientRect().width;
@@ -98,7 +105,6 @@ function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     shiftX += shiftNew;
    // shiftY = top - element.parentNode.getBoundingClientRect().top;
     var shiftY = 0 - (element.getBBox().y) + 12;
-    console.log(shiftY+" "+element.getBBox().y);
     //shiftY += 5;
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+" "+shiftY+")");
     element.parentNode.setAttribute("width", window.innerWidth);
@@ -121,7 +127,6 @@ function initCarAnim() {
 function carAnim() {
   clearInterval(carAnimID);
   for (i = 0; i < car.length; i++) {
-     console.log(car[i].style.strokeDasharray+" "+car[i].style.strokeDashoffset);
     car[i].style.strokeDashoffset = car[i].getTotalLength()-car[i].carCurrentOffset;
     car[i].carCurrentOffset = car[i].carCurrentOffset+car[i].carCurrentOffset*.91;
     if (car[i].carCurrentOffset > car[i].getTotalLength()) {
