@@ -22,9 +22,6 @@ var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, r
 currentLetter = 0, car = [], carAnimID;
 
 $(window).load(function() {
-  $(window).resize(function() { 
-    positionSVGS();
-  });
     positionSVGS();
 });
 
@@ -34,6 +31,12 @@ $(document).on('turbolinks:load', function() {
 
 $(document).on('click', "#reloada", function(e) {
 });
+
+function doStyle(ele,action) {
+  console.log(ele);
+  if (action == "out") ele.id = "requestRideBtn";
+  else ele.id = "requestRideBtnDown";
+}
 
 function positionSVGS() {
   var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -251,6 +254,8 @@ function startAnim() {
   boxAnimCounter += boxAnimIncrement;
   animBox(box);
 }  
+
+
 
 
 // for google maps and geolocating api
