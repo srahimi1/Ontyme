@@ -103,7 +103,11 @@ function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     var mid = width / 2; 
     var shiftX = midScreen-(left+mid);
     element.setAttribute("transform","scale("+scaleX+" "+scaleY+") translate("+shiftX+")");
-    left = element.getBBox().x;
+    if (element.id = "carGroup") {
+      left = element.getBBox().x;
+    } else {
+      left = element.getBoundingClientRect().left;
+    }
     var shiftNew = midScreen-(left+mid);
     shiftX += shiftNew;
    // shiftY = top - element.parentNode.getBoundingClientRect().top;
