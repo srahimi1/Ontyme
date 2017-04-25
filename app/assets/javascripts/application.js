@@ -37,6 +37,9 @@ $(document).on('click', "#reloada", function(e) {
 
 function positionSVGS() {
   var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+  screenHeight = parseInt(screenHeight);
+  document.body.style.height = screenHeight + "px";
   screenWidth = parseInt(screenWidth);
   var midScreen = screenWidth / 2;
   var scaleX, scaleY, shiftX = 0, shiftY = 0;
@@ -74,7 +77,7 @@ function positionSVGS() {
     var rideSafely = document.getElementById("rideSafely").childNodes[1].childNodes[1];
     centerSVG(rideSafely, midScreen, 0, 1, 1);
     var car1 = document.getElementById("carGroup");
-    centerSVG(car1, midScreen, 0, .50, .50);
+    centerSVG(car1, midScreen, 0, .55, .55);
   }
   else if (screenWidth < 992) {
     logoPhrase2.setAttribute("font-size","20");
