@@ -19,10 +19,11 @@ html {
 
 #logoPhrase2Parent {
     background-color: #00aa77;
+    margin-top: -10px;
 }
 
 #requestRideBtn {
-    background: #00804f; /* For browsers that do not support gradients */
+    background: #00aa77; /* For browsers that do not support gradients */
     background: -webkit-linear-gradient(#00cc7e, #00aa77); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(#00cc7e, #00aa77); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(#00cc7e, #00aa77); /* For Firefox 3.6 to 15 */

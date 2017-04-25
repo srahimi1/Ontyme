@@ -101,14 +101,20 @@ function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     var width = element.getBoundingClientRect().width;
     var height = element.getBoundingClientRect().height;   
     var mid = width / 2; 
+    if (left < 0) left = 0 - left;
     var shiftX = midScreen-(left+mid);
+    console.log(element.id+" : "+shiftX+" : "+left+" midScreen: "+midScreen);
+    console.log(mid);
     element.setAttribute("transform","scale("+scaleX+","+scaleY+") translate("+shiftX+")");
     left = element.getBoundingClientRect().left;
+    //if (left < 0) left = 0 - left;
     var shiftNew = midScreen-(left+mid);
     shiftX += shiftNew;
+    console.log(shiftX+","+shiftNew);
    // shiftY = top - element.parentNode.getBoundingClientRect().top;
     var shiftY = 0 - (element.getBBox().y) + 12;
     //shiftY += 5;
+    if (element.id == "carGroup") shiftX += 35;
     element.setAttribute("transform","scale("+scaleX+","+scaleY+") translate("+shiftX+","+shiftY+")");
     element.parentNode.setAttribute("width", window.innerWidth);
     var ySize = element.getBoundingClientRect().height + 20;
@@ -204,7 +210,7 @@ function animClock(hand) {
  clearInterval(rotateAnimID);
  rotateDeg+=1;
  hand.setAttribute("transform","rotate("+rotateDeg+",50,50)")
- rotateAnimID = setInterval(function() {animClock(hand)},45);
+ rotateAnimID = setInterval(function() {animClock(hand)},75);
  if (rotateDeg >= 363) {
     rotateDeg = 0;
   }
