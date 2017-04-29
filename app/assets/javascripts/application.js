@@ -23,6 +23,8 @@ currentLetter = 0, car = [], carAnimID;
 
 $(window).load(function() {
     positionSVGS();
+    var div = document.getElementById("midSectionDiv");
+    div.style.marginTop = ((0 - div.getBoundingClientRect().height)/2) + "px"; 
 });
 
 $(document).on('turbolinks:load', function() {
