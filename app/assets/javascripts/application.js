@@ -24,7 +24,9 @@ currentLetter = 0, car = [], carAnimID;
 $(window).load(function() {
     positionSVGS();
     var div = document.getElementById("midSectionDiv");
-    div.style.marginTop = ((0 - div.getBoundingClientRect().height)/2) + "px"; 
+    var top = document.getElementById("topSectionDiv");
+    var bottom = document.getElementById("termsOfServiceParent");
+    div.style.marginTop = ((bottom.getBoundingClientRect().top - top.getBoundingClientRect().bottom - div.getBoundingClientRect().height)/2) + "px";
 });
 
 $(document).on('turbolinks:load', function() {
@@ -79,7 +81,7 @@ function positionSVGS() {
     logoPhrase1.parentNode.style.display="none";
     document.getElementById("rideComfortably").style.display="none";
     centerSVG(logoPhrase2, midScreen, 0, 1, 1); 
-    var rideSafely = document.getElementById("rideSafely").childNodes[1].childNodes[1];
+    var rideSafely = document.getElementById("termsOfServiceParent").childNodes[1].childNodes[1];
     centerSVG(rideSafely, midScreen, 0, 1, 1);
     var car1 = document.getElementById("carGroup");
     centerSVG(car1, midScreen, 0, .55, .55);
