@@ -134,7 +134,7 @@ function carAnim() {
   clearInterval(carAnimID);
   for (i = 0; i < car.length; i++) {
     car[i].style.strokeDashoffset = car[i].getTotalLength()-car[i].carCurrentOffset;
-    car[i].carCurrentOffset = car[i].carCurrentOffset+car[i].carCurrentOffset*.41;
+    car[i].carCurrentOffset = car[i].carCurrentOffset+car[i].carCurrentOffset*.51;
     if (car[i].carCurrentOffset > car[i].getTotalLength()) {
       for (i = 0; i < car.length; i++) {
         car[i].style.strokeDashoffset = 0;
