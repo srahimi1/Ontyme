@@ -37,7 +37,6 @@ $(document).on('click', "#reloada", function(e) {
 });
 
 function doStyle(ele,action) {
-  console.log(ele);
   if (action == "out") ele.id = "requestRideBtn";
   else ele.id = "requestRideBtnDown";
 }
@@ -69,15 +68,10 @@ function positionSVGS() {
   var logo = document.getElementById("entireLogo");
   var logoPhrase2 = document.getElementById("logoPhrase2");
   var logoPhrase1 = document.getElementById("logoPhrase1");
-  console.log(screenWidth);
   if (screenWidth < 768){
-    console.log("small screen");
     centerSVG(logo, midScreen, 0, scaleX, scaleY);
-    console.log("phone screen");
     logoPhrase2.setAttribute("font-size","15");
     logoPhrase2.setAttribute("dy", "18");
-    console.log(" this is");
-    console.log(logoPhrase1.parentNode);
     logoPhrase1.parentNode.style.display="none";
     document.getElementById("rideComfortably").style.display="none";
     centerSVG(logoPhrase2, midScreen, 0, 1, 1); 
@@ -102,7 +96,6 @@ function positionSVGS() {
 
 
 function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
-    console.log("in centerSVG");
     element.setAttribute("transform","scale("+scaleX+","+scaleY+")");
     var left = element.getBoundingClientRect().left;
     var width = element.getBoundingClientRect().width;
@@ -110,18 +103,15 @@ function centerSVG(element, midScreen, shiftY, scaleX, scaleY) {
     var mid = width / 2; 
     if (left < 0) left = 0 - left;
     var shiftX = midScreen-(left+mid);
-    console.log(element.id+" : "+shiftX+" : "+left+" midScreen: "+midScreen);
-    console.log(mid);
     element.setAttribute("transform","scale("+scaleX+","+scaleY+") translate("+shiftX+")");
     left = element.getBoundingClientRect().left;
     //if (left < 0) left = 0 - left;
     var shiftNew = midScreen-(left+mid);
     shiftX += shiftNew;
-    console.log(shiftX+","+shiftNew);
    // shiftY = top - element.parentNode.getBoundingClientRect().top;
     var shiftY = 0 - (element.getBBox().y) + 12;
     //shiftY += 5;
-    if (element.id == "carGroup") shiftX += 35;
+    if (element.id == "carGroup") shiftX += 60;
     element.setAttribute("transform","scale("+scaleX+","+scaleY+") translate("+shiftX+","+shiftY+")");
     element.parentNode.setAttribute("width", window.innerWidth);
     var ySize = element.getBoundingClientRect().height + 20;
@@ -137,23 +127,74 @@ function initCarAnim() {
     car[i].style.strokeDashoffset = car[i].length;
     car[i].carCurrentOffset = 1;
   }
-  setTimeout(carAnim, 90);
+  setTimeout(carAnim, 45);
 }
 
 function carAnim() {
+  var endAnim = 0;
   clearInterval(carAnimID);
   for (i = 0; i < car.length; i++) {
     car[i].style.strokeDashoffset = car[i].getTotalLength()-car[i].carCurrentOffset;
-    car[i].carCurrentOffset = car[i].carCurrentOffset+car[i].carCurrentOffset*.91;
+    car[i].carCurrentOffset = car[i].carCurrentOffset+car[i].carCurrentOffset*.41;
     if (car[i].carCurrentOffset > car[i].getTotalLength()) {
       for (i = 0; i < car.length; i++) {
         car[i].style.strokeDashoffset = 0;
-      }
+      } // for (i=0...)
       clearInterval(carAnimID); 
-    }
+      endAnim = 1;
+    } // if (car[i].carCurrentOffset >...)
+  } // for (i=0 ... )
+  if (!endAnim) carAnimID = setInterval(carAnim, 45);
+  else {
+    fillCarAnim(1, 0, 70);
+    showClock(1,0,70); 
   }
-  carAnimID = setInterval(carAnim, 45);
-}
+} // end function carAnim
+
+
+function fillCarAnim(value, currentFrame, TotalFrames) {
+  clearInterval(carAnimID);
+  var carPart1 = document.getElementById("carPart1");
+  var carPart2 = document.getElementById("carPart2");
+  var carPart3 = document.getElementById("carPart3");
+  var opacity;
+  var opacity = getAnimValue(value, currentFrame, TotalFrames);
+  if (opacity < value) {
+    carPart1.setAttribute("fill-opacity",opacity);
+    carPart2.setAttribute("fill-opacity",opacity);
+    carPart3.setAttribute("fill-opacity",opacity);
+    currentFrame++;
+    carAnimID = setInterval(function() {fillCarAnim(value, currentFrame, TotalFrames)}, 1500/TotalFrames);
+  } // if (currentFrame != TotalFrames)
+  else {
+    carPart1.setAttribute("fill-opacity",value);
+    carPart2.setAttribute("fill-opacity",value);
+    carPart3.setAttribute("fill-opacity",value);
+  }
+} // end function fillCarAnim
+
+function showClock(value, currentFrame, TotalFrames) {
+  clearInterval(boxAnimID);
+  var circle = document.getElementById("blockCircle");
+  var opacity;
+  var opacity = 1 - getAnimValue(value, currentFrame, TotalFrames);
+  if (opacity > 0) {
+    circle.setAttribute("fill-opacity",opacity);
+    currentFrame++;
+    boxAnimID = setInterval(function() {showClock(value, currentFrame, TotalFrames)}, 1500/TotalFrames);
+  } // if (currentFrame != TotalFrames)
+  else {
+    circle.setAttribute("fill-opacity",0);
+  }
+} // end function showClock
+
+
+
+function getAnimValue(value, currentFrame, TotalFrames) {
+  var returnValue;
+  returnValue = value * (1 + Math.cos(  ((TotalFrames+currentFrame)/TotalFrames) *  Math.PI));
+  return returnValue;
+} // end function getAnimValue
 
 
 // for logo animation
@@ -200,17 +241,18 @@ function animLetter(letter) {
     animsCompleted++;
     if (animsCompleted == 6 ) {
       document.getElementById("clock").style.visibility = "visible";
+      document.getElementById("letterO").setAttribute("fill","#88eebf");
       animClock(document.getElementById("secondHand")); 
-    }
+    } // if (animsCompleted == 6 ) 
   } else {
     if ((letter.frameCount == 4) && (currentLetter != 5)) {
       currentLetter++;
       letterPaths[currentLetter].style.visibility = "visible";
       animLetter(letterPaths[currentLetter]);
-    }
+    } // if ((letter.frameCount == 4) && (currentLetter != 5)
     letter.frameCount++;
     letter.animID = setInterval(function () {animLetter(letter)}, 45);
-  }
+  } // else 
 }
 
 function animClock(hand) {
@@ -226,7 +268,6 @@ function animClock(hand) {
 function animBox(box) {
  var newWidth = 15 * Math.sin(boxAnimCounter);
  var newHeight = 12 * Math.sin(boxAnimCounter);
-// console.log(boxAnimCounter/boxAnimIncrement+"  "+box.height.baseVal.value+newHeight+"  "+box.width.baseVal.value+newWidth);
   if (( (box.width.baseVal.value + newWidth) >= 104) || ( (box.height.baseVal.value + newHeight) >= 70)) {
     clearInterval(boxAnimID);
     box.width.baseVal.value = 104;
@@ -332,7 +373,6 @@ var init = function() {
 
   iconsArray.map( function(node) {
     $(node).on('click', function(e) {
-//      console.log(e.target.currentSrc);
       hideElementById('select-icon-btn');
       showImage(e.target.currentSrc);
       $("[data-dismiss=modal]").trigger({ type: "click" });
