@@ -127,7 +127,6 @@ function initCarAnim() {
     car[i].style.strokeDashoffset = car[i].length;
     car[i].carCurrentOffset = 1;
   }
-  setTimeout(carAnim, 45);
 }
 
 function carAnim() {
@@ -146,8 +145,8 @@ function carAnim() {
   } // for (i=0 ... )
   if (!endAnim) carAnimID = setInterval(carAnim, 45);
   else {
-    fillCarAnim(1, 0, 70);
-    showClock(1,0,70); 
+   setTimeout(function() {fillCarAnim(1, 0, 70)}, 100);
+   setTimeout(function() {showClock(1,0,70)}, 100); 
   }
 } // end function carAnim
 
@@ -277,6 +276,7 @@ function animBox(box) {
     document.getElementById("logoLetters").style.visibility = "visible";
     letterPaths[currentLetter].style.visibility = "visible";
     animLetter(letterPaths[currentLetter]);
+    carAnim();
   }
   else {
     clearInterval(boxAnimID);
