@@ -30,6 +30,7 @@ $(window).load(function() {
     btnWT = sizes.width;
     document.getElementById("requestRideBtnDiv").style.height = btnHT + "px";
     document.getElementById("requestRideBtnDiv").style.width = btnWT + "px";
+    document.getElementById("requestRideBtnDiv").style.margin = "auto";
     document.getElementById("requestRideBtn").disabled = true;
     positionSVGS();
     var div = document.getElementById("midSectionDiv");
