@@ -151,25 +151,24 @@ function carAnim() {
 } // end function carAnim
 
 
-function carAnim2() {
+function carAnim2(currentFrame, TotalFrames) {
   var endAnim = 0;
   clearInterval(carAnimID);
   for (i = 0; i < car.length; i++) {
-    car[i].style.strokeDashoffset = car[i].getTotalLength()-car[i].carCurrentOffset;
-    car[i].carCurrentOffset = car[i].carCurrentOffset+car[i].carCurrentOffset*.51;
-    if (car[i].carCurrentOffset > car[i].getTotalLength()) {
-      for (i = 0; i < car.length; i++) {
-        car[i].style.strokeDashoffset = 0;
-      } // for (i=0...)
-      clearInterval(carAnimID); 
-      endAnim = 1;
-    } // if (car[i].carCurrentOffset >...)
+    var totalLength = car[i].getTotalLength();
+    var newLength = totalLength-getAnimValue(totalLength, currentFrame, TotalFrames);
+    console.log(newLength);
+    if (newLength > 0) car[i].style.strokeDashoffset = newLength;
+    else {
+      car[i].style.strokeDashoffset = 0; 
+      endAnim++; }
   } // for (i=0 ... )
-  if (!endAnim) carAnimID = setInterval(carAnim, 45);
+  if (endAnim < 3) {
+    currentFrame++;
+    carAnimID = setInterval(function(){carAnim2(currentFrame, TotalFrames)}, 2000/TotalFrames);}
   else {
    setTimeout(function() {fillCarAnim(1, 0, 70)}, 100);
-   setTimeout(function() {showClock(1,0,70)}, 100); 
-  }
+   setTimeout(function() {showClock(1,0,70)}, 100); }
 } // end function carAnim
 
 
@@ -302,7 +301,7 @@ function animBox(box) {
     document.getElementById("logoLetters").style.visibility = "visible";
     letterPaths[currentLetter].style.visibility = "visible";
     animLetter(letterPaths[currentLetter]);
-    carAnim();
+    carAnim2(0,50);
   }
   else {
     clearInterval(boxAnimID);
