@@ -28,8 +28,6 @@ $(window).load(function() {
     var sizes = button.getBoundingClientRect();
     btnHT = sizes.height;
     btnWT = sizes.width;
-    button.style.height = 0;
-    button.style.width = 0;
     document.getElementById("requestRideBtn").innerHTML = "";
     document.getElementById("requestRideBtn").disabled = true;
     positionSVGS();
@@ -98,6 +96,9 @@ function positionSVGS() {
   var logoPhrase1 = document.getElementById("logoPhrase1");
   logoPhrase1.setAttribute("dy", logo.getBoundingClientRect().bottom - 30);
   }
+  var button = document.getElementById("requestRideBtn");
+  button.style.height = 0;
+  button.style.width = 0;
  initLogoAnim();
  initCarAnim();
 }
