@@ -28,7 +28,8 @@ $(window).load(function() {
     var sizes = button.getBoundingClientRect();
     btnHT = sizes.height;
     btnWT = sizes.width;
-    document.getElementById("requestRideBtn").innerHTML = "";
+    document.getElementById("requestRideBtnDiv").style.height = btnHT + "px";
+    document.getElementById("requestRideBtnDiv").style.width = btnWT + "px";
     document.getElementById("requestRideBtn").disabled = true;
     positionSVGS();
     var div = document.getElementById("midSectionDiv");
@@ -97,6 +98,7 @@ function positionSVGS() {
   logoPhrase1.setAttribute("dy", logo.getBoundingClientRect().bottom - 30);
   }
   var button = document.getElementById("requestRideBtn");
+  button.innerHTML = "";
   button.style.height = 0;
   button.style.width = 0;
  initLogoAnim();
