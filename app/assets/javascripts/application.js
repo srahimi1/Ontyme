@@ -19,10 +19,19 @@
 
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
-currentLetter = 0, car = [], carAnimID;
+currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0;
 
 $(window).load(function() {
     document.getElementById("mainContainer").style.display = "block";
+    document.getElementById("requestRideBtn").style.visibility = "hidden";
+    var button = document.getElementById("requestRideBtn");
+    var sizes = button.getBoundingClientRect();
+    btnHT = sizes.height;
+    btnWT = sizes.width;
+    button.style.height = 0;
+    button.style.width = 0;
+    document.getElementById("requestRideBtn").innerHTML = "";
+    document.getElementById("requestRideBtn").disabled = "true";
     positionSVGS();
     var div = document.getElementById("midSectionDiv");
     var top = document.getElementById("topSectionDiv");
@@ -89,7 +98,6 @@ function positionSVGS() {
   var logoPhrase1 = document.getElementById("logoPhrase1");
   logoPhrase1.setAttribute("dy", logo.getBoundingClientRect().bottom - 30);
   }
- document.getElementById("mainContainer").style.display = "block";
  initLogoAnim();
  initCarAnim();
 }
@@ -151,13 +159,38 @@ function carAnim() {
 } // end function carAnim
 
 
+function buttonAnim(currentFrame, TotalFrames) {
+  clearInterval(buttonAnimID);
+  if (!doBtnWT) {
+    var height = getAnimValue(btnHT, currentFrame, TotalFrames);
+    if (height < btnHT) {
+      document.getElementById("requestRideBtn").style.height = height + "px";
+      document.getElementById("requestRideBtn").style.visibility = "visible";
+      currentFrame++;
+      buttonAnimID = setInterval(function() {buttonAnim(currentFrame,TotalFrames)}, 1000/TotalFrames);}
+    else {
+      document.getElementById("requestRideBtn").style.height = btnHT + "px";
+      doBtnWT = 1;
+      buttonAnim(0,TotalFrames); } }
+  else {
+    var width = getAnimValue(btnWT, currentFrame, TotalFrames);
+    if (width < btnWT) {
+      document.getElementById("requestRideBtn").style.width = width + "px";
+      currentFrame++;
+      buttonAnimID = setInterval(function() {buttonAnim(currentFrame,TotalFrames)}, 1000/TotalFrames);}
+    else {
+      document.getElementById("requestRideBtn").style.width = btnWT + "px";
+      document.getElementById("requestRideBtn").disabled = "false";
+      document.getElementById("requestRideBtn").innerHTML = "Get a Ride";} }
+
+}
+
 function carAnim2(currentFrame, TotalFrames) {
   var endAnim = 0;
   clearInterval(carAnimID);
   for (i = 0; i < car.length; i++) {
     var totalLength = car[i].getTotalLength();
     var newLength = totalLength-getAnimValue(totalLength, currentFrame, TotalFrames);
-    console.log(newLength);
     if (newLength > 0) car[i].style.strokeDashoffset = newLength;
     else {
       car[i].style.strokeDashoffset = 0; 
@@ -169,11 +202,8 @@ function carAnim2(currentFrame, TotalFrames) {
   else {
    setTimeout(function() {fillCarAnim(1, 0, 70)}, 100);
    setTimeout(function() {showClock(1,0,70)}, 100); }
+   //document.getElementById("requestRideBtn").style.visibility = "visible";
 } // end function carAnim
-
-
-
-
 
 
 function fillCarAnim(value, currentFrame, TotalFrames) {
@@ -187,6 +217,7 @@ function fillCarAnim(value, currentFrame, TotalFrames) {
     carPart1.setAttribute("fill-opacity",opacity);
     carPart2.setAttribute("fill-opacity",opacity);
     carPart3.setAttribute("fill-opacity",opacity);
+    if (  (opacity > (value/2)) && (opacity < (value/2 + 1))     ) buttonAnim(0,50);
     currentFrame++;
     carAnimID = setInterval(function() {fillCarAnim(value, currentFrame, TotalFrames)}, 1500/TotalFrames);
   } // if (currentFrame != TotalFrames)
