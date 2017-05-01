@@ -31,7 +31,7 @@ $(window).load(function() {
     button.style.height = 0;
     button.style.width = 0;
     document.getElementById("requestRideBtn").innerHTML = "";
-    document.getElementById("requestRideBtn").disabled = "true";
+    document.getElementById("requestRideBtn").disabled = true;
     positionSVGS();
     var div = document.getElementById("midSectionDiv");
     var top = document.getElementById("topSectionDiv");
@@ -180,7 +180,7 @@ function buttonAnim(currentFrame, TotalFrames) {
       buttonAnimID = setInterval(function() {buttonAnim(currentFrame,TotalFrames)}, 1000/TotalFrames);}
     else {
       document.getElementById("requestRideBtn").style.width = btnWT + "px";
-      document.getElementById("requestRideBtn").disabled = "false";
+      document.getElementById("requestRideBtn").disabled = false;
       document.getElementById("requestRideBtn").innerHTML = "Get a Ride";} }
 
 }
