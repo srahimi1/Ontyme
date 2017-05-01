@@ -22,6 +22,10 @@ html {
     margin-top: -10px;
 }
 
+#mainContainer {
+    display: none;
+}
+
 #requestRideBtn {
     background: #00aa77; /* For browsers that do not support gradients */
     background: -webkit-linear-gradient(#00cc7e, #00aa77); /* For Safari 5.1 to 6.0 */
@@ -87,10 +91,6 @@ html {
     bottom: 0px;
 }
 
-
-#logoPhrase1Div {
-    display: inline-block;
-}
 
 @media(min-width: 0px) {
     #doNotShow1, #doNotShow2, #doNotShow3, #doNotShow4, #doNotShow5, #intro, #sign-up-page, #current-users-page, #contact {

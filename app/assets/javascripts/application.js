@@ -22,6 +22,7 @@ var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, r
 currentLetter = 0, car = [], carAnimID;
 
 $(window).load(function() {
+    document.getElementById("mainContainer").style.display = "block";
     positionSVGS();
     var div = document.getElementById("midSectionDiv");
     var top = document.getElementById("topSectionDiv");
@@ -73,7 +74,6 @@ function positionSVGS() {
     logoPhrase2.setAttribute("font-size","15");
     logoPhrase2.setAttribute("dy", "18");
     logoPhrase1.parentNode.style.display="none";
-    document.getElementById("rideComfortably").style.display="none";
     centerSVG(logoPhrase2, midScreen, 0, 1, 1); 
     var rideSafely = document.getElementById("termsOfServiceParent").childNodes[1].childNodes[1];
     centerSVG(rideSafely, midScreen, 0, 1, 1);
@@ -84,12 +84,12 @@ function positionSVGS() {
     logoPhrase2.setAttribute("font-size","20");
     logoPhrase2.setAttribute("dy","24");
     logoPhrase1.parentNode.style.display="none";
-    document.getElementById("rideComfortably").style.display="none";
   }
   else {
   var logoPhrase1 = document.getElementById("logoPhrase1");
   logoPhrase1.setAttribute("dy", logo.getBoundingClientRect().bottom - 30);
   }
+ document.getElementById("mainContainer").style.display = "block";
  initLogoAnim();
  initCarAnim();
 }
@@ -149,6 +149,32 @@ function carAnim() {
    setTimeout(function() {showClock(1,0,70)}, 100); 
   }
 } // end function carAnim
+
+
+function carAnim2() {
+  var endAnim = 0;
+  clearInterval(carAnimID);
+  for (i = 0; i < car.length; i++) {
+    car[i].style.strokeDashoffset = car[i].getTotalLength()-car[i].carCurrentOffset;
+    car[i].carCurrentOffset = car[i].carCurrentOffset+car[i].carCurrentOffset*.51;
+    if (car[i].carCurrentOffset > car[i].getTotalLength()) {
+      for (i = 0; i < car.length; i++) {
+        car[i].style.strokeDashoffset = 0;
+      } // for (i=0...)
+      clearInterval(carAnimID); 
+      endAnim = 1;
+    } // if (car[i].carCurrentOffset >...)
+  } // for (i=0 ... )
+  if (!endAnim) carAnimID = setInterval(carAnim, 45);
+  else {
+   setTimeout(function() {fillCarAnim(1, 0, 70)}, 100);
+   setTimeout(function() {showClock(1,0,70)}, 100); 
+  }
+} // end function carAnim
+
+
+
+
 
 
 function fillCarAnim(value, currentFrame, TotalFrames) {
