@@ -300,7 +300,7 @@ function animLetter(letter) {
     animsCompleted++;
     if (animsCompleted == 6 ) {
       document.getElementById("clock").style.visibility = "visible";
-      document.getElementById("letterO").setAttribute("fill","#88eebf");
+      document.getElementById("letterO").setAttribute("fill","#99cdbf");
       animClock(document.getElementById("secondHand")); 
     } // if (animsCompleted == 6 ) 
   } else {
