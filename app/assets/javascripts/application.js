@@ -86,9 +86,9 @@ function positionSVGS() {
     el.setAttribute("transform","scale("+scale+" "+scale+")");
     var left = document.getElementById("logoPart1").getBoundingClientRect().left;
     var top = document.getElementById("logoPart1").getBoundingClientRect().top;
-    left = left-(5/scale);
+    left = (left-5)/scale;
     left = 0 - left;
-    top = top-(5/scale);
+    top = (top-5)/scale;
     top = 0 - top;
     el.setAttribute("transform","scale("+scale+" "+scale+") translate("+left+" "+top+")");
     el = document.getElementById("logoPart2");
