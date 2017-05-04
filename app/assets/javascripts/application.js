@@ -75,10 +75,24 @@ function positionSVGS() {
     scaleX = 1.5;
     scaleY = 1.5;
   }
-  var logo = document.getElementById("entireLogo");
+  var logo = document.getElementById("entireLogo1");
   var logoPhrase2 = document.getElementById("logoPhrase2");
   var logoPhrase1 = document.getElementById("logoPhrase1");
   if (screenWidth < 768){
+    var el = document.getElementById("logoPart1");
+    var newWidth = document.getElementById("entireLogo").getBoundingClientRect().width * .4;
+    var oldWidth = el.getBoundingClientRect().width;
+    var scale = newWidth/oldWidth;
+    el.setAttribute("transform","scale("+scale+" "+scale+")");
+    el = document.getElementById("logoPart2");
+    newWidth = screenWidth * .45;
+    oldWidth = el.getBoundingClientRect().width;
+    scale = newWidth/oldWidth;
+    oldHeight = document.getElementById("entireLogo").getBoundingClientRect().height;
+    oldWidth = document.getElementById("entireLogo").getBoundingClientRect().width;
+    el.setAttribute("transform","scale("+scale+" "+scale+")");
+    logoPhrase2.setAttribute("y",oldHeight-el.getBoundingClientRect().height);
+    logoPhrase2.setAttribute("x",oldWidth*.60);
     centerSVG(logo, midScreen, 0, scaleX, scaleY);
    // logoPhrase2.setAttribute("font-size","15");
    // logoPhrase2.setAttribute("dy", "18");
