@@ -84,21 +84,17 @@ function positionSVGS() {
     var oldWidth = el.getBoundingClientRect().width;
     var scale = newWidth/oldWidth;
     var left = document.getElementById("logoPart1").getBoundingClientRect().left;
-    if (left != 5) left = 5 - left;
+    if (left < 0) left = 5 - left;
+    else left = 5;
     el.setAttribute("transform","scale("+scale+" "+scale+") translate("+left+")");
+    
     el = document.getElementById("logoPart2");
-    newWidth = screenWidth * .45;
+    newWidth = document.getElementById("entireLogo").getBoundingClientRect().width * .45;
     oldWidth = el.getBoundingClientRect().width;
     scale = newWidth/oldWidth;
-    el.setAttribute("transform","scale("+scale+" "+scale+")");
-
-    oldWidth = document.getElementById("entireLogo").getBoundingClientRect().width;
-
-
-
-
-    logoPhrase2.setAttribute("y",oldHeight-el.getBoundingClientRect().height);
-    logoPhrase2.setAttribute("x",oldWidth*.60);
+    var right = el.getBoundingClientRect().right;
+    left = newWidth - right - 5;
+    el.setAttribute("transform","scale("+scale+" "+scale+") translate("+left+")");
     //centerSVG(logo, midScreen, 0, scaleX, scaleY);
    // logoPhrase2.setAttribute("font-size","15");
    // logoPhrase2.setAttribute("dy", "18");
