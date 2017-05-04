@@ -83,12 +83,14 @@ function positionSVGS() {
     var newWidth = document.getElementById("entireLogo").getBoundingClientRect().width * .45;
     var oldWidth = el.getBoundingClientRect().width;
     var scale = newWidth/oldWidth;
+    el.setAttribute("transform","scale("+scale+" "+scale+")");
     var left = document.getElementById("logoPart1").getBoundingClientRect().left;
     var top = document.getElementById("logoPart1").getBoundingClientRect().top;
-    left = (5 - left) * (1/scale);
-    top = (5 - top) * (1/scale);
-    el.setAttribute("transform","scale("+scale+" "+scale+")");
-  
+    left = left-(5/scale);
+    left = 0 - left;
+    top = top-(5/scale);
+    top = 0 - top;
+    el.setAttribute("transform","scale("+scale+" "+scale+") translate("+left+" "+top+")");
     el = document.getElementById("logoPart2");
     newWidth = document.getElementById("entireLogo").getBoundingClientRect().width * .45;
     oldWidth = el.getBoundingClientRect().width;
