@@ -83,7 +83,7 @@ function positionSVGS() {
     var newWidth = document.getElementById("entireLogo").getBoundingClientRect().width * .45;
     var oldWidth = el.getBoundingClientRect().width;
     var scale = newWidth/oldWidth;
-    el.setAttribute("transform","scale("+scale+" "+scale+")");
+    el.setAttribute("transform","scale("+scale+","+scale+")");
     var left = document.getElementById("logoPart1").getBoundingClientRect().left;
     var top = document.getElementById("logoPart1").getBoundingClientRect().top;
     console.log(left+" "+scale);
@@ -93,7 +93,7 @@ function positionSVGS() {
     console.log(left);
     top = (top-5)/scale;
     top = 0 - top;
-    el.setAttribute("transform","scale("+scale+" "+scale+") translate("+left+" "+top+")");
+    el.setAttribute("transform","scale("+scale+","+scale+") translate("+left+","+top+")");
     el = document.getElementById("logoPart2");
     newWidth = document.getElementById("entireLogo").getBoundingClientRect().width * .45;
     oldWidth = el.getBoundingClientRect().width;
