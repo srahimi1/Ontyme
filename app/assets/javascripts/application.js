@@ -80,20 +80,26 @@ function positionSVGS() {
   var logoPhrase1 = document.getElementById("logoPhrase1");
   if (screenWidth < 768){
     var el = document.getElementById("logoPart1");
-    var newWidth = document.getElementById("entireLogo").getBoundingClientRect().width * .4;
+    var newWidth = document.getElementById("entireLogo").getBoundingClientRect().width * .45;
     var oldWidth = el.getBoundingClientRect().width;
     var scale = newWidth/oldWidth;
-    el.setAttribute("transform","scale("+scale+" "+scale+")");
+    var left = document.getElementById("logoPart1").getBoundingClientRect().left;
+    if (left != 5) left = 5 - left;
+    el.setAttribute("transform","scale("+scale+" "+scale+") translate("+left+")");
     el = document.getElementById("logoPart2");
     newWidth = screenWidth * .45;
     oldWidth = el.getBoundingClientRect().width;
     scale = newWidth/oldWidth;
-    oldHeight = document.getElementById("entireLogo").getBoundingClientRect().height;
-    oldWidth = document.getElementById("entireLogo").getBoundingClientRect().width;
     el.setAttribute("transform","scale("+scale+" "+scale+")");
+
+    oldWidth = document.getElementById("entireLogo").getBoundingClientRect().width;
+
+
+
+
     logoPhrase2.setAttribute("y",oldHeight-el.getBoundingClientRect().height);
     logoPhrase2.setAttribute("x",oldWidth*.60);
-    centerSVG(logo, midScreen, 0, scaleX, scaleY);
+    //centerSVG(logo, midScreen, 0, scaleX, scaleY);
    // logoPhrase2.setAttribute("font-size","15");
    // logoPhrase2.setAttribute("dy", "18");
     logoPhrase1.parentNode.style.display="none";
