@@ -1,8 +1,9 @@
  <div id="mainContainer">
   <div id="topSectionDiv">
-     <svg id="logoSVG" xmlns="http://www.w3.org/2000/svg" version="1.1" width="700" height="150"> 
-            <g id="entireLogo" transform="scale(1 1)">
+     <svg id="entireLogo" xmlns="http://www.w3.org/2000/svg" version="1.1" width="480" height="75"> 
+            <g id="entireLogo1" transform="scale(1 1)">
 
+            <g id="LogoPart1" transform="scale(.85 .85)">
 
               <rect id="logoBox" x="0" y="0" width="0" height="0" fill="#00aa77" rx="12" ry="12"></rect>
               <g id="logoLetters" style="visibility:hidden"> 
@@ -33,14 +34,16 @@
                 <circle id="blockCircle" cx="50" cy="50" r="22" stroke="none" fill="#00aa77" fill-opacity="1"></circle>
               </g>
             </g>
+            <g id="logoPart2">
+                  <text id="logoPhrase2" x="230" y="60" dx="0" dy="0" font-family="Arial" font-weight="bold" stroke="none" fill="#4f554f">Women Driver for Women Riders</text>
+                </g>
+            </g>
     </svg>  
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="300" height="150">
               <text id="logoPhrase1" x="0" y="0" dx="30" dy="63" font-size="32" font-family="Verdana" fill="#4d4d4d">Women Drivers For Women Passengers</text>
             </svg>
           <div id="logoPhrase2Parent">
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="300" height="150"> 
-              <text id="logoPhrase2" x="0" y="0" dx="0" dy="33" font-size="10" font-family="Arial" font-weight="bold" fill="#ffffff">Women Drivers For Women Passengers</text>
-            </svg>
+            <button id="signUpBtn">Sign Up</button>
           </div>
   </div> <!-- topSectionDiv -->
     <div id="midSectionDiv">
@@ -71,7 +74,7 @@
        </svg>
 
            <div id="requestRideBtnDiv">
-            <button id="requestRideBtn" type="button" data-toggle="modal" data-target="#rideRequestFromHotelModal" onmouseout="doStyle(this,'out')" onmousedown="doStyle(this,'down')">Get a Ride</button>
+            <button id="requestRideBtn" type="button" data-toggle="modal" data-target="#rideRequestFromHotelModal" onmouseout="doStyle(this,'out')" onmousedown="doStyle(this,'down')">Sign In</button>
           </div>
 
 

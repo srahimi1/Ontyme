@@ -80,10 +80,10 @@ function positionSVGS() {
   var logoPhrase1 = document.getElementById("logoPhrase1");
   if (screenWidth < 768){
     centerSVG(logo, midScreen, 0, scaleX, scaleY);
-    logoPhrase2.setAttribute("font-size","15");
-    logoPhrase2.setAttribute("dy", "18");
+   // logoPhrase2.setAttribute("font-size","15");
+   // logoPhrase2.setAttribute("dy", "18");
     logoPhrase1.parentNode.style.display="none";
-    centerSVG(logoPhrase2, midScreen, 0, 1, 1); 
+   // centerSVG(logoPhrase2, midScreen, 0, 1, 1); 
     var rideSafely = document.getElementById("termsOfServiceParent").childNodes[1].childNodes[1];
     centerSVG(rideSafely, midScreen, 0, 1, 1);
     var car1 = document.getElementById("carGroup");
@@ -185,7 +185,7 @@ function buttonAnim(currentFrame, TotalFrames) {
     else {
       document.getElementById("requestRideBtn").style.width = btnWT + "px";
       document.getElementById("requestRideBtn").disabled = false;
-      document.getElementById("requestRideBtn").innerHTML = "Get a Ride";} }
+      document.getElementById("requestRideBtn").innerHTML = "Sign In";} }
 
 }
 
