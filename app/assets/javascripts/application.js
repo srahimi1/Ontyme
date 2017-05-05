@@ -58,49 +58,26 @@ function positionSVGS() {
   document.body.style.height = screenHeight + "px";
   screenWidth = parseInt(screenWidth);
   var midScreen = screenWidth / 2;
-  var scaleX, scaleY, shiftX = 0, shiftY = 0;
-  if (screenWidth < 401){
-    scaleX = 1.0;
-    scaleY = 1.0;
-  } 
-  else if (screenWidth < 768){
-    scaleX = 1.0;
-    scaleY = 1.0;
-  } 
-  else if (screenWidth < 992){
-    scaleX = 1.4;
-    scaleY = 1.4;
-  }
-  else if (screenWidth >= 1200){
-    scaleX = 1.5;
-    scaleY = 1.5;
-  }
+  var scaleX=1, scaleY=1, shiftX = 0, shiftY = 0;
   var logo = document.getElementById("entireLogo1");
   var logoPhrase2 = document.getElementById("logoPhrase2");
   var logoPhrase1 = document.getElementById("logoPhrase1");
   if (screenWidth < 768){
     var el = document.getElementById("logoPart1");
-    var newWidth = document.getElementById("entireLogo").getBoundingClientRect().width * .45;
+    var newWidth = document.getElementById("entireLogo").getBoundingClientRect().width * .42;
+    var newX = document.getElementById("entireLogo").getBoundingClientRect().width * .52;
+    var newY = document.getElementById("logoPart1").getBoundingClientRect().height - (document.getElementById("logoPhrase2").getBoundingClientRect().height/2);
+    console.log(newX+" "+newY);
     var oldWidth = el.getBoundingClientRect().width;
     var scale = newWidth/oldWidth;
     el.setAttribute("transform","scale("+scale+","+scale+")");
-    var left = document.getElementById("logoPart1").getBoundingClientRect().left;
-    var top = document.getElementById("logoPart1").getBoundingClientRect().top;
-    console.log(left+" "+scale);
-    left = (left-5)/scale;
-    console.log(left);
-    left = 0 - left;
-    console.log(left);
-    top = (top-5)/scale;
-    top = 0 - top;
-    el.setAttribute("transform","scale("+scale+","+scale+") translate("+left+","+top+")");
     el = document.getElementById("logoPart2");
-    newWidth = document.getElementById("entireLogo").getBoundingClientRect().width * .45;
+    newWidth = document.getElementById("entireLogo").getBoundingClientRect().width * .48;
     oldWidth = el.getBoundingClientRect().width;
     scale = newWidth/oldWidth;
-    var right = el.getBoundingClientRect().right;
-    left = newWidth - right - 5;
-    el.setAttribute("transform","scale("+scale+" "+scale+") translate("+left+")");
+    el.setAttribute("transform","scale("+scale+" "+scale+")");
+    document.getElementById("logoPhrase2").setAttribute("x",newX/scale);
+    document.getElementById("logoPhrase2").setAttribute("y",newY);
     //centerSVG(logo, midScreen, 0, scaleX, scaleY);
    // logoPhrase2.setAttribute("font-size","15");
    // logoPhrase2.setAttribute("dy", "18");
@@ -193,7 +170,7 @@ function buttonAnim(currentFrame, TotalFrames) {
       document.getElementById("requestRideBtn").style.height = height + "px";
       document.getElementById("requestRideBtn").style.visibility = "visible";
       currentFrame++;
-      buttonAnimID = setInterval(function() {buttonAnim(currentFrame,TotalFrames)}, 1000/TotalFrames);}
+      buttonAnimID = setInterval(function() {buttonAnim(currentFrame,TotalFrames)}, 500/TotalFrames);}
     else {
       document.getElementById("requestRideBtn").style.height = btnHT + "px";
       doBtnWT = 1;
@@ -203,7 +180,7 @@ function buttonAnim(currentFrame, TotalFrames) {
     if (width < btnWT) {
       document.getElementById("requestRideBtn").style.width = width + "px";
       currentFrame++;
-      buttonAnimID = setInterval(function() {buttonAnim(currentFrame,TotalFrames)}, 1000/TotalFrames);}
+      buttonAnimID = setInterval(function() {buttonAnim(currentFrame,TotalFrames)}, 800/TotalFrames);}
     else {
       document.getElementById("requestRideBtn").style.width = btnWT + "px";
       document.getElementById("requestRideBtn").disabled = false;
@@ -353,8 +330,8 @@ function animBox(box) {
     clearInterval(boxAnimID);
     box.width.baseVal.value = 104;
     box.height.baseVal.value = 70;
-    box.x.baseVal.value = 15;
-    box.y.baseVal.value = 15;
+    box.x.baseVal.value = 5;
+    box.y.baseVal.value = 5;
     document.getElementById("logoLetters").style.visibility = "visible";
     letterPaths[currentLetter].style.visibility = "visible";
     animLetter(letterPaths[currentLetter]);
