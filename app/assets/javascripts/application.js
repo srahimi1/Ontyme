@@ -63,19 +63,18 @@ function positionSVGS() {
   var logoPhrase2 = document.getElementById("logoPhrase2");
   var logoPhrase1 = document.getElementById("logoPhrase1");
   if (screenWidth < 768){
-    var el = document.getElementById("logoPart1");
+    var el1 = document.getElementById("logoPart1");
     var newWidth = document.getElementById("entireLogo").getBoundingClientRect().width * .42;
-    var newX = document.getElementById("entireLogo").getBoundingClientRect().width * .52;
-    var newY = document.getElementById("logoPart1").getBoundingClientRect().height - (document.getElementById("logoPhrase2").getBoundingClientRect().height/2);
-    console.log(newX+" "+newY);
-    var oldWidth = el.getBoundingClientRect().width;
+    var oldWidth = el1.getBoundingClientRect().width;
     var scale = newWidth/oldWidth;
-    el.setAttribute("transform","scale("+scale+","+scale+")");
-    el = document.getElementById("logoPart2");
+    el1.setAttribute("transform","scale("+scale+","+scale+")");
+    el2 = document.getElementById("logoPart2");
     newWidth = document.getElementById("entireLogo").getBoundingClientRect().width * .48;
-    oldWidth = el.getBoundingClientRect().width;
+    oldWidth = el2.getBoundingClientRect().width;
     scale = newWidth/oldWidth;
-    el.setAttribute("transform","scale("+scale+" "+scale+")");
+    el2.setAttribute("transform","scale("+scale+" "+scale+")");
+    var newX = document.getElementById("entireLogo").getBoundingClientRect().width * .52;
+    var newY = (el1.getBoundingClientRect().bottom - (2*logoPhrase2.getBoundingClientRect().height))/scale;
     document.getElementById("logoPhrase2").setAttribute("x",newX/scale);
     document.getElementById("logoPhrase2").setAttribute("y",newY);
     //centerSVG(logo, midScreen, 0, scaleX, scaleY);
