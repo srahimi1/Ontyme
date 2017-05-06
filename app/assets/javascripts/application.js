@@ -75,15 +75,12 @@ function positionSVGS() {
     el2.setAttribute("transform","scale("+scale+" "+scale+")");
     var newX = document.getElementById("entireLogo").getBoundingClientRect().width * .52;
     var newY = el1.getBoundingClientRect().bottom/scale;
-    document.getElementById("logoPhrase2").setAttribute("x",newX/scale-5);
-    document.getElementById("logoPhrase2").setAttribute("y",newY);
-    //centerSVG(logo, midScreen, 0, scaleX, scaleY);
-   // logoPhrase2.setAttribute("font-size","15");
-   // logoPhrase2.setAttribute("dy", "18");
+    logoPhrase2.setAttribute("x",newX/scale-10);
+    logoPhrase2.setAttribute("y",newY);
+    document.getElementById("logoPhrase2Parent").style.top = (el1.getBoundingClientRect().bottom+7) + "px";
     logoPhrase1.parentNode.style.display="none";
-   // centerSVG(logoPhrase2, midScreen, 0, 1, 1); 
-    var rideSafely = document.getElementById("termsOfServiceParent").childNodes[1].childNodes[1];
-    centerSVG(rideSafely, midScreen, 0, 1, 1);
+    var termsOfServiceParent = document.getElementById("termsOfServiceParent").childNodes[1].childNodes[1];
+    centerSVG(termsOfServiceParent, midScreen, 0, 1, 1);
     var car1 = document.getElementById("carGroup");
     centerSVG(car1, midScreen, 0, .55, .55);
   }

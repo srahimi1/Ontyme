@@ -26,13 +26,13 @@ html {
 }
 
 #logoPhrase2Parent {
+    position: absolute;
     width: 100%;
     background-color: #4f554f;    /* #66aa88;   #00aa77; */
     background: -webkit-linear-gradient(#4f554f,#333333); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(#4f554f, #333333); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(#4f554f,#333333); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#4f554f, #333333); /* Standard syntax */
-    margin-top: -10px;
     color: white;
     text-align: center;
     padding: 5px;
@@ -52,10 +52,10 @@ html {
     color: white;
     text-align: center;
     display: block;
-    font-size: 3em;
+    font-size: 2em;
     margin: auto;
-    width: 80%;
-    padding: 10px;
+    width: 75%;
+    padding: 7px;
     border-radius: 7px;
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
@@ -67,10 +67,10 @@ html {
     color: white;
     text-align: center;
     display: block;
-    font-size: 3em;
+    font-size: 2em;
     margin: auto;
-    width: 80%;
-    padding: 10px;
+    width: 75%;
+    padding: 7px;
     border-radius: 7px;
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
