@@ -180,7 +180,7 @@ function buttonAnim(currentFrame, TotalFrames) {
     else {
       document.getElementById("requestRideBtn").style.width = btnWT + "px";
       document.getElementById("requestRideBtn").disabled = false;
-      document.getElementById("requestRideBtn").innerHTML = "Sign In";} }
+      document.getElementById("requestRideBtn").innerHTML = "Get a Ride";} }
 
 }
 
