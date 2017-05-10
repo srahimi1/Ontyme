@@ -1,17 +1,37 @@
-<div class="modal fade" id="rideRequestModal" tabindex="-1" role="dialog" aria-labelledby="rideRequestFromHotelModalLabel" aria-hidden="true">
+<div class="modal fade" id="rideRequestModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header ontyme" id="icon-modal">
-        <h4 class="modal-title ontyme-title" id="rideRequestFromHotelModalLabel">Request a Ride</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" id="close-button">&times;</span>
-        </button>
+    <div class="modal-content" id="hidMod">
+
+    <div id="slider-main">
+      <div class="slider-content">
+      <div class="modal-header ride-request-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title ontyme-title" id="myModalLabel1">Where are you going?</h4>
       </div>
-      <div class="modal-body">
-        <%= render 'forms/ride-from-hotel-form' %>
+      <div class="modal-body" id="here1">
+              <div class="shift-div" id="div1">This is</div>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="sliderNextBtn" onclick="void(0)">Next</button>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-block btn-lg btn-danger" data-dismiss="modal">Exit</button>
+      </div> <!-- end div id="slider-content" -->
+
+      <div class="slider-content" id="content2">
+      <div class="modal-header ride-request-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title ontyme-title" id="myModalLabel2">Where are you going to be picked up from?</h4>
+      </div>
+      <div class="modal-body" id="here2">
+              <div class="shift-div" id="div1">A Test</div>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="sliderBackBtn" onclick="slideLeft(0,0,100)">Back</button>
+      </div>
+      </div> <!-- end div id="slider-content" -->
+      
+      </div> <!-- end div id="slider-main" -->
+
+
+      <div class="modal-footer ride-request-modal-footer">
+
       </div>
     </div>
   </div>

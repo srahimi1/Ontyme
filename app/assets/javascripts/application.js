@@ -19,7 +19,7 @@
 
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
-currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0;
+currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim;
 
 $(window).load(function() {
     document.getElementById("mainContainer").style.display = "block";
@@ -37,19 +37,60 @@ $(window).load(function() {
     var top = document.getElementById("topSectionDiv");
     var bottom = document.getElementById("termsOfServiceParent");
     div.style.marginTop = ((bottom.getBoundingClientRect().top - top.getBoundingClientRect().bottom - div.getBoundingClientRect().height)/2) + "px";
+
+   $("#rideRequestModal").on('shown.bs.modal', function() {
+      var width = document.getElementById("rideRequestModal").getBoundingClientRect().width;
+      var siblings = document.getElementsByClassName("slider-content");
+      for (var i=0; i< siblings.length; i++) siblings[i].style.width = width + "px";
+      sliderLeftDim = document.getElementsByClassName("slider-content")[1].getBoundingClientRect().left - document.getElementsByClassName("slider-content")[0].getBoundingClientRect().left;
+      document.getElementById("sliderNextBtn").onclick = function() {slideLeft(sliderLeftDim,0,100, 1)};
+      document.getElementById("sliderBackBtn").onclick = function() {slideLeft(sliderLeftDim,0,100, 0)};
+    });
+
+
+
 });
+
+
+
 
 $(document).on('turbolinks:load', function() {
   init();
 });
 
-$(document).on('click', "#reloada", function(e) {
-});
 
 function doStyle(ele,action) {
   if (action == "out") ele.id = "requestRideBtn";
   else ele.id = "requestRideBtnDown";
 }
+
+function slideLeft(value, currentFrame, TotalFrames, dir) {
+  clearInterval(buttonAnimID);
+  var item = document.getElementById("slider-main");
+  var returnValue = getAnimValue(value, currentFrame, TotalFrames);
+  
+  if (dir == 1) {  
+    var val1 = 0 - returnValue;
+    item.style.marginLeft = val1 + "px";
+    currentFrame++;
+    if (returnValue < (value-10) ) buttonAnimID = setInterval(function() {slideLeft(value, currentFrame, TotalFrames, dir)}, 500/TotalFrames);
+    else {
+      item.style.marginLeft = (0 - sliderLeftDim  ) + "px";
+    }}
+
+  if (dir == 0) {  
+    var val1 = returnValue;
+    item.style.marginLeft = (0-sliderLeftDim) + val1 + "px";
+    currentFrame++;
+    if (returnValue < (value-10) ) buttonAnimID = setInterval(function() {slideLeft(value, currentFrame, TotalFrames, dir)}, 500/TotalFrames);
+    else {
+      item.style.marginLeft = (0-sliderLeftDim) + value + "px";
+    }}
+
+
+
+}
+
 
 function positionSVGS() {
   var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;

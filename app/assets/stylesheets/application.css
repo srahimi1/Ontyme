@@ -14,6 +14,44 @@
  *= require_self
  */
 
-div.ride-request-modal {
-	background-color: #00aa77;
+div.ride-request-modal-header {
+    background: #00aa77; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#00cc7e, #00aa77); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#00cc7e, #00aa77); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#00cc7e, #00aa77); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#00cc7e, #00aa77); /* Standard syntax */
+	color: white;
+}
+
+.ride-request-modal-footer {
+    background-color: #4f554f;    /* #66aa88;   #00aa77; */
+    background: -webkit-linear-gradient(#4f554f,#333333); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#4f554f, #333333); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#4f554f,#333333); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#4f554f, #333333); /* Standard syntax */
+}
+
+.shift-div {
+	display: inline-block;
+	width: 100%;
+}
+
+#slider-main {
+	overflow: hidden;
+	width: 3000px;
+}
+
+.slider-content {
+	width: 50%;
+	overflow: hidden;
+	display: inline-block;
+}
+
+#myModalLabel1, #myModalLabel2	{
+	overflow: hidden;
+}
+
+
+#hidMod {
+	overflow: hidden;
 }
