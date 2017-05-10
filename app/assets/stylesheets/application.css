@@ -55,3 +55,7 @@ div.ride-request-modal-header {
 #hidMod {
 	overflow: hidden;
 }
+
+.ride-request-modal-header {
+	justify-content: none;
+}
