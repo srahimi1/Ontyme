@@ -41,6 +41,7 @@ $(window).load(function() {
 
    $("#rideRequestModal").on('show.bs.modal', function() {
       document.getElementById("slider-main").style.visibility = "hidden";
+      document.getElementById("destinationField").value = "";
     });
 
 
