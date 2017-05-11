@@ -19,9 +19,10 @@
 
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
-currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim;
+currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates, findLatLngCalled = 0;
 
 $(window).load(function() {
+    findLatLng(1,1);
     document.getElementById("mainContainer").style.display = "block";
     document.getElementById("requestRideBtn").style.visibility = "hidden";
     var button = document.getElementById("requestRideBtn");
@@ -38,18 +39,59 @@ $(window).load(function() {
     var bottom = document.getElementById("termsOfServiceParent");
     div.style.marginTop = ((bottom.getBoundingClientRect().top - top.getBoundingClientRect().bottom - div.getBoundingClientRect().height)/2) + "px";
 
+   $("#rideRequestModal").on('show.bs.modal', function() {
+      document.getElementById("slider-main").style.visibility = "hidden";
+    });
+
+
    $("#rideRequestModal").on('shown.bs.modal', function() {
       var width = document.getElementById("rideRequestModal").getBoundingClientRect().width;
       var siblings = document.getElementsByClassName("slider-content");
+      document.getElementById("slider-main").style.marginLeft = 0 + "px";
       for (var i=0; i< siblings.length; i++) siblings[i].style.width = width + "px";
       sliderLeftDim = document.getElementsByClassName("slider-content")[1].getBoundingClientRect().left - document.getElementsByClassName("slider-content")[0].getBoundingClientRect().left;
       document.getElementById("sliderNextBtn").onclick = function() {slideLeft(sliderLeftDim,0,100, 1)};
       document.getElementById("sliderBackBtn").onclick = function() {slideLeft(sliderLeftDim,0,100, 0)};
+      document.getElementById("slider-main").style.visibility = "visible";
     });
-
-
-
 });
+
+
+function searchForAddress() {
+  var input = document.getElementById("destinationField").value;
+  var ajaxRequest = new XMLHttpRequest();
+  while (!coordinates && !findLatLngCalled) {
+    findLatLng(1,1);
+  }
+
+  while (!coordinates && findLatLngCalled) {
+    console.log("waiting...");
+  }
+
+  //var url = "https://www.mapquestapi.com/search/v3/prediction?collection=address&limit=10&q=23%20Verm&location=1%2C1&key=rKMTmlr5sRG1k5KKm6peLS9hYRgM966u"
+  var url = "users/getaddress?val="+encodeURIComponent(input)+"&longlat="+encodeURIComponent(coordinates.longitude+","+coordinates.latitude);
+  console.log(url);
+  ajaxRequest.onreadystatechange = function() {
+      if(this.readyState == 4 && this.status == 200) {
+            var res = JSON.parse(ajaxRequest.responseText);
+            displayResults(res.results);
+      } // end this.readyState ...
+    } // end onreadystatechange
+    ajaxRequest.open("GET", url, true);
+    ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
+    ajaxRequest.send();
+}
+
+
+function displayResults(results) {
+  var contentArea =  document.getElementById("listOfAddresses");
+  var html = "<p>&nbsp</p>";
+  for (var i=0; i< results.length; i++) {
+    html += "<p>"+results[i].displayString+"</p>"
+  }
+  contentArea.innerHTML = html;
+}
+
 
 
 
@@ -97,7 +139,7 @@ function positionSVGS() {
   var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
   screenHeight = parseInt(screenHeight);
   document.body.style.height = screenHeight + "px";
-  screenWidth = parseInt(screenWidth);
+  screenWidth = parseInt(screenWidth); 
   var midScreen = screenWidth / 2;
   var scaleX=1, scaleY=1, shiftX = 0, shiftY = 0;
   var logo = document.getElementById("entireLogo1");
@@ -418,16 +460,22 @@ function geocodeLatLng(geocoder,latlng,infowindow) {
 
 
 function findLatLng(geocoder,infowindow) {
+    findLatLngCalled = 1;
     if(navigator.geolocation) {
-       navigator.geolocation.getCurrentPosition(function(position){
-         geocodeLatLng(geocoder,position,infowindow);
-       }, geolocateError, {enableHighAccuracy: true});
+      navigator.geolocation.getCurrentPosition(function(position){
+        coordinates = position.coords;
+        console.log(coordinates);
+        // geocodeLatLng(geocoder,position,infowindow);
+      }, geolocateError, {enableHighAccuracy: true});
     }
-    else
+    else {
+      findLatLngCalled = 0;
       alert("Browser does not support geolocating");
+    }
 } // end FindLocation()
 
 function geolocateError(error) {
+  findLatLngCalled = 0;
   if(error.code == 1) {
     $('#locationRequestModal').modal('toggle');
     //alert("You must allow AirportRun access to your location for the site to operate, or, if you don't want to use the site, close this browser window");

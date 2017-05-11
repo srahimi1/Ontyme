@@ -8,7 +8,9 @@
                 <h4 class="modal-title ontyme-title" id="myModalLabel1">Ride Request - Your Destination</h4>
       </div>
       <div class="modal-body" id="here1">
-              <div class="shift-div" id="div1">Where are you going?</div>
+        <div class="shift-div" id="div1">Where are you going?</div>
+        <input id="destinationField" type="text" size="50" onkeyup="searchForAddress()">
+        <div id="listOfAddresses">&nbsp</div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="sliderNextBtn" onclick="void(0)">Next</button>
       </div>
