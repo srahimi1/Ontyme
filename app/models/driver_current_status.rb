@@ -1,0 +1,2 @@
+class DriverCurrentStatus < ApplicationRecord
+end

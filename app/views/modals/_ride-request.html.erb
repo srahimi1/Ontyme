@@ -10,7 +10,7 @@
       <div class="modal-body" id="here1">
         <div class="shift-div" id="div1">Where are you going?</div>
         <input id="destinationField" type="text" size="50" onkeyup="searchForAddress()">
-        <div id="listOfAddresses">&nbsp</div>
+        <div id="listOfAddresses"><p>&nbsp;</p></div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="sliderNextBtn" onclick="void(0)">Next</button>
       </div>
@@ -21,7 +21,10 @@
       <h4 class="modal-title ontyme-title" id="myModalLabel2">Your Pickup Location</h4>
       </div>
       <div class="modal-body" id="here2">
-              <div class="shift-div" id="div1">Where are we picking you up from?</div>
+        <div class="shift-div" id="div1">Where are we picking you up from?</div>
+        <div onclick="findMe()">Find Me</div>
+        <p>-- or --</p>
+        <form_for 
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="sliderBackBtn" onclick="void(0)">Back</button>
       </div>

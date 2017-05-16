@@ -19,7 +19,7 @@
 
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
-currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates, findLatLngCalled = 0;
+currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates, findLatLngCalled = 0, addressList;
 
 $(window).load(function() {
     findLatLng(1,1);
@@ -42,7 +42,7 @@ $(window).load(function() {
    $("#rideRequestModal").on('show.bs.modal', function() {
       document.getElementById("slider-main").style.visibility = "hidden";
       document.getElementById("destinationField").value = "";
-      document.getElementById("listOfAddresses").innerHTML = "";
+      document.getElementById("listOfAddresses").innerHTML = "<p>&nbsp;</p>";
     });
 
 
@@ -61,6 +61,7 @@ $(window).load(function() {
 
 function searchForAddress() {
   var input = document.getElementById("destinationField").value;
+  if (input.length >1) {
   var ajaxRequest = new XMLHttpRequest();
   while (!coordinates && !findLatLngCalled) {
     findLatLng(1,1);
@@ -72,30 +73,39 @@ function searchForAddress() {
 
   //var url = "https://www.mapquestapi.com/search/v3/prediction?collection=address&limit=10&q=23%20Verm&location=1%2C1&key=rKMTmlr5sRG1k5KKm6peLS9hYRgM966u"
   var url = "users/getaddress?val="+encodeURIComponent(input)+"&longlat="+encodeURIComponent(coordinates.longitude+","+coordinates.latitude);
-  console.log(url);
   ajaxRequest.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
             var res = JSON.parse(ajaxRequest.responseText);
-            displayResults(res.results);
+            addressList = res.results;
+            displayResults(addressList);
       } // end this.readyState ...
     } // end onreadystatechange
     ajaxRequest.open("GET", url, true);
     ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
     ajaxRequest.send();
-}
+  } // end if (input.legnth > 1)
+  else document.getElementById("listOfAddresses").innerHTML = "<p>&nbsp;</p>";
 
+}
 
 function displayResults(results) {
   var contentArea =  document.getElementById("listOfAddresses");
-  var html = "<p>&nbsp</p>";
-  for (var i=0; i< results.length; i++) {
-    html += "<p>"+results[i].displayString+"</p>"
-  }
+  var html = "<p>&nbsp;</p>";
   contentArea.innerHTML = html;
+  for (var i=0; i< results.length; i++) {
+    html += "<p class='address-list'><a class='address-list-a' href='javascript:void(0)' onclick='selectAddress(this)' id='"+i+"'>"+results[i].displayString+"</a><input type='hidden' id='"+results[i].id.split("address:")[1]+"' value='"+results[i].slug+"'></p>"
+  }
+  contentArea.innerHTML = html + "<p>&nbsp;</p>";
 }
 
 
-
+function selectAddress(add) {
+  addObj = addressList[parseInt(add.id)].place.properties;
+  var contentArea =  document.getElementById("listOfAddresses");
+  var html = "<p>&nbsp;</p><p>"+addObj.street+"</p><p>"+addObj.city+", "+addObj.stateCode+" "+addObj.postalCode+"</p>";
+  contentArea.innerHTML = html;
+  document.getElementById("destinationField").style.display = "none";
+}
 
 
 $(document).on('turbolinks:load', function() {

@@ -1,0 +1,3 @@
+class TripRequest < ApplicationRecord
+	belongs_to :user
+end

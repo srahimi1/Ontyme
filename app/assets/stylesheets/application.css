@@ -42,7 +42,6 @@ div.ride-request-modal-header {
 }
 
 .slider-content {
-	width: 50%;
 	overflow: hidden;
 	display: inline-block;
 }
@@ -58,4 +57,22 @@ div.ride-request-modal-header {
 
 .ride-request-modal-header {
 	justify-content: none;
+}
+
+.address-list {
+	border-bottom: 1px solid lightgray;
+	transition: font-size 0.2s;
+	-webkit-transition: font-size 0.2s;
+	font-size: 1em;
+	color: white;
+}
+
+.address-list:hover {
+	background-color: darkblue;
+	color: white;
+	font-size: 1.2em;
+}
+
+.address-list-a:hover {
+	color: white;
 }
