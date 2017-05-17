@@ -16179,3 +16179,695 @@ puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
   [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
   [1m[35m (6167.3ms)[0m  [1m[35mDROP DATABASE IF EXISTS "db/development_pg"[0m
   [1m[35m (5219.8ms)[0m  [1m[35mDROP DATABASE IF EXISTS "db/test_pg"[0m
+  [1m[35m (296.9ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)[0m
+  [1m[35m (250.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (187.5ms)[0m  [1m[34mSELECT pg_try_advisory_lock(6912912541936343250);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (93.8ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateUsers (20161125174417)
+  [1m[35m (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (265.6ms)[0m  [1m[35mCREATE TABLE "users" ("id" serial primary key, "user_id" character varying, "first_name" character varying, "middle_name" character varying, "last_name" character varying, "street" character varying, "city" character varying, "state" character varying, "zip" character varying, "telephone_number" character varying, "email_address_1" character varying, "email_address_2" character varying, "email_address_3" character varying, "id_pic_url" character varying, "additional_id_pic_url" character varying, "nickname" character varying, "icon" text, "status" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (62.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20161125174417"]]
+  [1m[35m (78.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateDrivers (20170227164224)
+  [1m[35m (15.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (312.5ms)[0m  [1m[35mCREATE TABLE "drivers" ("id" serial primary key, "driver_id" character varying, "first_name" character varying, "middle_name" character varying, "last_name" character varying, "street" character varying, "city" character varying, "state" character varying, "zip" character varying, "telephone_number" character varying, "dob" character varying, "ssn" character varying, "driver_pic_url" character varying, "driver_license_pic_url" character varying, "ss_card_pic_url" character varying, "additional_id_pic_url" character varying, "status" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (82.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170227164224"]]
+  [1m[35m (78.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateTripRequests (20170516202722)
+  [1m[35m (93.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (375.0ms)[0m  [1m[35mCREATE TABLE "trip_requests" ("id" serial primary key, "trip_request_id" text, "user_id" integer, "map_provider" character varying, "map_provider_url" character varying, "destination_street" character varying, "destination_city" character varying, "destination_state" character varying, "destination_zipcode" character varying, "destination_longitude" character varying, "destination_latitude" character varying, "map_provider_destination_id" character varying, "map_provider_destination_slug" character varying, "pickup_location_street" character varying, "pickup_location_city" character varying, "pickup_location_state" character varying, "pickup_location_zipcode" character varying, "pickup_location_longitude" character varying, "pickup_location_latitude" character varying, "map_provider_pickup_location_id" character varying, "map_provider_pickup_location_slug" character varying, "status" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_faa1ce4bdf"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (234.4ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_trip_requests_on_user_id" ON "trip_requests"  ("user_id")[0m
+  [1m[35mSQL (140.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170516202722"]]
+  [1m[35m (93.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateActiveTrips (20170516210521)
+  [1m[35m (93.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (312.5ms)[0m  [1m[35mCREATE TABLE "active_trips" ("id" serial primary key, "active_trip_id" text, "user_id" integer, "driver_id" integer, "trip_request_id" integer, "map_provider" character varying, "map_provider_url" character varying, "destination_street" character varying, "destination_city" character varying, "destination_state" character varying, "destination_zipcode" character varying, "destination_longitude" character varying, "destination_latitude" character varying, "map_provider_destination_id" character varying, "map_provider_destination_slug" character varying, "trip_start_time" timestamp, "driver_connect_time" timestamp, "trip_end_time" timestamp, "route_data" text, "status" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_02f0128bc2"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_a17aad6414"
+FOREIGN KEY ("driver_id")
+  REFERENCES "drivers" ("id")
+, CONSTRAINT "fk_rails_14d34a208c"
+FOREIGN KEY ("trip_request_id")
+  REFERENCES "trip_requests" ("id")
+)[0m
+  [1m[35m (140.6ms)[0m  [1m[35mCREATE  INDEX  "index_active_trips_on_user_id" ON "active_trips"  ("user_id")[0m
+  [1m[35m (78.1ms)[0m  [1m[35mCREATE  INDEX  "index_active_trips_on_driver_id" ON "active_trips"  ("driver_id")[0m
+  [1m[35m (62.5ms)[0m  [1m[35mCREATE  INDEX  "index_active_trips_on_trip_request_id" ON "active_trips"  ("trip_request_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170516210521"]]
+  [1m[35m (15.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateCompletedTrips (20170516212937)
+  [1m[35m (15.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (234.4ms)[0m  [1m[35mCREATE TABLE "completed_trips" ("id" serial primary key, "completed_trip_id" text, "user_id" integer, "driver_id" integer, "trip_request_id" integer, "active_trip_id" integer, "map_provider" character varying, "map_provider_url" character varying, "destination_street" character varying, "destination_city" character varying, "destination_state" character varying, "destination_zipcode" character varying, "destination_longitude" character varying, "destination_latitude" character varying, "map_provider_destination_id" character varying, "map_provider_destination_slug" character varying, "completed_trip_end_time" timestamp, "status" character varying, "total_miles" float, "payment_status" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_f7d3c9a182"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_78b3891f06"
+FOREIGN KEY ("driver_id")
+  REFERENCES "drivers" ("id")
+, CONSTRAINT "fk_rails_a5e573ff46"
+FOREIGN KEY ("trip_request_id")
+  REFERENCES "trip_requests" ("id")
+, CONSTRAINT "fk_rails_7b3a63fd7b"
+FOREIGN KEY ("active_trip_id")
+  REFERENCES "active_trips" ("id")
+)[0m
+  [1m[35m (62.5ms)[0m  [1m[35mCREATE  INDEX  "index_completed_trips_on_user_id" ON "completed_trips"  ("user_id")[0m
+  [1m[35m (3906.4ms)[0m  [1m[35mCREATE  INDEX  "index_completed_trips_on_driver_id" ON "completed_trips"  ("driver_id")[0m
+  [1m[35m (328.1ms)[0m  [1m[35mCREATE  INDEX  "index_completed_trips_on_trip_request_id" ON "completed_trips"  ("trip_request_id")[0m
+  [1m[35m (206.3ms)[0m  [1m[35mCREATE  INDEX  "index_completed_trips_on_active_trip_id" ON "completed_trips"  ("active_trip_id")[0m
+  [1m[35mSQL (93.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170516212937"]]
+  [1m[35m (78.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateDriverCurrentStatuses (20170516221036)
+  [1m[35m (78.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (296.9ms)[0m  [1m[35mCREATE TABLE "driver_current_statuses" ("id" serial primary key, "driver_id" integer, "status" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_46fe95eff8"
+FOREIGN KEY ("driver_id")
+  REFERENCES "drivers" ("id")
+)[0m
+  [1m[35m (218.8ms)[0m  [1m[35mCREATE  INDEX  "index_driver_current_statuses_on_driver_id" ON "driver_current_statuses"  ("driver_id")[0m
+  [1m[35mSQL (171.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170516221036"]]
+  [1m[35m (125.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreatePaymentMethods (20170516222312)
+  [1m[35m (15.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (218.8ms)[0m  [1m[35mCREATE TABLE "payment_methods" ("id" serial primary key, "user_id" integer, "name" character varying, "description" character varying, "method" character varying, "account_number" character varying, "routing_number" character varying, "expiration_date" character varying, "cv" character varying, "method_pic_url" character varying, "user_name_on_method" character varying, "billing_address_street" character varying, "billing_address_city" character varying, "billing_address_state" character varying, "billing_address_zip" character varying, "billing_address_country" character varying, "status" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_e13d4c515f"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (46.9ms)[0m  [1m[35mCREATE  INDEX  "index_payment_methods_on_user_id" ON "payment_methods"  ("user_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170516222312"]]
+  [1m[35m (0.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateReceivePaymentMethods (20170516223337)
+  [1m[35m (15.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (218.8ms)[0m  [1m[35mCREATE TABLE "receive_payment_methods" ("id" serial primary key, "driver_id" integer, "name" character varying, "description" character varying, "method" character varying, "account_number" character varying, "routing_number" character varying, "expiration_date" character varying, "cv" character varying, "method_pic_url" character varying, "user_name_on_method" character varying, "billing_address_street" character varying, "billing_address_city" character varying, "billing_address_state" character varying, "billing_address_zip" character varying, "billing_address_country" character varying, "status" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_f410699564"
+FOREIGN KEY ("driver_id")
+  REFERENCES "drivers" ("id")
+)[0m
+  [1m[35m (46.9ms)[0m  [1m[35mCREATE  INDEX  "index_receive_payment_methods_on_driver_id" ON "receive_payment_methods"  ("driver_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170516223337"]]
+  [1m[35m (0.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (7.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", 2017-05-16 23:06:00 UTC], ["updated_at", 2017-05-16 23:06:00 UTC]]
+  [1m[35m (8.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT pg_advisory_unlock(6912912541936343250)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Started GET "/" for ::1 at 2017-05-16 19:12:25 -0400
+  [1m[36mActiveRecord::SchemaMigration Load (104.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+  Rendered welcome/_nav-test.html.erb (0.0ms)
+  Rendered welcome/_main-section.html.erb (0.0ms)
+  Rendered forms/_sign-up-form.html.erb (324.1ms)
+  Rendered welcome/_sign-up-section.html.erb (500.2ms)
+  Rendered welcome/index.html.erb within layouts/application (1496.5ms)
+Completed 500 Internal Server Error in 7811ms (ActiveRecord: 220.1ms)
+
+
+  
+ActionView::Template::Error (undefined method `hotel_name' for #<User:0x4d2b7e0>):
+    1: <div class="sign-up" id="sign-up-form">
+    2:   <%= form_for :user, :url => users_path, :remote => true, html: { :id => 'create_new_user' } do |f| %>
+    3:     <div class="form-group">
+    4:     <%= f.select(:hotel_name, options_for_select([["Select Your Hotel",""],["Marriott","Marriott"],["Sheraton","Sheraton"],["Hilton","Hilton"],["Hyatt Regency","Hyatt Regency"],["Crowne Plaza","Crowne Plaza"],["Holiday Inn","Holiday Inn"]]), {}, class: "custom-select form-control") %>
+    5:     </div>
+    6:     <div class="form-group position-relative">
+    7:       <%= f.label :nickname, "Choose A Nickname", class: "control-label-hide", id: "nickNameLabel" %>
+  
+app/views/forms/_sign-up-form.html.erb:4:in `block in _app_views_forms__sign_up_form_html_erb__450308162_42259320'
+app/views/forms/_sign-up-form.html.erb:2:in `_app_views_forms__sign_up_form_html_erb__450308162_42259320'
+app/views/welcome/_sign-up-section.html.erb:6:in `_app_views_welcome__sign_up_section_html_erb__603162628_42927912'
+app/views/welcome/index.html.erb:12:in `_app_views_welcome_index_html_erb___1050846672_44064696'
+  Rendering d:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout
+  Rendering d:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered d:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (116.0ms)
+  Rendering d:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered d:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (48.0ms)
+  Rendering d:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered d:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.0ms)
+  Rendered d:/RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (11307.6ms)
+Started GET "/" for ::1 at 2017-05-16 19:15:54 -0400
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+  Rendered welcome/index.html.erb within layouts/application (0.0ms)
+Completed 500 Internal Server Error in 840ms (ActiveRecord: 0.0ms)
+
+
+  
+SyntaxError (d:/sites/ontyme/app/views/welcome/index.html.erb:13: syntax error, unexpected '<'
+  </section> -->
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:17: unknown regexp options - crrt
+end pattern with unmatched parenthesis: /section> -->
+
+    <!-- Current Users Section -->
+  <section id="current-users-page" class="current-users-section">
+    '.freeze;@output_buffer.append=( render 'welcome/
+d:/sites/ontyme/app/views/welcome/index.html.erb:17: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...'welcome/current-users-section' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:18: syntax error, unexpected '<', expecting ')'
+  </section>
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:22: unknown regexp options - faq
+end pattern with unmatched parenthesis: /section>
+
+    <!--FAQ Section -->
+  <section id="contact" class="contact-section">
+    '.freeze;@output_buffer.append=( render 'welcome/
+d:/sites/ontyme/app/views/welcome/index.html.erb:22: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...=( render 'welcome/faq-section' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:23: syntax error, unexpected '<', expecting ')'
+  </section>
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:26: unknown regexp options - rd
+end pattern with unmatched parenthesis: /section>
+
+  <!-- Modals -->
+'.freeze;@output_buffer.append=( render 'modals/i
+d:/sites/ontyme/app/views/welcome/index.html.erb:26: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...=( render 'modals/ride-request' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:27: syntax error, unexpected tIDENTIFIER, expecting ')'
+..._buffer.append=( render 'modals/allow-location-request' );@o...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:27: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...'modals/allow-location-request' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected '<', expecting ')'
+<!-- End of Modals -->
+ ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+<!-- End of Modals -->
+           ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected '\n', expecting keyword_do_LAMBDA or tLAMBEG
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+....googleapis.com/maps/api/js?key=AIzaSyBR4VVlIs3tREWzRrxd0j6B...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...6BquoEU-yUFGg&callback=initMap">
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: unterminated string meets end of file):
+  
+app/views/welcome/index.html.erb:13: syntax error, unexpected '<'
+app/views/welcome/index.html.erb:17: unknown regexp options - crrt
+app/views/welcome/index.html.erb:17: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:18: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:22: unknown regexp options - faq
+app/views/welcome/index.html.erb:22: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:23: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:26: unknown regexp options - rd
+app/views/welcome/index.html.erb:26: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:27: syntax error, unexpected tIDENTIFIER, expecting ')'
+app/views/welcome/index.html.erb:27: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:28: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:28: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:28: syntax error, unexpected '\n', expecting keyword_do_LAMBDA or tLAMBEG
+app/views/welcome/index.html.erb:35: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:35: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:35: unterminated string meets end of file
+Started GET "/" for ::1 at 2017-05-16 19:15:57 -0400
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+  Rendered welcome/index.html.erb within layouts/application (4.0ms)
+Completed 500 Internal Server Error in 1080ms (ActiveRecord: 0.0ms)
+
+
+  
+SyntaxError (d:/sites/ontyme/app/views/welcome/index.html.erb:13: syntax error, unexpected '<'
+  </section> -->
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:17: unknown regexp options - crrt
+end pattern with unmatched parenthesis: /section> -->
+
+    <!-- Current Users Section -->
+  <section id="current-users-page" class="current-users-section">
+    '.freeze;@output_buffer.append=( render 'welcome/
+d:/sites/ontyme/app/views/welcome/index.html.erb:17: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...'welcome/current-users-section' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:18: syntax error, unexpected '<', expecting ')'
+  </section>
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:22: unknown regexp options - faq
+end pattern with unmatched parenthesis: /section>
+
+    <!--FAQ Section -->
+  <section id="contact" class="contact-section">
+    '.freeze;@output_buffer.append=( render 'welcome/
+d:/sites/ontyme/app/views/welcome/index.html.erb:22: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...=( render 'welcome/faq-section' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:23: syntax error, unexpected '<', expecting ')'
+  </section>
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:26: unknown regexp options - rd
+end pattern with unmatched parenthesis: /section>
+
+  <!-- Modals -->
+'.freeze;@output_buffer.append=( render 'modals/i
+d:/sites/ontyme/app/views/welcome/index.html.erb:26: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...=( render 'modals/ride-request' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:27: syntax error, unexpected tIDENTIFIER, expecting ')'
+..._buffer.append=( render 'modals/allow-location-request' );@o...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:27: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...'modals/allow-location-request' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected '<', expecting ')'
+<!-- End of Modals -->
+ ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+<!-- End of Modals -->
+           ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected '\n', expecting keyword_do_LAMBDA or tLAMBEG
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+....googleapis.com/maps/api/js?key=AIzaSyBR4VVlIs3tREWzRrxd0j6B...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...6BquoEU-yUFGg&callback=initMap">
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: unterminated string meets end of file):
+  
+app/views/welcome/index.html.erb:13: syntax error, unexpected '<'
+app/views/welcome/index.html.erb:17: unknown regexp options - crrt
+app/views/welcome/index.html.erb:17: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:18: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:22: unknown regexp options - faq
+app/views/welcome/index.html.erb:22: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:23: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:26: unknown regexp options - rd
+app/views/welcome/index.html.erb:26: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:27: syntax error, unexpected tIDENTIFIER, expecting ')'
+app/views/welcome/index.html.erb:27: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:28: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:28: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:28: syntax error, unexpected '\n', expecting keyword_do_LAMBDA or tLAMBEG
+app/views/welcome/index.html.erb:35: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:35: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:35: unterminated string meets end of file
+Started GET "/" for ::1 at 2017-05-16 19:17:29 -0400
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+  Rendered welcome/index.html.erb within layouts/application (0.0ms)
+Completed 500 Internal Server Error in 708ms (ActiveRecord: 0.0ms)
+
+
+  
+SyntaxError (d:/sites/ontyme/app/views/welcome/index.html.erb:13: syntax error, unexpected '<'
+  </section> -->
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:17: unknown regexp options - crrt
+end pattern with unmatched parenthesis: /section> -->
+
+    <!-- Current Users Section -->
+  <section id="current-users-page" class="current-users-section">
+    '.freeze;@output_buffer.append=( render 'welcome/
+d:/sites/ontyme/app/views/welcome/index.html.erb:17: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...'welcome/current-users-section' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:18: syntax error, unexpected '<', expecting ')'
+  </section>
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:22: unknown regexp options - faq
+end pattern with unmatched parenthesis: /section>
+
+    <!--FAQ Section -->
+  <section id="contact" class="contact-section">
+    '.freeze;@output_buffer.append=( render 'welcome/
+d:/sites/ontyme/app/views/welcome/index.html.erb:22: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...=( render 'welcome/faq-section' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:23: syntax error, unexpected '<', expecting ')'
+  </section>
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:26: unknown regexp options - rd
+end pattern with unmatched parenthesis: /section>
+
+  <!-- Modals -->
+'.freeze;@output_buffer.append=( render 'modals/i
+d:/sites/ontyme/app/views/welcome/index.html.erb:26: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...=( render 'modals/ride-request' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:27: syntax error, unexpected tIDENTIFIER, expecting ')'
+..._buffer.append=( render 'modals/allow-location-request' );@o...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:27: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...'modals/allow-location-request' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected '<', expecting ')'
+<!-- End of Modals -->
+ ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+<!-- End of Modals -->
+           ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected '\n', expecting keyword_do_LAMBDA or tLAMBEG
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+....googleapis.com/maps/api/js?key=AIzaSyBR4VVlIs3tREWzRrxd0j6B...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...6BquoEU-yUFGg&callback=initMap">
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: unterminated string meets end of file):
+  
+app/views/welcome/index.html.erb:13: syntax error, unexpected '<'
+app/views/welcome/index.html.erb:17: unknown regexp options - crrt
+app/views/welcome/index.html.erb:17: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:18: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:22: unknown regexp options - faq
+app/views/welcome/index.html.erb:22: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:23: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:26: unknown regexp options - rd
+app/views/welcome/index.html.erb:26: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:27: syntax error, unexpected tIDENTIFIER, expecting ')'
+app/views/welcome/index.html.erb:27: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:28: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:28: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:28: syntax error, unexpected '\n', expecting keyword_do_LAMBDA or tLAMBEG
+app/views/welcome/index.html.erb:35: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:35: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:35: unterminated string meets end of file
+Started GET "/" for ::1 at 2017-05-17 00:18:55 -0400
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+  Rendered welcome/index.html.erb within layouts/application (72.0ms)
+Completed 500 Internal Server Error in 5066ms (ActiveRecord: 0.0ms)
+
+
+  
+SyntaxError (d:/sites/ontyme/app/views/welcome/index.html.erb:13: syntax error, unexpected '<'
+  </section> -->
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:17: unknown regexp options - crrt
+end pattern with unmatched parenthesis: /section> -->
+
+    <!-- Current Users Section -->
+  <section id="current-users-page" class="current-users-section">
+    '.freeze;@output_buffer.append=( render 'welcome/
+d:/sites/ontyme/app/views/welcome/index.html.erb:17: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...'welcome/current-users-section' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:18: syntax error, unexpected '<', expecting ')'
+  </section>
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:22: unknown regexp options - faq
+end pattern with unmatched parenthesis: /section>
+
+    <!--FAQ Section -->
+  <section id="contact" class="contact-section">
+    '.freeze;@output_buffer.append=( render 'welcome/
+d:/sites/ontyme/app/views/welcome/index.html.erb:22: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...=( render 'welcome/faq-section' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:23: syntax error, unexpected '<', expecting ')'
+  </section>
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:26: unknown regexp options - rd
+end pattern with unmatched parenthesis: /section>
+
+  <!-- Modals -->
+'.freeze;@output_buffer.append=( render 'modals/i
+d:/sites/ontyme/app/views/welcome/index.html.erb:26: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...=( render 'modals/ride-request' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:27: syntax error, unexpected tIDENTIFIER, expecting ')'
+..._buffer.append=( render 'modals/allow-location-request' );@o...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:27: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...'modals/allow-location-request' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected '<', expecting ')'
+<!-- End of Modals -->
+ ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+<!-- End of Modals -->
+           ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected '\n', expecting keyword_do_LAMBDA or tLAMBEG
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+....googleapis.com/maps/api/js?key=AIzaSyBR4VVlIs3tREWzRrxd0j6B...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...6BquoEU-yUFGg&callback=initMap">
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: unterminated string meets end of file):
+  
+app/views/welcome/index.html.erb:13: syntax error, unexpected '<'
+app/views/welcome/index.html.erb:17: unknown regexp options - crrt
+app/views/welcome/index.html.erb:17: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:18: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:22: unknown regexp options - faq
+app/views/welcome/index.html.erb:22: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:23: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:26: unknown regexp options - rd
+app/views/welcome/index.html.erb:26: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:27: syntax error, unexpected tIDENTIFIER, expecting ')'
+app/views/welcome/index.html.erb:27: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:28: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:28: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:28: syntax error, unexpected '\n', expecting keyword_do_LAMBDA or tLAMBEG
+app/views/welcome/index.html.erb:35: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:35: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:35: unterminated string meets end of file
+Started GET "/" for ::1 at 2017-05-17 00:19:23 -0400
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+  Rendered welcome/index.html.erb within layouts/application (4.0ms)
+Completed 500 Internal Server Error in 696ms (ActiveRecord: 0.0ms)
+
+
+  
+SyntaxError (d:/sites/ontyme/app/views/welcome/index.html.erb:13: syntax error, unexpected '<'
+  </section> -->
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:17: unknown regexp options - crrt
+end pattern with unmatched parenthesis: /section> -->
+
+    <!-- Current Users Section -->
+  <section id="current-users-page" class="current-users-section">
+    '.freeze;@output_buffer.append=( render 'welcome/
+d:/sites/ontyme/app/views/welcome/index.html.erb:17: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...'welcome/current-users-section' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:18: syntax error, unexpected '<', expecting ')'
+  </section>
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:22: unknown regexp options - faq
+end pattern with unmatched parenthesis: /section>
+
+    <!--FAQ Section -->
+  <section id="contact" class="contact-section">
+    '.freeze;@output_buffer.append=( render 'welcome/
+d:/sites/ontyme/app/views/welcome/index.html.erb:22: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...=( render 'welcome/faq-section' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:23: syntax error, unexpected '<', expecting ')'
+  </section>
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:26: unknown regexp options - rd
+end pattern with unmatched parenthesis: /section>
+
+  <!-- Modals -->
+'.freeze;@output_buffer.append=( render 'modals/i
+d:/sites/ontyme/app/views/welcome/index.html.erb:26: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...=( render 'modals/ride-request' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:27: syntax error, unexpected tIDENTIFIER, expecting ')'
+..._buffer.append=( render 'modals/allow-location-request' );@o...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:27: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...'modals/allow-location-request' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected '<', expecting ')'
+<!-- End of Modals -->
+ ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+<!-- End of Modals -->
+           ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected '\n', expecting keyword_do_LAMBDA or tLAMBEG
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+....googleapis.com/maps/api/js?key=AIzaSyBR4VVlIs3tREWzRrxd0j6B...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...6BquoEU-yUFGg&callback=initMap">
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: unterminated string meets end of file):
+  
+app/views/welcome/index.html.erb:13: syntax error, unexpected '<'
+app/views/welcome/index.html.erb:17: unknown regexp options - crrt
+app/views/welcome/index.html.erb:17: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:18: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:22: unknown regexp options - faq
+app/views/welcome/index.html.erb:22: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:23: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:26: unknown regexp options - rd
+app/views/welcome/index.html.erb:26: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:27: syntax error, unexpected tIDENTIFIER, expecting ')'
+app/views/welcome/index.html.erb:27: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:28: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:28: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:28: syntax error, unexpected '\n', expecting keyword_do_LAMBDA or tLAMBEG
+app/views/welcome/index.html.erb:35: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:35: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:35: unterminated string meets end of file
+Started GET "/" for ::1 at 2017-05-17 00:19:34 -0400
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+  Rendered welcome/index.html.erb within layouts/application (4.0ms)
+Completed 500 Internal Server Error in 464ms (ActiveRecord: 0.0ms)
+
+
+  
+SyntaxError (d:/sites/ontyme/app/views/welcome/index.html.erb:13: syntax error, unexpected '<'
+  </section> -->
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:17: unknown regexp options - crrt
+end pattern with unmatched parenthesis: /section> -->
+
+    <!-- Current Users Section -->
+  <section id="current-users-page" class="current-users-section">
+    '.freeze;@output_buffer.append=( render 'welcome/
+d:/sites/ontyme/app/views/welcome/index.html.erb:17: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...'welcome/current-users-section' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:18: syntax error, unexpected '<', expecting ')'
+  </section>
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:22: unknown regexp options - faq
+end pattern with unmatched parenthesis: /section>
+
+    <!--FAQ Section -->
+  <section id="contact" class="contact-section">
+    '.freeze;@output_buffer.append=( render 'welcome/
+d:/sites/ontyme/app/views/welcome/index.html.erb:22: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...=( render 'welcome/faq-section' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:23: syntax error, unexpected '<', expecting ')'
+  </section>
+   ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:26: unknown regexp options - rd
+end pattern with unmatched parenthesis: /section>
+
+  <!-- Modals -->
+'.freeze;@output_buffer.append=( render 'modals/i
+d:/sites/ontyme/app/views/welcome/index.html.erb:26: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...=( render 'modals/ride-request' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:27: syntax error, unexpected tIDENTIFIER, expecting ')'
+..._buffer.append=( render 'modals/allow-location-request' );@o...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:27: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...'modals/allow-location-request' );@output_buffer.safe_append...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected '<', expecting ')'
+<!-- End of Modals -->
+ ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+<!-- End of Modals -->
+           ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:28: syntax error, unexpected '\n', expecting keyword_do_LAMBDA or tLAMBEG
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+....googleapis.com/maps/api/js?key=AIzaSyBR4VVlIs3tREWzRrxd0j6B...
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...6BquoEU-yUFGg&callback=initMap">
+...                               ^
+d:/sites/ontyme/app/views/welcome/index.html.erb:35: unterminated string meets end of file):
+  
+app/views/welcome/index.html.erb:13: syntax error, unexpected '<'
+app/views/welcome/index.html.erb:17: unknown regexp options - crrt
+app/views/welcome/index.html.erb:17: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:18: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:22: unknown regexp options - faq
+app/views/welcome/index.html.erb:22: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:23: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:26: unknown regexp options - rd
+app/views/welcome/index.html.erb:26: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:27: syntax error, unexpected tIDENTIFIER, expecting ')'
+app/views/welcome/index.html.erb:27: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:28: syntax error, unexpected '<', expecting ')'
+app/views/welcome/index.html.erb:28: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:28: syntax error, unexpected '\n', expecting keyword_do_LAMBDA or tLAMBEG
+app/views/welcome/index.html.erb:35: syntax error, unexpected tIDENTIFIER, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:35: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+app/views/welcome/index.html.erb:35: unterminated string meets end of file
+Started GET "/" for ::1 at 2017-05-17 00:20:32 -0400
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+  Rendered welcome/_nav-test.html.erb (4.0ms)
+  Rendered welcome/_main-section.html.erb (0.0ms)
+  [1m[36mUser Load (268.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered welcome/_current-users-section.html.erb (376.1ms)
+  Rendered welcome/_faq-section.html.erb (0.0ms)
+  Rendered modals/_ride-request.html.erb (0.0ms)
+  Rendered modals/_allow-location-request.html.erb (0.0ms)
+  Rendered welcome/index.html.erb within layouts/application (1944.6ms)
+Completed 200 OK in 41389ms (Views: 40916.5ms | ActiveRecord: 268.1ms)
+
+
+Started GET "/" for ::1 at 2017-05-17 00:47:21 -0400
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+  Rendered welcome/_nav-test.html.erb (0.0ms)
+  Rendered welcome/_main-section.html.erb (0.0ms)
+  [1m[36mUser Load (156.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered welcome/_current-users-section.html.erb (188.1ms)
+  Rendered welcome/_faq-section.html.erb (0.0ms)
+  Rendered modals/_ride-request.html.erb (0.0ms)
+  Rendered modals/_allow-location-request.html.erb (0.0ms)
+  Rendered welcome/index.html.erb within layouts/application (1244.4ms)
+Completed 200 OK in 4866ms (Views: 4483.8ms | ActiveRecord: 156.1ms)
+
+
+Started GET "/users/getaddress?val=23&longlat=-73.4035906%2C40.807763099999995" for ::1 at 2017-05-17 00:47:48 -0400
+Processing by UsersController#findAddress as */*
+  Parameters: {"val"=>"23", "longlat"=>"-73.4035906,40.807763099999995"}
+Started GET "/users/getaddress?val=23%20&longlat=-73.4035906%2C40.807763099999995" for ::1 at 2017-05-17 00:47:49 -0400
+Processing by UsersController#findAddress as */*
+  Parameters: {"val"=>"23 ", "longlat"=>"-73.4035906,40.807763099999995"}
+Completed 200 OK in 307ms (Views: 0.6ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/getaddress?val=23%20v&longlat=-73.4035906%2C40.807763099999995" for ::1 at 2017-05-17 00:47:49 -0400
+Processing by UsersController#findAddress as */*
+Started GET "/users/getaddress?val=23&longlat=-73.4035906%2C40.807763099999995" for ::1 at 2017-05-17 00:47:49 -0400
+  Parameters: {"val"=>"23 v", "longlat"=>"-73.4035906,40.807763099999995"}
+Processing by UsersController#findAddress as */*
+  Parameters: {"val"=>"23", "longlat"=>"-73.4035906,40.807763099999995"}
+Completed 200 OK in 252ms (Views: 0.4ms | ActiveRecord: 0.0ms)
+
+
+Completed 200 OK in 189ms (Views: 0.3ms | ActiveRecord: 0.0ms)
+
+
+Completed 200 OK in 213ms (Views: 0.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/getaddress?val=23%20ve&longlat=-73.4035906%2C40.807763099999995" for ::1 at 2017-05-17 00:47:50 -0400
+Processing by UsersController#findAddress as */*
+  Parameters: {"val"=>"23 ve", "longlat"=>"-73.4035906,40.807763099999995"}
+Started GET "/users/getaddress?val=23%20ver&longlat=-73.4035906%2C40.807763099999995" for ::1 at 2017-05-17 00:47:50 -0400
+Processing by UsersController#findAddress as */*
+  Parameters: {"val"=>"23 ver", "longlat"=>"-73.4035906,40.807763099999995"}
+Completed 200 OK in 185ms (Views: 0.3ms | ActiveRecord: 0.0ms)
+
+
+Completed 200 OK in 180ms (Views: 0.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for ::1 at 2017-05-17 00:48:31 -0400
+Processing by WelcomeController#index as HTML
+  Rendering welcome/index.html.erb within layouts/application
+  Rendered welcome/_nav-test.html.erb (0.0ms)
+  Rendered welcome/_main-section.html.erb (0.0ms)
+  [1m[36mUser Load (144.0ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered welcome/_current-users-section.html.erb (240.1ms)
+  Rendered welcome/_faq-section.html.erb (0.0ms)
+  Rendered modals/_ride-request.html.erb (0.0ms)
+  Rendered modals/_allow-location-request.html.erb (0.0ms)
+  Rendered welcome/index.html.erb within layouts/application (1872.6ms)
+Completed 200 OK in 4738ms (Views: 4432.5ms | ActiveRecord: 144.0ms)
+
+
