@@ -78,6 +78,28 @@ ActiveRecord::Schema.define(version: 20170516223337) do
     t.index ["driver_id"], name: "index_driver_current_statuses_on_driver_id", using: :btree
   end
 
+  create_table "driver_receive_payment_methods", force: :cascade do |t|
+    t.integer  "driver_id"
+    t.string   "name"
+    t.string   "description"
+    t.string   "method"
+    t.string   "account_number"
+    t.string   "routing_number"
+    t.string   "expiration_date"
+    t.string   "cv"
+    t.string   "method_pic_url"
+    t.string   "user_name_on_method"
+    t.string   "billing_address_street"
+    t.string   "billing_address_city"
+    t.string   "billing_address_state"
+    t.string   "billing_address_zip"
+    t.string   "billing_address_country"
+    t.string   "status"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.index ["driver_id"], name: "index_driver_receive_payment_methods_on_driver_id", using: :btree
+  end
+
   create_table "drivers", force: :cascade do |t|
     t.string   "driver_id"
     t.string   "first_name"
@@ -121,28 +143,6 @@ ActiveRecord::Schema.define(version: 20170516223337) do
     t.index ["user_id"], name: "index_payment_methods_on_user_id", using: :btree
   end
 
-  create_table "receive_payment_methods", force: :cascade do |t|
-    t.integer  "driver_id"
-    t.string   "name"
-    t.string   "description"
-    t.string   "method"
-    t.string   "account_number"
-    t.string   "routing_number"
-    t.string   "expiration_date"
-    t.string   "cv"
-    t.string   "method_pic_url"
-    t.string   "user_name_on_method"
-    t.string   "billing_address_street"
-    t.string   "billing_address_city"
-    t.string   "billing_address_state"
-    t.string   "billing_address_zip"
-    t.string   "billing_address_country"
-    t.string   "status"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.index ["driver_id"], name: "index_receive_payment_methods_on_driver_id", using: :btree
-  end
-
   create_table "trip_requests", force: :cascade do |t|
     t.text     "trip_request_id"
     t.integer  "user_id"
@@ -156,17 +156,17 @@ ActiveRecord::Schema.define(version: 20170516223337) do
     t.string   "destination_latitude"
     t.string   "map_provider_destination_id"
     t.string   "map_provider_destination_slug"
-    t.string   "pickup_location_street"
-    t.string   "pickup_location_city"
-    t.string   "pickup_location_state"
-    t.string   "pickup_location_zipcode"
-    t.string   "pickup_location_longitude"
-    t.string   "pickup_location_latitude"
-    t.string   "map_provider_pickup_location_id"
-    t.string   "map_provider_pickup_location_slug"
+    t.string   "pickup_street"
+    t.string   "pickup_city"
+    t.string   "pickup_state"
+    t.string   "pickup_zipcode"
+    t.string   "pickup_longitude"
+    t.string   "pickup_latitude"
+    t.string   "map_provider_pickup_id"
+    t.string   "map_provider_pickup_slug"
     t.string   "status"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.index ["user_id"], name: "index_trip_requests_on_user_id", unique: true, using: :btree
   end
 
@@ -200,7 +200,7 @@ ActiveRecord::Schema.define(version: 20170516223337) do
   add_foreign_key "completed_trips", "trip_requests"
   add_foreign_key "completed_trips", "users"
   add_foreign_key "driver_current_statuses", "drivers"
+  add_foreign_key "driver_receive_payment_methods", "drivers"
   add_foreign_key "payment_methods", "users"
-  add_foreign_key "receive_payment_methods", "drivers"
   add_foreign_key "trip_requests", "users"
 end

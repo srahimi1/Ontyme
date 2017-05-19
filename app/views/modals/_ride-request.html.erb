@@ -9,8 +9,27 @@
       </div>
       <div class="modal-body" id="here1">
         <div class="shift-div" id="div1">Where are you going?</div>
+        <p>Easy Search</p>
         <input id="destinationField" type="text" size="50" onkeyup="searchForAddress()">
         <div id="listOfAddresses"><p>&nbsp;</p></div>
+        <p>-- or --</p>
+        <p>Enter destination yourself</p>
+        <%= form_for :trip_requests do |f|  %>
+          <p>
+          <%= f.label :Street %><br>
+          <%= f.text_field :destination_street %> </p>
+          <p>
+          <%= f.label :City %><br>
+          <%= f.text_field :destination_city %>
+          <%= f.label :State %><br>
+          <%= f.text_field :destination_state %>
+          <%= f.label :Zip_code %><br>
+          <%= f.text_field :destination_postalcode %>
+          <%= f.hidden_field :destination_longitude %>
+          <%= f.hidden_field :destination_latitude %>
+          <%= f.hidden_field :map_provider_destination_id %>
+          <%= f.hidden_field :map_provider_destination_slug %>
+          </p>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="sliderNextBtn" onclick="void(0)">Next</button>
       </div>
@@ -22,9 +41,24 @@
       </div>
       <div class="modal-body" id="here2">
         <div class="shift-div" id="div1">Where are we picking you up from?</div>
-        <div id="find-me-div" onclick="findMe()">Find Me</div>
-        <div id="myLocationDiv"><p>&nbsp;</p></div>
+        <div id="find-me-div"><button type="button" class="btn btn-info" onclick="findMe()">Find Me</button></div>
+        <!-- <div id="myLocationDiv"><p>&nbsp;</p></div> -->
         <p>-- or --</p>
+        <p>
+          <%= f.label :Street %><br>
+          <%= f.text_field :pickup_street %> </p>
+          <p>
+          <%= f.label :City %><br>
+          <%= f.text_field :pickup_city %>
+          <%= f.label :State %><br>
+          <%= f.text_field :pickup_state %>
+          <%= f.label :Zip_code %><br>
+          <%= f.text_field :pickup_postalcode %>
+          <%= f.hidden_field :pickup_longitude %>
+          <%= f.hidden_field :pickup_latitude %>
+          <%= f.hidden_field :map_provider_pickup_id %>
+          <%= f.hidden_field :map_provider_pickup_slug %>
+          <% end %>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="sliderBackBtn" onclick="void(0)">Back</button>
       </div>

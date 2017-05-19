@@ -102,8 +102,13 @@ function displayResults(results) {
 function selectAddress(add) {
   addObj = addressList[parseInt(add.id)].place.properties;
   var contentArea =  document.getElementById("listOfAddresses");
-  var html = "<p>&nbsp;</p><p>"+addObj.street+"</p><p>"+addObj.city+", "+addObj.stateCode+" "+addObj.postalCode+"</p>";
-  contentArea.innerHTML = html;
+  //var html = "<p>&nbsp;</p><p>"+addObj.street+"</p><p>"+addObj.city+", "+addObj.stateCode+" "+addObj.postalCode+"</p>";
+  document.getElementById("trip_requests_destination_street").value = addObj.street;
+  document.getElementById("trip_requests_destination_city").value = addObj.city;
+  document.getElementById("trip_requests_destination_state").value = addObj.stateCode;
+  document.getElementById("trip_requests_destination_postalcode").value = addObj.postalCode;
+  //contentArea.innerHTML = html;
+  contentArea.innerHTML = "";
   document.getElementById("destinationField").style.display = "none";
 }
 
@@ -522,8 +527,12 @@ function findMe() {
         res = JSON.parse(ajaxRequest.responseText);
         console.log(res);
         res = res.results[0].locations[0];
-        var address = "<p class='location-Found'>"+res.street+"</p><p>"+res.adminArea5+", "+res.adminArea3+" "+res.postalCode+"</p><img src='"+res.mapUrl+"'/>";
-        document.getElementById("myLocationDiv").innerHTML=address;
+        document.getElementById("trip_requests_pickup_street").value = res.street;
+        document.getElementById("trip_requests_pickup_city").value = res.adminArea5;
+        document.getElementById("trip_requests_pickup_state").value = res.adminArea3;
+        document.getElementById("trip_requests_pickup_postalcode").value = res.postalCode;
+        //var address = "<p class='location-Found'>"+res.street+"</p><p>"+res.adminArea5+", "+res.adminArea3+" "+res.postalCode+"</p><img src='"+res.mapUrl+"'/>";
+        //document.getElementById("myLocationDiv").innerHTML=address;
       } // end this.readyState ...
     } // end onreadystatechange
     ajaxRequest.open("GET", url2, true);

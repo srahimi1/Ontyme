@@ -10,7 +10,7 @@ class CreateActiveTrips < ActiveRecord::Migration[5.0]
         t.string :destination_street
         t.string :destination_city
         t.string :destination_state
-        t.string :destination_zipcode
+        t.string :destination_postalcode
         t.string :destination_longitude
         t.string :destination_latitude
         t.string :map_provider_destination_id

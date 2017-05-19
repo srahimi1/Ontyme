@@ -1,7 +1,7 @@
-class CreatePaymentMethods < ActiveRecord::Migration[5.0]
+class CreateDriverReceivePaymentMethods < ActiveRecord::Migration[5.0]
   def change
-    create_table :payment_methods do |t|
-    	t.references :user, foreign_key: true
+    create_table :driver_receive_payment_methods do |t|
+    	t.references :driver, foreign_key: true
     	t.string :name
     	t.string :description
     	t.string :method
@@ -16,8 +16,8 @@ class CreatePaymentMethods < ActiveRecord::Migration[5.0]
     	t.string :billing_address_state
     	t.string :billing_address_postalcode
     	t.string :billing_address_country
-    	t.string :status
-    	t.timestamps
+    	t.string :status    	
+      t.timestamps
     end
   end
 end

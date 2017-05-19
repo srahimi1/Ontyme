@@ -8,19 +8,19 @@ class CreateTripRequests < ActiveRecord::Migration[5.0]
         t.string :destination_street
         t.string :destination_city
         t.string :destination_state
-        t.string :destination_zipcode
+        t.string :destination_postalcode
         t.string :destination_longitude
         t.string :destination_latitude
         t.string :map_provider_destination_id
         t.string :map_provider_destination_slug
-        t.string :pickup_location_street
-        t.string :pickup_location_city
-        t.string :pickup_location_state
-        t.string :pickup_location_zipcode
-        t.string :pickup_location_longitude
-        t.string :pickup_location_latitude
-        t.string :map_provider_pickup_location_id
-        t.string :map_provider_pickup_location_slug
+        t.string :pickup_street
+        t.string :pickup_city
+        t.string :pickup_state
+        t.string :pickup_postalcode
+        t.string :pickup_longitude
+        t.string :pickup_latitude
+        t.string :map_provider_pickup_id
+        t.string :map_provider_pickup_slug
         t.string :status
         t.timestamps
     end
