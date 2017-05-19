@@ -14,6 +14,11 @@
  *= require_self
  */
 
+.location-Found {
+    background-color: blue;
+    color: white;
+}
+
 div.ride-request-modal-header {
     background: #00aa77; /* For browsers that do not support gradients */
     background: -webkit-linear-gradient(#00cc7e, #00aa77); /* For Safari 5.1 to 6.0 */
@@ -75,4 +80,50 @@ div.ride-request-modal-header {
 
 .address-list-a:hover {
 	color: white;
+}
+
+#requestRideBtn {
+    background: #00aa77; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#00cc7e, #00aa77); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#00cc7e, #00aa77); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#00cc7e, #00aa77); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#00cc7e, #00aa77); /* Standard syntax */
+    border: none;
+    color: white;
+    text-align: center;
+    display: block;
+    font-size: 2.5em;
+    margin: auto;
+    width: 75%;
+    padding: 7px;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+}
+
+#requestRideBtnDown {
+    background-color: #66bb00;
+    border: none;
+    color: white;
+    text-align: center;
+    display: block;
+    font-size: 2.5em;
+    margin: auto;
+    width: 75%;
+    padding: 7px;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+}
+
+#find-me-div {
+	padding: 10px;
+	cursor: pointer;
+}
+
+#find-me-div:hover {
+	padding: 10px;
+	cursor: pointer;
+	color: white;
+	background-color: blue;
 }

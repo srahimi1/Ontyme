@@ -10,16 +10,13 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
 //= require tether
-//= require jquery_ujs
-//= require bootstrap
 //= require turbolinks
 //= require_tree .
 
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
-currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates, findLatLngCalled = 0, addressList;
+currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList;
 
 $(window).load(function() {
     findLatLng(1,1);
@@ -63,18 +60,21 @@ function searchForAddress() {
   var input = document.getElementById("destinationField").value;
   if (input.length >1) {
   var ajaxRequest = new XMLHttpRequest();
-  while (!coordinates && !findLatLngCalled) {
-    findLatLng(1,1);
-  }
-
-  while (!coordinates && findLatLngCalled) {
-    console.log("waiting...");
-  }
-
+    if ((coordinates == 0) && !findLatLngCalled) {
+      findLatLng(1,1);
+      setTimeout(function() {searchForAddress()}, 50);
+    }
+    else if ((coordinates == 0) && findLatLngCalled) {
+      setTimeout(function() {searchForAddress()}, 100);
+    }
+    else {
   //var url = "https://www.mapquestapi.com/search/v3/prediction?collection=address&limit=10&q=23%20Verm&location=1%2C1&key=rKMTmlr5sRG1k5KKm6peLS9hYRgM966u"
-  var url = "users/getaddress?val="+encodeURIComponent(input)+"&longlat="+encodeURIComponent(coordinates.longitude+","+coordinates.latitude);
+  var url = "/users/getaddress?reverseGeocode=0&val="+encodeURIComponent(input)+"&longlat="+encodeURIComponent(coordinates.longitude+","+coordinates.latitude);
   ajaxRequest.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
+            findLatLngCalled = 0;
+            coordinates = 0;
+            console.log(ajaxRequest.responseText);
             var res = JSON.parse(ajaxRequest.responseText);
             addressList = res.results;
             displayResults(addressList);
@@ -82,11 +82,11 @@ function searchForAddress() {
     } // end onreadystatechange
     ajaxRequest.open("GET", url, true);
     ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
-    ajaxRequest.send();
+    ajaxRequest.send(); }
   } // end if (input.legnth > 1)
   else document.getElementById("listOfAddresses").innerHTML = "<p>&nbsp;</p>";
 
-}
+} // end function searchForAddress()
 
 function displayResults(results) {
   var contentArea =  document.getElementById("listOfAddresses");
@@ -464,7 +464,6 @@ function geocodeLatLng(geocoder,latlng,infowindow) {
   geocoder.geocode({'location': {lat: latlng.coords.latitude, lng: latlng.coords.longitude}}, function(results, status) {
     if (status=== 'OK'){
       if (results[1]) {
-        alert(results[0].formatted_address);
       }
     }
   });
@@ -472,17 +471,15 @@ function geocodeLatLng(geocoder,latlng,infowindow) {
 
 
 function findLatLng(geocoder,infowindow) {
-    findLatLngCalled = 1;
     if(navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position){
+      findLatLngCalled = 1;
+      window.navigator.geolocation.getCurrentPosition(function(position){
         coordinates = position.coords;
-        console.log(coordinates);
         // geocodeLatLng(geocoder,position,infowindow);
       }, geolocateError, {enableHighAccuracy: true});
     }
     else {
       findLatLngCalled = 0;
-      alert("Browser does not support geolocating");
     }
 } // end FindLocation()
 
@@ -506,6 +503,34 @@ function reverseGeocode(latlng) {
     ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
     ajaxRequest.send();
 }
+
+function findMe() {
+    if ((coordinates == 0) && !findLatLngCalled) {
+      findLatLng(1,1);
+      setTimeout(function() {findMe()}, 50);
+    }
+    else if ((coordinates == 0) && findLatLngCalled) {
+      setTimeout(function() {findMe()}, 100);
+    }
+    else {
+    var ajaxRequest = new XMLHttpRequest();
+    var url2 = "/users/getaddress?reverseGeocode=1&latlong="+encodeURIComponent(coordinates.latitude+","+coordinates.longitude);
+    ajaxRequest.onreadystatechange = function() {
+      if(this.readyState == 4 && this.status == 200) {
+        findLatLngCalled = 0;
+        coordinates = 0;
+        res = JSON.parse(ajaxRequest.responseText);
+        console.log(res);
+        res = res.results[0].locations[0];
+        var address = "<p class='location-Found'>"+res.street+"</p><p>"+res.adminArea5+", "+res.adminArea3+" "+res.postalCode+"</p><img src='"+res.mapUrl+"'/>";
+        document.getElementById("myLocationDiv").innerHTML=address;
+      } // end this.readyState ...
+    } // end onreadystatechange
+    ajaxRequest.open("GET", url2, true);
+    ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
+    ajaxRequest.send(); }
+}
+
 
 
 var init = function() {
