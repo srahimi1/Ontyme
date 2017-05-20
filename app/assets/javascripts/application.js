@@ -487,7 +487,7 @@ function findLatLng(geocoder,infowindow) {
       window.navigator.geolocation.getCurrentPosition(function(position){
         coordinates = position.coords;
         // geocodeLatLng(geocoder,position,infowindow);
-      }, geolocateError, {enableHighAccuracy: true});
+      }, geolocateError, {enableHighAccuracy: true, maximumAge: 0});
     }
     else {
       findLatLngCalled = 0;
