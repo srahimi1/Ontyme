@@ -18,6 +18,12 @@
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList;
 
+
+function submitTripRequestForm() {
+    alert("finish this");
+}
+
+
 $(window).load(function() {
     findLatLng(1,1);
     document.getElementById("mainContainer").style.display = "block";
