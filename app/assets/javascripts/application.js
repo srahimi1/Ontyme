@@ -108,11 +108,13 @@ function displayResults(results) {
 function selectAddress(add) {
   addObj = addressList[parseInt(add.id)].place.properties;
   var contentArea =  document.getElementById("listOfAddresses");
+  console.log(addObj);
   //var html = "<p>&nbsp;</p><p>"+addObj.street+"</p><p>"+addObj.city+", "+addObj.stateCode+" "+addObj.postalCode+"</p>";
   document.getElementById("trip_requests_destination_street").value = addObj.street;
   document.getElementById("trip_requests_destination_city").value = addObj.city;
   document.getElementById("trip_requests_destination_state").value = addObj.stateCode;
   document.getElementById("trip_requests_destination_postalcode").value = addObj.postalCode;
+  document.getElementById("trip_requests_destination_longitude").value = addObj.postalCode;
   //contentArea.innerHTML = html;
   contentArea.innerHTML = "";
   document.getElementById("destinationField").style.display = "none";
@@ -484,8 +486,8 @@ function geocodeLatLng(geocoder,latlng,infowindow) {
 function findLatLng(geocoder,infowindow) {
     if(navigator.geolocation) {
       findLatLngCalled = 1;
-      window.navigator.geolocation.clearWatch(positionID);
-      positionID = window.navigator.geolocation.watchPosition(function(position){
+      //window.navigator.geolocation.clearWatch(positionID);
+      window.navigator.geolocation.getCurrentPosition(function(position){
         console.log(position.coords.accuracy);
         if (position.coords.accuracy < 8.0) {
           coordinates = position.coords;
