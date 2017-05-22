@@ -486,15 +486,17 @@ function findLatLng(geocoder,infowindow) {
       findLatLngCalled = 1;
       window.navigator.geolocation.clearWatch(positionID);
       positionID = window.navigator.geolocation.watchPosition(function(position){
-        coordinates = position.coords;
-        if (coordinates.accuracy > 8.0) {
+        console.log(position.coords.accuracy);
+        if (position.coords.accuracy < 8.0) {
+          coordinates = position.coords;
+          alert(coordinates.accuracy);}
+        else {
           findLatLngCalled = 0;
-          findLatLng(1,1);
-        }
-        alert(coordinates.accuracy);
+          findLatLng(1,1);}
         // geocodeLatLng(geocoder,position,infowindow);
       }, geolocateError, {enableHighAccuracy: true, maximumAge: 0});
     }
+    
     else {
       findLatLngCalled = 0;
     }
