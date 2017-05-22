@@ -16,7 +16,7 @@
 
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
-currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList;
+currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID;
 
 
 function submitTripRequestForm() {
@@ -484,8 +484,13 @@ function geocodeLatLng(geocoder,latlng,infowindow) {
 function findLatLng(geocoder,infowindow) {
     if(navigator.geolocation) {
       findLatLngCalled = 1;
-      window.navigator.geolocation.getCurrentPosition(function(position){
+      window.navigator.geolocation.clearWatch(positionID);
+      positionID = window.navigator.geolocation.watchPosition(function(position){
         coordinates = position.coords;
+        if (coordinates.accuracy > 8.0) {
+          findLatLngCalled = 0;
+          findLatLng(1,1);
+        }
         alert(coordinates.accuracy);
         // geocodeLatLng(geocoder,position,infowindow);
       }, geolocateError, {enableHighAccuracy: true, maximumAge: 0});
