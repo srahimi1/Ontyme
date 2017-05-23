@@ -17,18 +17,18 @@
         <%= form_for :trip_requests do |f|  %>
           <p>
           <%= f.label :Street %><br>
-          <%= f.text_field :destination_street %> </p>
+          <%= f.text_field :destination_street, :value => "" %> </p>
           <p>
           <%= f.label :City %><br>
-          <%= f.text_field :destination_city %>
+          <%= f.text_field :destination_city, :value => "" %>
           <%= f.label :State %><br>
-          <%= f.text_field :destination_state %>
+          <%= f.text_field :destination_state, :value => "" %>
           <%= f.label :Zip_code %><br>
-          <%= f.text_field :destination_postalcode %>
-          <%= f.hidden_field :destination_longitude %>
-          <%= f.hidden_field :destination_latitude %>
-          <%= f.hidden_field :map_provider_destination_id %>
-          <%= f.hidden_field :map_provider_destination_slug %>
+          <%= f.text_field :destination_postalcode, :value => "" %>
+          <%= f.hidden_field :destination_longitude, :value => "" %>
+          <%= f.hidden_field :destination_latitude, :value => "" %>
+          <%= f.hidden_field :map_provider_destination_id, :value => "" %>
+          <%= f.hidden_field :map_provider_destination_slug, :value => "" %>
           </p>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="sliderNextBtn" onclick="void(0)">Next</button>
@@ -46,18 +46,18 @@
         <p>-- or --</p>
         <p>
           <%= f.label :Street %><br>
-          <%= f.text_field :pickup_street %> </p>
+          <%= f.text_field :pickup_street, :value => ""  %> </p>
           <p>
           <%= f.label :City %><br>
-          <%= f.text_field :pickup_city %>
+          <%= f.text_field :pickup_city, :value => ""   %>
           <%= f.label :State %><br>
-          <%= f.text_field :pickup_state %>
+          <%= f.text_field :pickup_state, :value => ""   %>
           <%= f.label :Zip_code %><br>
-          <%= f.text_field :pickup_postalcode %>
-          <%= f.hidden_field :pickup_longitude %>
-          <%= f.hidden_field :pickup_latitude %>
-          <%= f.hidden_field :map_provider_pickup_id %>
-          <%= f.hidden_field :map_provider_pickup_slug %>
+          <%= f.text_field :pickup_postalcode, :value => ""   %>
+          <%= f.hidden_field :pickup_longitude, :value => ""   %>
+          <%= f.hidden_field :pickup_latitude, :value => ""   %>
+          <%= f.hidden_field :map_provider_pickup_id, :value => ""   %>
+          <%= f.hidden_field :map_provider_pickup_slug, :value => ""   %>
           <% end %>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="sliderBackBtn" onclick="void(0)">Back</button>

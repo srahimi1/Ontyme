@@ -80,7 +80,6 @@ function searchForAddress() {
       if(this.readyState == 4 && this.status == 200) {
             findLatLngCalled = 0;
             coordinates = 0;
-            console.log(ajaxRequest.responseText);
             var res = JSON.parse(ajaxRequest.responseText);
             addressList = res.results;
             displayResults(addressList);
@@ -106,15 +105,18 @@ function displayResults(results) {
 
 
 function selectAddress(add) {
-  addObj = addressList[parseInt(add.id)].place.properties;
+  addObj = addressList[parseInt(add.id)];
+ // addObj = addressList[parseInt(add.id)].place.properties;
   var contentArea =  document.getElementById("listOfAddresses");
-  console.log(addObj);
   //var html = "<p>&nbsp;</p><p>"+addObj.street+"</p><p>"+addObj.city+", "+addObj.stateCode+" "+addObj.postalCode+"</p>";
-  document.getElementById("trip_requests_destination_street").value = addObj.street;
-  document.getElementById("trip_requests_destination_city").value = addObj.city;
-  document.getElementById("trip_requests_destination_state").value = addObj.stateCode;
-  document.getElementById("trip_requests_destination_postalcode").value = addObj.postalCode;
-  document.getElementById("trip_requests_destination_longitude").value = addObj.postalCode;
+  document.getElementById("trip_requests_destination_street").value = addObj.place.properties.street;
+  document.getElementById("trip_requests_destination_city").value = addObj.place.properties.city;
+  document.getElementById("trip_requests_destination_state").value = addObj.place.properties.stateCode;
+  document.getElementById("trip_requests_destination_postalcode").value = addObj.place.properties.postalCode;
+  document.getElementById("trip_requests_destination_longitude").value = addObj.place.geometry.coordinates[0];
+  document.getElementById("trip_requests_destination_latitude").value = addObj.place.geometry.coordinates[1];
+  document.getElementById("trip_requests_map_provider_destination_id").value = addObj.id;
+  document.getElementById("trip_requests_map_provider_destination_slug").value = addObj.slug;
   //contentArea.innerHTML = html;
   contentArea.innerHTML = "";
   document.getElementById("destinationField").style.display = "none";
@@ -488,10 +490,8 @@ function findLatLng(geocoder,infowindow) {
       findLatLngCalled = 1;
       //window.navigator.geolocation.clearWatch(positionID);
       window.navigator.geolocation.getCurrentPosition(function(position){
-        console.log(position.coords.accuracy);
-        if (position.coords.accuracy < 8.0) {
-          coordinates = position.coords;
-          alert(coordinates.accuracy);}
+        if (position.coords.accuracy < 12.0) {
+          coordinates = position.coords;}
         else {
           findLatLngCalled = 0;
           findLatLng(1,1);}
@@ -541,12 +541,13 @@ function findMe() {
         findLatLngCalled = 0;
         coordinates = 0;
         res = JSON.parse(ajaxRequest.responseText);
-        console.log(res);
         res = res.results[0].locations[0];
         document.getElementById("trip_requests_pickup_street").value = res.street;
         document.getElementById("trip_requests_pickup_city").value = res.adminArea5;
         document.getElementById("trip_requests_pickup_state").value = res.adminArea3;
         document.getElementById("trip_requests_pickup_postalcode").value = res.postalCode;
+        document.getElementById("trip_requests_pickup_longitude").value = res.latLng.lng;
+        document.getElementById("trip_requests_pickup_latitude").value = res.latLng.lat;
         //var address = "<p class='location-Found'>"+res.street+"</p><p>"+res.adminArea5+", "+res.adminArea3+" "+res.postalCode+"</p><img src='"+res.mapUrl+"'/>";
         //document.getElementById("myLocationDiv").innerHTML=address;
       } // end this.readyState ...
