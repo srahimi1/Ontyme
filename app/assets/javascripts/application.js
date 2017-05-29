@@ -520,7 +520,7 @@ function findLatLng(geocoder,infowindow) {
       findLatLngCalled = 1;
       //window.navigator.geolocation.clearWatch(positionID);
       window.navigator.geolocation.getCurrentPosition(function(position){
-        if (position.coords.accuracy < 90000.0) {
+        if (position.coords.accuracy < 10.0) {
           coordinates = position.coords;}
         else {
           findLatLngCalled = 0;
