@@ -27,7 +27,8 @@ class UsersController < ApplicationController
 		connection = Net::HTTP.new(uri.host, uri.port)
 		#connection.use_ssl = true
 		res = connection.get(uri.request_uri)
-		render json: res.body
+		output = res.body + "q_mupmapquest" + "q_muphttp://www.mapquestapi.com"
+		render plain: output
 	end
 
 

@@ -2,7 +2,7 @@ class CreateTripRequests < ActiveRecord::Migration[5.0]
   def change
     create_table :trip_requests do |t|
         t.text :trip_request_id
-        t.belongs_to :user, index: {unique: true}, foreign_key: true
+        t.string :user_id, foreign_key: true
         t.string :map_provider
         t.string :map_provider_url
         t.string :destination_street

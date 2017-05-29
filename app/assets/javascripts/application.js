@@ -16,11 +16,37 @@
 
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
-currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID;
+currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url;
 
 
 function submitTripRequestForm() {
-    alert("finish this");
+  var destination_street = document.getElementById("trip_requests_destination_street").value;
+  var destination_city = document.getElementById("trip_requests_destination_city").value;
+  var destination_state = document.getElementById("trip_requests_destination_state").value;
+  var destination_postalcode = document.getElementById("trip_requests_destination_postalcode").value;
+  var destination_longitude = document.getElementById("trip_requests_destination_longitude").value;
+  var destination_latitude = document.getElementById("trip_requests_destination_latitude").value;
+  var map_provider_destination_id = document.getElementById("trip_requests_map_provider_destination_id").value;
+  var map_provider_destination_slug = document.getElementById("trip_requests_map_provider_destination_slug").value;
+  var pickup_street = document.getElementById("trip_requests_pickup_street").value;
+  var pickup_city = document.getElementById("trip_requests_pickup_city").value;
+  var pickup_state = document.getElementById("trip_requests_pickup_state").value;
+  var pickup_postalcode = document.getElementById("trip_requests_pickup_postalcode").value;
+  var pickup_longitude = document.getElementById("trip_requests_pickup_longitude").value;
+  var pickup_latitude = document.getElementById("trip_requests_pickup_latitude").value;
+  var map_provider_pickup_id = document.getElementById("trip_requests_map_provider_pickup_id").value;
+  var map_provider_pickup_slug = document.getElementById("trip_requests_map_provider_pickup_slug").value;
+  var httpRequest = new XMLHttpRequest();
+  httpRequest.onreadystatechange = function() {
+      if ((this.readyState == 4) && (this.status == 200)) {
+        var res = httpRequest.responseText + "";
+        if (res != "BAD")
+          alert("your trip request id is:\n "+ res + "\nAnd you have been connected with a driver");}
+  }
+  httpRequest.open("POST", "/users/3/trip_requests", true);
+  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  httpRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
+  httpRequest.send("trip_request[destination_street]="+destination_street+"&trip_request[destination_city]="+destination_city+"&trip_request[destination_state]="+destination_state+"&trip_request[destination_postalcode]="+destination_postalcode+"&trip_request[destination_longitude]="+destination_longitude+"&trip_request[destination_latitude]="+destination_latitude+"&trip_request[map_provider_destination_id]="+map_provider_destination_id+"&trip_request[map_provider_destination_slug]="+map_provider_destination_slug+"&trip_request[pickup_street]="+pickup_street+"&trip_request[pickup_city]="+pickup_city+"&trip_request[pickup_state]="+pickup_state+"&trip_request[pickup_postalcode]="+pickup_postalcode+"&trip_request[pickup_longitude]="+pickup_longitude+"&trip_request[pickup_latitude]="+pickup_latitude+"&trip_request[map_provider_pickup_id]="+map_provider_pickup_id+"&trip_request[map_provider_pickup_slug]="+map_provider_pickup_slug+"&trip_request[map_provider]="+map_provider+"&trip_request[map_provider_url]="+map_provider_url);
 }
 
 
@@ -71,7 +97,7 @@ function searchForAddress() {
       setTimeout(function() {searchForAddress()}, 50);
     }
     else if ((coordinates == 0) && findLatLngCalled) {
-      setTimeout(function() {searchForAddress()}, 100);
+      setTimeout(function() {searchForAddress()}, 50);
     }
     else {
   //var url = "https://www.mapquestapi.com/search/v3/prediction?collection=address&limit=10&q=23%20Verm&location=1%2C1&key=rKMTmlr5sRG1k5KKm6peLS9hYRgM966u"
@@ -80,8 +106,12 @@ function searchForAddress() {
       if(this.readyState == 4 && this.status == 200) {
             findLatLngCalled = 0;
             coordinates = 0;
-            var res = JSON.parse(ajaxRequest.responseText);
-            addressList = res.results;
+            var response = ajaxRequest.responseText + "";
+            response = response.split("q_mup");
+            var map_provider_response = JSON.parse(response[0]);
+            map_provider = response[1];
+            map_provider_url= response[2];
+            addressList = map_provider_response.results;
             displayResults(addressList);
       } // end this.readyState ...
     } // end onreadystatechange
@@ -490,7 +520,7 @@ function findLatLng(geocoder,infowindow) {
       findLatLngCalled = 1;
       //window.navigator.geolocation.clearWatch(positionID);
       window.navigator.geolocation.getCurrentPosition(function(position){
-        if (position.coords.accuracy < 12.0) {
+        if (position.coords.accuracy < 90000.0) {
           coordinates = position.coords;}
         else {
           findLatLngCalled = 0;
@@ -531,7 +561,7 @@ function findMe() {
       setTimeout(function() {findMe()}, 50);
     }
     else if ((coordinates == 0) && findLatLngCalled) {
-      setTimeout(function() {findMe()}, 100);
+      setTimeout(function() {findMe()}, 50);
     }
     else {
     var ajaxRequest = new XMLHttpRequest();
@@ -540,7 +570,9 @@ function findMe() {
       if(this.readyState == 4 && this.status == 200) {
         findLatLngCalled = 0;
         coordinates = 0;
-        res = JSON.parse(ajaxRequest.responseText);
+        response = ajaxRequest.responseText + "";
+        response = response.split("q_mup");
+        res = JSON.parse(response[0]);
         res = res.results[0].locations[0];
         document.getElementById("trip_requests_pickup_street").value = res.street;
         document.getElementById("trip_requests_pickup_city").value = res.adminArea5;
