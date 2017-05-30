@@ -51,7 +51,7 @@ function submitTripRequestForm() {
 
 
 $(window).load(function() {
-    findLatLng(1,1);
+    findLatLng(1,1,1);
     document.getElementById("mainContainer").style.display = "block";
     document.getElementById("requestRideBtn").style.visibility = "hidden";
     var button = document.getElementById("requestRideBtn");
@@ -93,7 +93,7 @@ function searchForAddress() {
   if (  (input.length > 4) && ((input.length % 3 == 0) || (input.split(" ").length > 2)) ) {
   var ajaxRequest = new XMLHttpRequest();
     if ((coordinates == 0) && !findLatLngCalled) {
-      findLatLng(1,1);
+      findLatLng(1,1,0);
       setTimeout(function() {searchForAddress()}, 50);
     }
     else if ((coordinates == 0) && findLatLngCalled) {
@@ -515,16 +515,21 @@ function geocodeLatLng(geocoder,latlng,infowindow) {
 } // end function geocodeLatLng
 
 
-function findLatLng(geocoder,infowindow) {
+function findLatLng(geocoder,infowindow, accuracyCode) {
     if(navigator.geolocation) {
       findLatLngCalled = 1;
+      var accuracyA;
       //window.navigator.geolocation.clearWatch(positionID);
+      if (accuracyCode == 0)
+        accuracyA = 100.0;
+      else
+        accuracyA = 6.0;
       window.navigator.geolocation.getCurrentPosition(function(position){
-        if (position.coords.accuracy < 6.0) {
+        if (position.coords.accuracy < accuracyA) {
           coordinates = position.coords;}
         else {
           findLatLngCalled = 0;
-          findLatLng(1,1);}
+          findLatLng(1,1, accuracyCode);}
         // geocodeLatLng(geocoder,position,infowindow);
       }, geolocateError, {enableHighAccuracy: true, maximumAge: 0});
     }
@@ -557,7 +562,7 @@ function reverseGeocode(latlng) {
 
 function findMe() {
     if ((coordinates == 0) && !findLatLngCalled) {
-      findLatLng(1,1);
+      findLatLng(1,1,1);
       setTimeout(function() {findMe()}, 50);
     }
     else if ((coordinates == 0) && findLatLngCalled) {
