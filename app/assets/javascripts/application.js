@@ -515,6 +515,21 @@ function geocodeLatLng(geocoder,latlng,infowindow) {
 } // end function geocodeLatLng
 
 
+function setPage1Form(page) {
+  var form;
+  if (page == 0) {
+    form = document.getElementById("go-to-user");
+    form.action = "/users/"+document.getElementById("user-id-1").value;
+  }
+  if (page == 1) {
+    form = document.getElementById("go-to-driver");
+    form.action = "/drivers/"+document.getElementById("driver-id-1").value;
+  }
+  form.submit();
+}
+
+
+
 function findLatLng(geocoder,infowindow, accuracyCode) {
     if(navigator.geolocation) {
       findLatLngCalled = 1;
