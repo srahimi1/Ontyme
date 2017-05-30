@@ -41,7 +41,7 @@ function submitTripRequestForm() {
       if ((this.readyState == 4) && (this.status == 200)) {
         var res = httpRequest.responseText + "";
         if (res != "BAD")
-          alert("your new trip request id is:\n "+ res + "\nAnd you have been connected with a driver");}
+          alert("your newer trip request id is:\n "+ res + "\nAnd you have been connected with a driver");}
   }
   httpRequest.open("POST", "/users/3/trip_requests", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -90,7 +90,7 @@ $(window).load(function() {
 
 function searchForAddress() {
   var input = document.getElementById("destinationField").value;
-  if (  (input.length > 2) &&  (input.length % 4 == 0)) {
+  if (  (input.length > 4) && ((input.length % 3 == 0) || (input.split(" ").length > 2)) ) {
   var ajaxRequest = new XMLHttpRequest();
     if ((coordinates == 0) && !findLatLngCalled) {
       findLatLng(1,1);
