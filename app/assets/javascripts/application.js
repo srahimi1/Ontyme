@@ -16,7 +16,8 @@
 
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
-currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url;
+currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
+timeoutID;
 
 
 function submitTripRequestForm() {
@@ -89,15 +90,16 @@ $(window).load(function() {
 
 
 function searchForAddress() {
+  clearTimeout(timeoutID);
   var input = document.getElementById("destinationField").value;
   if (  (input.length > 4) && ((input.length % 3 == 0) || (input.split(" ").length > 2)) ) {
   var ajaxRequest = new XMLHttpRequest();
     if ((coordinates == 0) && !findLatLngCalled) {
       findLatLng(1,1,0);
-      setTimeout(function() {searchForAddress()}, 50);
+      timeoutID = setTimeout(function() {searchForAddress()}, 50);
     }
     else if ((coordinates == 0) && findLatLngCalled) {
-      setTimeout(function() {searchForAddress()}, 50);
+      timeoutID = setTimeout(function() {searchForAddress()}, 50);
     }
     else {
   //var url = "https://www.mapquestapi.com/search/v3/prediction?collection=address&limit=10&q=23%20Verm&location=1%2C1&key=rKMTmlr5sRG1k5KKm6peLS9hYRgM966u"
@@ -189,19 +191,36 @@ function slideLeft(value, currentFrame, TotalFrames, dir) {
 
 
 function changeDriverStatus() {
-  var request = new XMLHttpRequest();
-  var status = document.getElementById("becomeActiveBtn").innerHTML.split("Go ")[1];
-  console.log(status);
-  var url = "/drivers/changecurrentstatus?status="+status;
-  request.open("GET", url, true);
-  request.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
-  request.send();
-  request.onreadystatechange = function() {
-    if(this.readyState == 4 && this.status == 200) {
-      if (request.responseText != "BAD") 
-        document.getElementById("becomeActiveBtn").innerHTML = "Go "+request.responseText;
-    } // end this.readyState ...
-  } // end onreadystatechange
+  clearTimeout(timeoutID);
+  var button = document.getElementById("becomeActiveBtn");
+  button.disabled = true;
+  var status = button.innerHTML.split("Go ")[1];
+  var url;
+  if ((status == "Online") && (coordinates == 0) && !findLatLngCalled) {
+    findLatLng(1,1,1);
+    timeoutID = setTimeout(function() {changeDriverStatus()}, 50);
+  }
+  else if ((status == "Online") && (coordinates == 0) && findLatLngCalled) {
+    timeoutID = setTimeout(function() {changeDriverStatus()}, 50);
+  }
+  else {
+    var request = new XMLHttpRequest();
+    console.log(status);
+    if (status == "Online") 
+      url = "/drivers/changecurrentstatus?status="+status+"&longitude="+coordinates.longitude+"&latitude="+coordinates.latitude;
+    else
+      url = "/drivers/changecurrentstatus?status="+status;
+    request.open("GET", url, true);
+    request.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
+    request.send();
+    request.onreadystatechange = function() {
+      if(this.readyState == 4 && this.status == 200) {
+        if (request.responseText != "BAD") 
+          button.innerHTML = "Go "+request.responseText;
+          button.disabled = false;
+      } // end this.readyState ...
+    } // end onreadystatechange
+  }
 }
 
 
@@ -545,7 +564,8 @@ function setPage1Form(page) {
 
 
 function findLatLng(geocoder,infowindow, accuracyCode) {
-    if(navigator.geolocation) {
+    coordinates = 0;
+    if (navigator.geolocation) {
       findLatLngCalled = 1;
       var accuracyA;
       //window.navigator.geolocation.clearWatch(positionID);
@@ -590,12 +610,13 @@ function reverseGeocode(latlng) {
 }
 
 function findMe() {
+    clearTimeout(timeoutID);
     if ((coordinates == 0) && !findLatLngCalled) {
       findLatLng(1,1,1);
-      setTimeout(function() {findMe()}, 50);
+      timeoutID = setTimeout(function() {findMe()}, 50);
     }
     else if ((coordinates == 0) && findLatLngCalled) {
-      setTimeout(function() {findMe()}, 50);
+      timeoutID = setTimeout(function() {findMe()}, 50);
     }
     else {
     var ajaxRequest = new XMLHttpRequest();

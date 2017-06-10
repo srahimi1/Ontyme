@@ -15,7 +15,8 @@ class DriversController < ApplicationController
 		driverCurrentStatus = DriverCurrentStatus.find_by(driver_id: session[:driver_id]) 
 		if driverCurrentStatus
 			driverCurrentStatus.status = params[:status]
-			puts "status is"+params[:status]
+			driverCurrentStatus.current_longitude = params[:longitude]
+			driverCurrentStatus.current_latitude = params[:latitude]
 			if driverCurrentStatus.save
 				if (params[:status] == "Offline")
 					render plain: "Online"
