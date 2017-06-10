@@ -185,9 +185,23 @@ function slideLeft(value, currentFrame, TotalFrames, dir) {
     else {
       item.style.marginLeft = (0-sliderLeftDim) + value + "px";
     }}
+}
 
 
-
+function changeDriverStatus() {
+  var request = new XMLHttpRequest();
+  var status = document.getElementById("becomeActiveBtn").innerHTML.split("Go ")[1];
+  console.log(status);
+  var url = "/drivers/changecurrentstatus?status="+status;
+  request.open("GET", url, true);
+  request.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
+  request.send();
+  request.onreadystatechange = function() {
+    if(this.readyState == 4 && this.status == 200) {
+      if (request.responseText != "BAD") 
+        document.getElementById("becomeActiveBtn").innerHTML = "Go "+request.responseText;
+    } // end this.readyState ...
+  } // end onreadystatechange
 }
 
 

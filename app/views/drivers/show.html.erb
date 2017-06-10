@@ -51,9 +51,9 @@
 
 <div id="midSectionDiv">
 
-<p id="driverCurrentStatus"></p>
+<h2 id="driverCurrentStatus">You are <%= DriverCurrentStatus.find_by(driver_id: params[:id] ).status %> </h2>
 <div id="requestRideBtnDiv">
-  <button id="becomeActiveBtn" type="button" onmouseout="doStyle(this,'out')" onmousedown="doStyle(this,'down')" onclick="changeDriverStatus()">Go Online</button>
+  <button id="becomeActiveBtn" type="button" onclick="changeDriverStatus()">Go Online</button>
 </div>
 
 

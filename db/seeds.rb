@@ -8,3 +8,4 @@
 
 User.create([{user_id: "1"}, {user_id: "2"}, {user_id: "3"}])
 Driver.create([{driver_id: "1"}, {driver_id: "2"}, {driver_id: "3"}, {driver_id: "4"}, {driver_id: "5"}])
+DriverCurrentStatus.create([{driver_id: "1", status: "offline"}, {driver_id: "2", status: "offline"}, {driver_id: "3", status: "offline"}, {driver_id: "4", status: "offline"}, {driver_id: "5", status: "offline"}])

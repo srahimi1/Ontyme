@@ -71,17 +71,16 @@ ActiveRecord::Schema.define(version: 20170516223337) do
   end
 
   create_table "driver_current_statuses", force: :cascade do |t|
-    t.integer  "driver_id"
+    t.string   "driver_id"
     t.string   "status"
     t.string   "current_longitude"
     t.string   "current_latitude"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
-    t.index ["driver_id"], name: "index_driver_current_statuses_on_driver_id", using: :btree
   end
 
   create_table "driver_receive_payment_methods", force: :cascade do |t|
-    t.integer  "driver_id"
+    t.string   "driver_id"
     t.string   "name"
     t.string   "description"
     t.string   "method"
@@ -99,7 +98,6 @@ ActiveRecord::Schema.define(version: 20170516223337) do
     t.string   "status"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.index ["driver_id"], name: "index_driver_receive_payment_methods_on_driver_id", using: :btree
   end
 
   create_table "drivers", force: :cascade do |t|
@@ -124,7 +122,7 @@ ActiveRecord::Schema.define(version: 20170516223337) do
   end
 
   create_table "payment_methods", force: :cascade do |t|
-    t.integer  "user_id"
+    t.string   "user_id"
     t.string   "name"
     t.string   "description"
     t.string   "method"
@@ -142,7 +140,6 @@ ActiveRecord::Schema.define(version: 20170516223337) do
     t.string   "status"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.index ["user_id"], name: "index_payment_methods_on_user_id", using: :btree
   end
 
   create_table "trip_requests", force: :cascade do |t|
@@ -200,7 +197,4 @@ ActiveRecord::Schema.define(version: 20170516223337) do
   add_foreign_key "completed_trips", "drivers"
   add_foreign_key "completed_trips", "trip_requests"
   add_foreign_key "completed_trips", "users"
-  add_foreign_key "driver_current_statuses", "drivers"
-  add_foreign_key "driver_receive_payment_methods", "drivers"
-  add_foreign_key "payment_methods", "users"
 end
