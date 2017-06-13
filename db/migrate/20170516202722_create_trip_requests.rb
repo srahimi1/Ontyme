@@ -24,5 +24,8 @@ class CreateTripRequests < ActiveRecord::Migration[5.0]
         t.string :status
         t.timestamps
     end
+  
+    add_index :trip_requests, :trip_request_id, unique: true
+
   end
 end
