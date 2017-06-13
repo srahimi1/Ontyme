@@ -168,6 +168,7 @@ ActiveRecord::Schema.define(version: 20170516223337) do
     t.string   "status"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
+    t.index ["trip_request_id"], name: "index_trip_requests_on_trip_request_id", unique: true, using: :btree
   end
 
   create_table "users", force: :cascade do |t|
