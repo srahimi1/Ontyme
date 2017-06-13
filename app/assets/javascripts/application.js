@@ -17,7 +17,44 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID;
+timeoutID, webWorker;
+
+
+function checkForRideRequests() {
+  if (!!window.Worker) {
+    webWorker = new Worker("/javascripts/checkForRideRequests.js");
+    webWorker.onmessage = function(event) {
+      var data = event.data;
+      showDriverRideRequestModal(data);
+    } // end webWorker.onmessage = function(event)
+  } // end if (!!window.Worker)
+
+  else {}
+} // end of function checkForRideRequests
+
+
+function showDriverRideRequestModal(data) {
+  $('#driverRideRequestModal').modal('show');
+  if ((data != "null") && (data != "cancelled")) {
+    document.getElementById("driverRequestData").style.display = "block";
+    document.getElementById("driverRequestCancel").style.display = "none";
+    for (var key in data) {
+      if (data.hasOwnProperty(key)) {
+        var el = key + "";
+        document.getElementById(el).innerHTML = data[key];
+      }
+    } 
+  } // end if ((data != "null") && (data != "cancelled")) 
+  else {
+    document.getElementById("driverRequestData").style.display = "none";
+    var el = document.getElementById("driverRequestCancel");
+    el.innerHTML = "Request Cancelled";
+    el.style.display = "block";
+  }
+} // end function showDrvierRideRequestModal(data)
+
+
+
 
 
 function submitTripRequestForm() {
@@ -42,7 +79,7 @@ function submitTripRequestForm() {
       if ((this.readyState == 4) && (this.status == 200)) {
         var res = httpRequest.responseText + "";
         if (res != "BAD")
-          alert("your newer trip request id is:\n "+ res + "\nAnd you have been connected with a driver");}
+          alert("your newer trip request id is:\n "+ res.split("mup_q")[0] + "\nAnd they are "+res.split("mup_q")[1]+" km away");}
   }
   httpRequest.open("POST", "/users/3/trip_requests", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -205,7 +242,6 @@ function changeDriverStatus() {
   }
   else {
     var request = new XMLHttpRequest();
-    console.log(status);
     if (status == "Online") 
       url = "/drivers/changecurrentstatus?status="+status+"&longitude="+coordinates.longitude+"&latitude="+coordinates.latitude;
     else
@@ -215,9 +251,17 @@ function changeDriverStatus() {
     request.send();
     request.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
-        if (request.responseText != "BAD") 
-          button.innerHTML = "Go "+request.responseText;
-          button.disabled = false;
+        var response = request.responseText + "";
+        if (response != "BAD") { 
+          if (response == "Offline") 
+            checkForRideRequests();
+          else {
+            webWorker.terminate();
+            webWorker = undefined;
+          }
+          button.innerHTML = "Go " + response;
+          button.disabled = false; 
+        }
       } // end this.readyState ...
     } // end onreadystatechange
   }

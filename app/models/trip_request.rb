@@ -38,8 +38,41 @@ class TripRequest < ApplicationRecord
 	end
 
 
+	def self.find_closest_driver(trip_request_id)
+		trip_request = TripRequest.find_by(trip_request_id: trip_request_id)
+		drivers = DriverCurrentStatus.where(trip_status: 'available', status: 'Online')
+		if (drivers)
+			drivers_sorted = drivers.all.sort_by {|driver| GPS_distance(driver.current_longitude, driver.current_latitude, trip_request.pickup_longitude, trip_request.pick_latitude)}
+			closest_driver = DriverCurrentStatus.find_by(driver_id: drivers_sorted.first.driver_id) 
+			if ((closest_driver.trip_status == "available") && (closest_driver.status == "Online"))
+				puts "\n\n\n"+ GPS_distance(closest_driver.current_longitude, closest_driver.current_latitude, trip_request.pickup_longitude, trip_request.pick_latitude)+"\n\n\n"
+				return closest_driver
+			else
+				find_closest_driver(trip_request_id)
+			end
+		else
+			return "null"
+		end
+	end
 
+	def self.GPS_distance(long1, lat1, long2, lat2)
+		long1 = long1.to_f
+		long2 = long2.to_f
+		lat1 = lat1.to_f
+		lat2 = lat2.to_f
+		earth_radius_km = 6371
+		d_lat = degrees_to_radians(lat2 - lat1)
+		d_long = degrees_to_radians(long2 - long1)
+		lat1 = degrees_to_radians(lat1)
+		lat2 = degrees_to_radians(lat2)
+		a = Math.sin(d_lat/2) * Math.sin(d_lat/2) + Math.sin(d_long/2) * Math.sin(d_long/2) * Math.cos(lat1) * Math.cos(lat2)
+		b = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+		distance = earth_radius_km * b
+	end
 
+	def degrees_to_radians(deg)
+		degree = deg * Math::PI / 180
+	end
 
 
 end

@@ -5,6 +5,8 @@ class CreateDriverCurrentStatuses < ActiveRecord::Migration[5.0]
     	t.string :status
     	t.string :current_longitude
     	t.string :current_latitude
+		t.string :trip_status
+		t.text :trip_request_id
 		t.timestamps
     end
   end

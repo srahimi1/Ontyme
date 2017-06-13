@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
 	get '/users/getaddress', to: 'users#findAddress'
 	get '/drivers/changecurrentstatus', to: 'drivers#changeCurrentStatus'
-
+	get '/drivers/checkForRideRequests', to: 'drivers#checkForRideRequests'
 
 	resources :users do 
 		resources :trip_requests

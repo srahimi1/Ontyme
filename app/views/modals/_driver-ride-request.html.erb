@@ -1,0 +1,40 @@
+<div class="modal fade" id="driverRideRequestModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" id="hidMod">
+
+    <div id="slider-main">
+      <div class="slider-content">
+      <div class="modal-header ride-request-modal-header">
+                <h4 class="modal-title ontyme-title" id="myModalLabel1">Ride Request</h4>
+      </div>
+      <div class="modal-body" id="rideRequestModalBody">
+        <div id="driverRequestData">
+          <h4>From: </h4>
+          <p id="pickup_street"></p>
+          <p id="pickup_city"></p>
+          <p id="pickup_state"></p>
+          <p id="pickup_postalcode"></p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <h4>To: </h4>
+          <p id="destination_street"></p>
+          <p id="destination_city"></p>
+          <p id="destination_state"></p>
+          <p id="destination_postalcode"></p>
+          <p>&nbsp;</p>
+          <p><button type="button" onclick="acceptRequest(1)">Accept</button></p>
+          <p><button type="button" onclick="acceptRequest(0)">Reject</button></p>
+        </div>
+
+        <div id="driverRequestCancel"></div>
+      </div>
+      </div> <!-- end div id="slider-content" -->
+      </div> <!-- end div id="slider-main" -->
+
+
+      <div class="modal-footer ride-request-modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
