@@ -10,8 +10,9 @@ class TripRequestsController < ApplicationController
 			closest_driver = TripRequest.find_closest_driver(@trip_request.trip_request_id)
 			found_driver = "null"
 			if (closest_driver != "null")
-				found_driver = GPS_distance(closest_driver.current_longitude, closest_driver.current_latitude, @trip_request.pickup_longitude, @trip_request.pick_latitude)
+				found_driver = TripRequest.GPS_distance(closest_driver.current_longitude, closest_driver.current_latitude, @trip_request.pickup_longitude, @trip_request.pickup_latitude)
 				closest_driver.trip_status = "requesting"
+				closest_driver.trip_request_id = @trip_request.trip_request_id
 				closest_driver.save
 			end
 			render plain: @trip_request.trip_request_id+"mup_q"+found_driver.to_s

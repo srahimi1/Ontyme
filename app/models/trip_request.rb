@@ -41,11 +41,16 @@ class TripRequest < ApplicationRecord
 	def self.find_closest_driver(trip_request_id)
 		trip_request = TripRequest.find_by(trip_request_id: trip_request_id)
 		drivers = DriverCurrentStatus.where(trip_status: 'available', status: 'Online')
-		if (drivers)
-			drivers_sorted = drivers.all.sort_by {|driver| GPS_distance(driver.current_longitude, driver.current_latitude, trip_request.pickup_longitude, trip_request.pick_latitude)}
+		puts "\n\nhere\n\n"
+		puts drivers.inspect
+		if (!drivers.empty?)
+			drivers_sorted = drivers.all.sort_by {|driver| GPS_distance(driver.current_longitude, driver.current_latitude, trip_request.pickup_longitude, trip_request.pickup_latitude)}
+			puts "\n\n\nghghghg\n"
+			puts drivers_sorted.first.inspect
+			puts "\n\n\n"
 			closest_driver = DriverCurrentStatus.find_by(driver_id: drivers_sorted.first.driver_id) 
 			if ((closest_driver.trip_status == "available") && (closest_driver.status == "Online"))
-				puts "\n\n\n"+ GPS_distance(closest_driver.current_longitude, closest_driver.current_latitude, trip_request.pickup_longitude, trip_request.pick_latitude)+"\n\n\n"
+				puts "\n\n\n"+ GPS_distance(closest_driver.current_longitude, closest_driver.current_latitude, trip_request.pickup_longitude, trip_request.pickup_latitude).to_s+"\n\n\n"
 				return closest_driver
 			else
 				find_closest_driver(trip_request_id)
@@ -54,6 +59,11 @@ class TripRequest < ApplicationRecord
 			return "null"
 		end
 	end
+
+	def self.degrees_to_radians(deg)
+		degree = deg * Math::PI / 180
+	end
+
 
 	def self.GPS_distance(long1, lat1, long2, lat2)
 		long1 = long1.to_f
@@ -69,10 +79,5 @@ class TripRequest < ApplicationRecord
 		b = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
 		distance = earth_radius_km * b
 	end
-
-	def degrees_to_radians(deg)
-		degree = deg * Math::PI / 180
-	end
-
 
 end

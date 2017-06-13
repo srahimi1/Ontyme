@@ -17,7 +17,40 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID, webWorker;
+timeoutID, webWorker, watchID, nullCoords = {"latitude" : null, "longitude": null};
+
+var coordinates2 = nullCoords;
+
+var options = {
+  enableHighAccuracy: true,
+  maximumAge: 0
+};
+
+
+function wp(){
+  watchID = window.navigator.geolocation.watchPosition(success2, error2, options);
+}
+
+
+function success2(pos) {
+  if (pos.coords.accuracy > 1500000000.0) {
+    error2();
+  }
+  else {
+    window.navigator.geolocation.clearWatch(watchID);
+    coordinates2 = pos.coords;
+    if (!!webWorker) {
+      webWorker.postMessage({"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude});
+    }
+  }
+}
+
+function error2() {
+  window.navigator.geolocation.clearWatch(watchID);
+  coordinates2 = nullCoords;
+  wp();
+}
+
 
 
 function checkForRideRequests() {
@@ -253,8 +286,10 @@ function changeDriverStatus() {
       if(this.readyState == 4 && this.status == 200) {
         var response = request.responseText + "";
         if (response != "BAD") { 
-          if (response == "Offline") 
+          if (response == "Offline") { 
+            wp();
             checkForRideRequests();
+          }
           else {
             webWorker.terminate();
             webWorker = undefined;
@@ -614,9 +649,9 @@ function findLatLng(geocoder,infowindow, accuracyCode) {
       var accuracyA;
       //window.navigator.geolocation.clearWatch(positionID);
       if (accuracyCode == 0)
-        accuracyA = 100.0;
+        accuracyA = 1000000.0;
       else
-        accuracyA = 6.0;
+        accuracyA = 600000.0;
       window.navigator.geolocation.getCurrentPosition(function(position){
         if (position.coords.accuracy < accuracyA) {
           coordinates = position.coords;}
