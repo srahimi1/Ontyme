@@ -27,6 +27,10 @@ var options = {
 };
 
 
+function inputChanged() {
+  document.getElementById("trip_requests_input_changed").value = "1";
+}
+
 function wp(){
   watchID = window.navigator.geolocation.watchPosition(success2, error2, options);
 }
@@ -107,6 +111,7 @@ function submitTripRequestForm() {
   var pickup_latitude = document.getElementById("trip_requests_pickup_latitude").value;
   var map_provider_pickup_id = document.getElementById("trip_requests_map_provider_pickup_id").value;
   var map_provider_pickup_slug = document.getElementById("trip_requests_map_provider_pickup_slug").value;
+  var input_changed = document.getElementById("trip_requests_input_changed").value;
   var httpRequest = new XMLHttpRequest();
   httpRequest.onreadystatechange = function() {
       if ((this.readyState == 4) && (this.status == 200)) {
@@ -117,7 +122,7 @@ function submitTripRequestForm() {
   httpRequest.open("POST", "/users/3/trip_requests", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
-  httpRequest.send("trip_request[destination_street]="+destination_street+"&trip_request[destination_city]="+destination_city+"&trip_request[destination_state]="+destination_state+"&trip_request[destination_postalcode]="+destination_postalcode+"&trip_request[destination_longitude]="+destination_longitude+"&trip_request[destination_latitude]="+destination_latitude+"&trip_request[map_provider_destination_id]="+map_provider_destination_id+"&trip_request[map_provider_destination_slug]="+map_provider_destination_slug+"&trip_request[pickup_street]="+pickup_street+"&trip_request[pickup_city]="+pickup_city+"&trip_request[pickup_state]="+pickup_state+"&trip_request[pickup_postalcode]="+pickup_postalcode+"&trip_request[pickup_longitude]="+pickup_longitude+"&trip_request[pickup_latitude]="+pickup_latitude+"&trip_request[map_provider_pickup_id]="+map_provider_pickup_id+"&trip_request[map_provider_pickup_slug]="+map_provider_pickup_slug+"&trip_request[map_provider]="+map_provider+"&trip_request[map_provider_url]="+map_provider_url);
+  httpRequest.send("trip_request[input_changed]="+input_changed+"&trip_request[destination_street]="+destination_street+"&trip_request[destination_city]="+destination_city+"&trip_request[destination_state]="+destination_state+"&trip_request[destination_postalcode]="+destination_postalcode+"&trip_request[destination_longitude]="+destination_longitude+"&trip_request[destination_latitude]="+destination_latitude+"&trip_request[map_provider_destination_id]="+map_provider_destination_id+"&trip_request[map_provider_destination_slug]="+map_provider_destination_slug+"&trip_request[pickup_street]="+pickup_street+"&trip_request[pickup_city]="+pickup_city+"&trip_request[pickup_state]="+pickup_state+"&trip_request[pickup_postalcode]="+pickup_postalcode+"&trip_request[pickup_longitude]="+pickup_longitude+"&trip_request[pickup_latitude]="+pickup_latitude+"&trip_request[map_provider_pickup_id]="+map_provider_pickup_id+"&trip_request[map_provider_pickup_slug]="+map_provider_pickup_slug+"&trip_request[map_provider]="+map_provider+"&trip_request[map_provider_url]="+map_provider_url);
 }
 
 
@@ -143,6 +148,7 @@ $(window).load(function() {
       document.getElementById("slider-main").style.visibility = "hidden";
       document.getElementById("destinationField").value = "";
       document.getElementById("listOfAddresses").innerHTML = "<p>&nbsp;</p>";
+      document.getElementById("trip_requests_input_changed").value = "";
     });
 
 

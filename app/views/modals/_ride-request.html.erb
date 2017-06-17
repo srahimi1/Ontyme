@@ -17,20 +17,21 @@
         <%= form_for :trip_requests do |f|  %>
           <p>
           <%= f.label :Street %><br>
-          <%= f.text_field :destination_street, :value => "" %> </p>
+          <%= f.text_field :destination_street, :value => "", :onkeyup => 'inputChanged()' %> </p>
           <p>
           <%= f.label :City %><br>
-          <%= f.text_field :destination_city, :value => "" %>
+          <%= f.text_field :destination_city, :value => "", :onkeyup => 'inputChanged()' %>
           <%= f.label :State %><br>
-          <%= f.text_field :destination_state, :value => "" %>
+          <%= f.text_field :destination_state, :value => "", :onkeyup => 'inputChanged()' %>
           <%= f.label :Zip_code %><br>
-          <%= f.text_field :destination_postalcode, :value => "" %>
+          <%= f.text_field :destination_postalcode, :value => "", :onkeyup => 'inputChanged()' %>
           <%= f.hidden_field :destination_longitude, :value => "" %>
           <%= f.hidden_field :destination_latitude, :value => "" %>
           <%= f.hidden_field :map_provider_destination_id, :value => "" %>
           <%= f.hidden_field :map_provider_destination_slug, :value => "" %>
           <%= f.hidden_field :map_provider, :value => "" %>
           <%= f.hidden_field :map_provider_url, :value => "" %>
+          <%= f.hidden_field :input_changed, :value => "" %>
           </p>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="sliderNextBtn" onclick="void(0)">Next</button>
@@ -48,14 +49,14 @@
         <p>-- or --</p>
         <p>
           <%= f.label :Street %><br>
-          <%= f.text_field :pickup_street, :value => ""  %> </p>
+          <%= f.text_field :pickup_street, :value => "", :onkeyup => 'inputChanged()'  %> </p>
           <p>
           <%= f.label :City %><br>
-          <%= f.text_field :pickup_city, :value => ""   %>
+          <%= f.text_field :pickup_city, :value => "", :onkeyup => 'inputChanged()'   %>
           <%= f.label :State %><br>
-          <%= f.text_field :pickup_state, :value => ""   %>
+          <%= f.text_field :pickup_state, :value => "", :onkeyup => 'inputChanged()'   %>
           <%= f.label :Zip_code %><br>
-          <%= f.text_field :pickup_postalcode, :value => ""   %>
+          <%= f.text_field :pickup_postalcode, :value => "", :onkeyup => 'inputChanged()'   %>
           <%= f.hidden_field :pickup_longitude, :value => ""   %>
           <%= f.hidden_field :pickup_latitude, :value => ""   %>
           <%= f.hidden_field :map_provider_pickup_id, :value => ""   %>
