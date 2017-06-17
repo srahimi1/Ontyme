@@ -9,7 +9,7 @@ class TripRequestsController < ApplicationController
 		@trip_request.user_id = params["user_id"]
 		@trip_request.status = "new"
 		@trip_request.trip_request_id = TripRequest.create_id
-		if @trip_request.save
+		if (@trip_request.save)
 			closest_driver = TripRequest.find_closest_driver(@trip_request.trip_request_id)
 			found_driver = "null"
 			if (closest_driver != "null")
@@ -20,7 +20,7 @@ class TripRequestsController < ApplicationController
 			end
 			render plain: @trip_request.trip_request_id+"mup_q"+found_driver.to_s
 		else
-			render plain: "BAD"
+			create
 		end
 	end
 
