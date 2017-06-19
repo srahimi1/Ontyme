@@ -95,7 +95,7 @@ function showDriverRideRequestModal(data) {
         document.getElementById(el).innerHTML = data[key];
       }
     }
-    audio.play();
+    unmuteAudio();
   } // end if ((data != "null") && (data != "cancelled")) 
   else {
     document.getElementById("driverRequestData").style.display = "none";
@@ -106,7 +106,10 @@ function showDriverRideRequestModal(data) {
 } // end function showDrvierRideRequestModal(data)
 
 
-
+function unmuteAudio() {
+  audio.currentTime = 0;
+  audio.muted = false;
+}
 
 
 function submitTripRequestForm() {
@@ -308,6 +311,9 @@ function changeDriverStatus() {
         var response = request.responseText + "";
         if (response != "BAD") { 
           if (response == "Offline") { 
+            audio = new Audio("/sounds/DriverRideRequestMusic1.mp3");
+            audio.muted = true;
+            audio.oncanplaythrough = function() {audio.play();}
             wp();
             checkForRideRequests();
           }
