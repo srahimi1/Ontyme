@@ -96,7 +96,7 @@ function showDriverRideRequestModal(data) {
     }
     audio = document.getElementById("driverRideRequestAudio");
     audio.src = "/sounds/DriverRideRequestMusic1.mp3";
-    audio.play();
+    audio.addEventListener('load', function() {audio.play(); });
   } // end if ((data != "null") && (data != "cancelled")) 
   else {
     document.getElementById("driverRequestData").style.display = "none";
