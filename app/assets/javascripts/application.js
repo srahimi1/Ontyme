@@ -308,11 +308,6 @@ function changeDriverStatus() {
         var response = request.responseText + "";
         if (response != "BAD") { 
           if (response == "Offline") { 
-              audio = document.getElementById("driverRideRequestAudio");
-              audio.src = "/sounds/DriverRideRequestMusic1.mp3";
-              audio.oncanplaythrough = function() {audio.play();
-              audio.pause(); };
-
             wp();
             checkForRideRequests();
           }
