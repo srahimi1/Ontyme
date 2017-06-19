@@ -17,7 +17,7 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID, webWorker, watchID, receivedRequest = 0, nullCoords = {"latitude" : null, "longitude": null};
+timeoutID, webWorker, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null};
 
 var coordinates2 = nullCoords;
 
@@ -94,9 +94,7 @@ function showDriverRideRequestModal(data) {
         document.getElementById(el).innerHTML = data[key];
       }
     }
-    audio = document.getElementById("driverRideRequestAudio");
-    audio.src = "/sounds/DriverRideRequestMusic1.mp3";
-    audio.oncanplaythrough = function() {audio.play(); };
+    audio.play();
   } // end if ((data != "null") && (data != "cancelled")) 
   else {
     document.getElementById("driverRequestData").style.display = "none";
@@ -309,6 +307,11 @@ function changeDriverStatus() {
         var response = request.responseText + "";
         if (response != "BAD") { 
           if (response == "Offline") { 
+              audio = document.getElementById("driverRideRequestAudio");
+              audio.src = "/sounds/DriverRideRequestMusic1.mp3";
+              audio.oncanplaythrough = function() {audio.play();
+              audio.pause(); };
+
             wp();
             checkForRideRequests();
           }
