@@ -27,6 +27,7 @@ var options = {
 };
 
 function acceptRequest(sel) {
+  audio.play();
   var url = "/drivers/acceptrequest?trip_request_id="+document.getElementById("trip_request_id").value+"&acceptance_code="+sel
   ajaxRequest.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
