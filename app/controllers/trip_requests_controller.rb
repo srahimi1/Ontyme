@@ -20,6 +20,7 @@ class TripRequestsController < ApplicationController
 			end
 			render plain: @trip_request.trip_request_id+"mup_q"+found_driver.to_s
 		else
+			puts "\n\n\n\n REDOING CREATE \n\n\n\n\n\n\n\n\n"
 			create
 		end
 	end

@@ -17,7 +17,7 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID, webWorker, watchID, nullCoords = {"latitude" : null, "longitude": null};
+timeoutID, webWorker, watchID, receivedRequest = 0, nullCoords = {"latitude" : null, "longitude": null};
 
 var coordinates2 = nullCoords;
 
@@ -25,6 +25,18 @@ var options = {
   enableHighAccuracy: true,
   maximumAge: 0
 };
+
+function acceptRequest(sel) {
+  var url = "/drivers/acceptrequest?trip_request_id="+document.getElementById("trip_request_id").value+"&acceptance_code="+sel
+  ajaxRequest.onreadystatechange = function() {
+      if(this.readyState == 4 && this.status == 200) {
+          
+      } // end this.readyState ...
+    } // end onreadystatechange
+    ajaxRequest.open("GET", url, true);
+    ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
+    ajaxRequest.send(); 
+}
 
 
 function inputChanged() {
@@ -62,7 +74,7 @@ function checkForRideRequests() {
     webWorker = new Worker("/javascripts/checkForRideRequests.js");
     webWorker.onmessage = function(event) {
       var data = event.data;
-      showDriverRideRequestModal(data);
+      if (receivedRequest == 0) showDriverRideRequestModal(data);
     } // end webWorker.onmessage = function(event)
   } // end if (!!window.Worker)
 
@@ -71,6 +83,7 @@ function checkForRideRequests() {
 
 
 function showDriverRideRequestModal(data) {
+  receivedRequest = 1;
   $('#driverRideRequestModal').modal('show');
   if ((data != "null") && (data != "cancelled")) {
     document.getElementById("driverRequestData").style.display = "block";
@@ -80,7 +93,10 @@ function showDriverRideRequestModal(data) {
         var el = key + "";
         document.getElementById(el).innerHTML = data[key];
       }
-    } 
+    }
+    audio = document.getElementById("driverRideRequestAudio");
+    audio.src = "/sounds/DriverRideRequestMusic1.mp3";
+    audio.play();
   } // end if ((data != "null") && (data != "cancelled")) 
   else {
     document.getElementById("driverRequestData").style.display = "none";

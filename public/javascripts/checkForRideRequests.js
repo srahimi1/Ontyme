@@ -1,4 +1,4 @@
-var event, trip_request_id = "null", coordinates;
+var event, trip_request_id = "null", coordinates, rideRequestSent = 0;
 
 onmessage = function(event) {
 	var data = event.data;
@@ -14,8 +14,13 @@ if (!!event) {
 	event.onmessage = function(event) {
 		var data = event.data;
 		console.log(data);
-		if ((data != "cancelled") && (data != "null")) data = JSON.parse(data);
-		postMessage(data);
+		if ((data != "cancelled") && (data != "null")) {
+			data = JSON.parse(data);
+			rideRequestSent = 1;}
+		if (rideRequestSent != 2) {
+			postMessage(data);
+			if (rideRequestSent == 1) rideRequestSent = 2;
+			}
 	} // end event.onmessage = function(event)
 }  // end if (!!window.EventSource)
 else {
