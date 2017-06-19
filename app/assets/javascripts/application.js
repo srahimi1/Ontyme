@@ -107,6 +107,7 @@ function showDriverRideRequestModal(data) {
 
 
 function unmuteAudio() {
+  console.log("unmuteAudio");
   audio.currentTime = 0;
   audio.muted = false;
 }
@@ -286,6 +287,9 @@ function slideLeft(value, currentFrame, TotalFrames, dir) {
 
 function changeDriverStatus() {
   clearTimeout(timeoutID);
+  audio = new Audio("/sounds/DriverRideRequestMusic1.mp3");
+  audio.muted = true;
+  audio.oncanplaythrough = function() {audio.play();}
   var button = document.getElementById("becomeActiveBtn");
   button.disabled = true;
   var status = button.innerHTML.split("Go ")[1];
@@ -311,9 +315,6 @@ function changeDriverStatus() {
         var response = request.responseText + "";
         if (response != "BAD") { 
           if (response == "Offline") { 
-            audio = new Audio("/sounds/DriverRideRequestMusic1.mp3");
-            audio.muted = true;
-            audio.oncanplaythrough = function() {audio.play();}
             wp();
             checkForRideRequests();
           }
