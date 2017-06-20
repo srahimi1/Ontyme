@@ -287,9 +287,11 @@ function slideLeft(value, currentFrame, TotalFrames, dir) {
 
 function changeDriverStatus() {
   clearTimeout(timeoutID);
-  audio = new Audio("/sounds/DriverRideRequestMusic1.mp3");
+  audio = new Audio("/sounds/DriverRideRequestMusic3.mp3");
   audio.muted = true;
-  audio.oncanplaythrough = function() {audio.play();}
+  audio.oncanplaythrough = function() {
+    console.log("canplauth");
+    audio.play();}
   var button = document.getElementById("becomeActiveBtn");
   button.disabled = true;
   var status = button.innerHTML.split("Go ")[1];
