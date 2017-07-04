@@ -75,7 +75,7 @@
           var p = map.getView().getProjection();
           var cord = ol.proj.fromLonLat([coordinates.longitude, coordinates.latitude], p);
           map.getView().setCenter(cord);
-          map.getView().setZoom(16);
+          map.getView().setZoom(13);
           setTimeout(function() {map.updateSize()}, 50);
           marker.setPosition(cord);
           watchPos();
