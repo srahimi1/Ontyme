@@ -3,57 +3,10 @@
 </script>
 
  <div id="mainContainer">
-  <div id="topSectionDiv">
-   <svg id="entireLogo" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="75"> 
-    <g id="entireLogo1" transform="scale(1 1)">
-
-      <g id="logoPart1" transform="scale(1 1)">
-
-        <rect id="logoBox" x="0" y="0" width="0" height="0" fill="#00aa77" rx="12" ry="12"></rect>
-        <g transform="translate(-10 -10)">
-          <g id="logoLetters" style="visibility:hidden"> 
-
-            <circle id="letterO" cx="50" cy="50" r="25" stroke="white" stroke-width="6" fill="#00aa77"></circle> <!-- fill="#88eebf" -->
-
-            <path id="letterN" d="M87 71 v-30 m0 10 a2 2 0 0 1 20 0 v20" stroke-width="5" stroke="white" fill="none"></path>
-
-            <path d="M102 30 h18" stroke-linejoin="round" stroke="#ffffff" stroke-width="5" fill="none" ></path>
-
-            <path id="letterT" d="M121 30 h18 h-18 v42"  stroke="#00aa77" stroke-width="5" fill="none" ></path>
-
-            <path id="letterY" d="M133 40 v15 q-1 11 10 10 h10 m0 -25 v35 q1 11 -10 10 h-11" stroke-width="5" stroke="#00aa77" fill="none"></path>
-
-            <path id="letterM" d="M167 71 v-30 m0 10 a2 2 0 0 1 20 0 v20 m0 -20 a2 2 0 0 1 20 0 v20" stroke="#00aa77" stroke-width="5" fill="none" ></path>
-
-            <path id="letterE" d="M220 54 h30 a2 2 0 0 0 -30 1 a2 2 0 0 0 30 3" stroke="#00aa77" stroke-width="5" fill="none" ></path>
-          </g> <!-- end  <g id="logoLetters" --> 
-          <g id="clock" style="visibility:hidden">
-            <rect id="bar1" fill="#f8f8f8" x="49" y="30" width="3" height="7"></rect>
-            <rect id="bar2" fill="#f8f8f8" x="63" y="49" width="7" height="3"></rect>
-            <rect id="bar3" fill="#f8f8f8" x="49" y="63" width="3" height="7"></rect>
-            <rect id="bar4" fill="#f8f8f8" x="30" y="49" width="7" height="3"></rect>
-            <line id="hourHand" x1="50" y1="50" x2="50" y2="33" stroke="#505050" stroke-width="2" transform="rotate(60 50 50)"></line>
-            <line id="minuteHand" x1="50" y1="50" x2="50" y2="33" stroke="#505050" stroke-width="2" transform="rotate(-30 50 50)"></line>
-            <line id="secondHand" x1="50" y1="50" x2="50" y2="30" stroke="#990000" stroke-width="1" transform="rotate(0 50 50)"></line>
-            <circle cx="50" cy="50" r="3" stroke="none" fill="#353535" ></circle>
-            <circle id="blockCircle" cx="50" cy="50" r="22" stroke="none" fill="#00aa77" fill-opacity="1"></circle>
-          </g> <!-- end  <g id="clock"  --> 
-        </g> <!-- end <g transform="translate(-10 -10)"  --> 
-      </g> <!-- end <g id="logoPart1"   --> 
-      <g id="logoPart2">
-        <text id="logoPhrase2" font-family="Arial" font-weight="bold" stroke="none" fill="#4f554f">Women Drivers for Women Riders</text>
-      </g> <!-- end  <g id="logoPart2">   -->
-    </g> <!-- end  <g id="entireLogo1" --> 
-  </svg>  
-  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="300" height="150">
-    <text id="logoPhrase1" x="0" y="0" dx="30" dy="63" font-size="32" font-family="Verdana" fill="#4d4d4d">Women Drivers For Women Passengers</text>
-  </svg>
-  <div id="logoPhrase2Parent">
-    <button id="signUpBtn">Sign Up</button>
-  </div>
-</div> <!-- end topSectionDiv -->
+  
 
 <div id="midSectionDiv">
+<div id="map" style="width: 530px; height: 500px"></div>
 
 <h2 id="driverCurrentStatus">You are <%= DriverCurrentStatus.find_by(driver_id: params[:id] ).status %> </h2>
 <div id="requestRideBtnDiv">
@@ -74,5 +27,67 @@
 </div>
 </div>
 
+<script type="text/javascript">
+      console.log(coordinates);
+
+     var key = 'pk.eyJ1IjoibWFwcGVybSIsImEiOiJjajRrOGlrdGkwZ3N2MnFxanF1ZTZnZzNnIn0.xrT2S657GvVZ3NXZ0Qu5dg';
+
+      // Calculation of resolutions that match zoom levels 1, 3, 5, 7, 9, 11, 13, 15.
+      var resolutions = [];
+      for (var i = 0; i <= 7; ++i) {
+        resolutions.push(156543.03392804097 / Math.pow(2, i * 2));
+      }
+      // Calculation of tile urls for zoom levels 1, 3, 5, 7, 9, 11, 13, 15.
+      function tileUrlFunction(tileCoord) {
+        return ('https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/' +
+            '{z}/{x}/{y}.vector.pbf?access_token=' + key)
+            .replace('{z}', String(tileCoord[0] * 2 - 1))
+            .replace('{x}', String(tileCoord[1]))
+            .replace('{y}', String(-tileCoord[2] - 1))
+            .replace('{a-d}', 'abcd'.substr(
+                ((tileCoord[1] << tileCoord[0]) + tileCoord[2]) % 4, 1));
+      }
+
+      var map = new ol.Map({
+        layers: [
+          new ol.layer.VectorTile({
+            source: new ol.source.VectorTile({
+              attributions: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> ' +
+                '© <a href="https://www.openstreetmap.org/copyright">' +
+                'OpenStreetMap contributors</a>',
+              format: new ol.format.MVT(),
+              tileGrid: new ol.tilegrid.TileGrid({
+                extent: ol.proj.get('EPSG:3857').getExtent(),
+                resolutions: resolutions,
+                tileSize: 512
+              }),
+              tilePixelRatio: 8,
+              tileUrlFunction: tileUrlFunction
+            }),
+            style: createMapboxStreetsV6Style()
+          })
+        ],
+        target: 'map',
+        view: new ol.View({
+          center: [60,40],
+          minZoom: 1,
+          zoom: 5
+        })
+      });
+
+
+        console.log(map);
+        var size = map.getSize();
+        console.log(size);
+        var p = map.getView().getProjection();
+        console.log(p);
+        var cord = ol.proj.fromLonLat([-73.403642, 40.807797], p);
+        map.getView().setCenter(cord);
+        map.getView().setZoom(15);
+
+
+
+
+</script>
 
 <%= render 'modals/driver-ride-request' %>
