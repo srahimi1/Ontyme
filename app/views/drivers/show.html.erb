@@ -39,7 +39,6 @@
       }
       // Calculation of tile urls for zoom levels 1, 3, 5, 7, 9, 11, 13, 15.
       function tileUrlFunction(tileCoord) {
-        console.log(tileCoord);
         return ('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwcGVybSIsImEiOiJjajRrOGlrdGkwZ3N2MnFxanF1ZTZnZzNnIn0.xrT2S657GvVZ3NXZ0Qu5dg')
             .replace('{z}', String(tileCoord[0] * 2 - 1))
             .replace('{x}', String(tileCoord[1]))
@@ -76,19 +75,16 @@
           var p = map.getView().getProjection();
           var cord = ol.proj.fromLonLat([coordinates.longitude, coordinates.latitude], p);
           map.getView().setCenter(cord);
-          map.getView().setZoom(17);
+          map.getView().setZoom(16);
           setTimeout(function() {map.updateSize()}, 50);
-          console.log(coordinates);
           marker.setPosition(cord);
           watchPos();
         } else {
-          console.log("cal\n");
           setTimeout(function() {recenterMap()}, 100);
         }
       }
 
       function watchPos() {
-        console.log("wapos");
         window.navigator.geolocation.watchPosition(function(position){ 
           var p = map.getView().getProjection();
           var coords = ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude], p);
