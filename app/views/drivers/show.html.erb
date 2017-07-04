@@ -39,32 +39,19 @@
       }
       // Calculation of tile urls for zoom levels 1, 3, 5, 7, 9, 11, 13, 15.
       function tileUrlFunction(tileCoord) {
-        return ('https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/' +
-            '{z}/{x}/{y}.vector.pbf?access_token=' + key)
+        console.log(tileCoord);
+        return ('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwcGVybSIsImEiOiJjajRrOGlrdGkwZ3N2MnFxanF1ZTZnZzNnIn0.xrT2S657GvVZ3NXZ0Qu5dg')
             .replace('{z}', String(tileCoord[0] * 2 - 1))
             .replace('{x}', String(tileCoord[1]))
-            .replace('{y}', String(-tileCoord[2] - 1))
-            .replace('{a-d}', 'abcd'.substr(
-                ((tileCoord[1] << tileCoord[0]) + tileCoord[2]) % 4, 1));
+            .replace('{y}', String(-tileCoord[2] - 1));
       }
 
       var map = new ol.Map({
         layers: [
-          new ol.layer.VectorTile({
-            source: new ol.source.VectorTile({
-              attributions: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> ' +
-                '© <a href="https://www.openstreetmap.org/copyright">' +
-                'OpenStreetMap contributors</a>',
-              format: new ol.format.MVT(),
-              tileGrid: new ol.tilegrid.TileGrid({
-                extent: ol.proj.get('EPSG:3857').getExtent(),
-                resolutions: resolutions,
-                tileSize: 512
-              }),
-              tilePixelRatio: 8,
-              tileUrlFunction: tileUrlFunction
-            }),
-            style: createMapboxStreetsV6Style()
+          new ol.layer.Tile({
+            source: new ol.source.XYZ({
+              url:'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwcGVybSIsImEiOiJjajRrOGlrdGkwZ3N2MnFxanF1ZTZnZzNnIn0.xrT2S657GvVZ3NXZ0Qu5dg' 
+              })
           })
         ],
         target: 'map',
@@ -89,7 +76,7 @@
           var p = map.getView().getProjection();
           var cord = ol.proj.fromLonLat([coordinates.longitude, coordinates.latitude], p);
           map.getView().setCenter(cord);
-          map.getView().setZoom(15);
+          map.getView().setZoom(17);
           setTimeout(function() {map.updateSize()}, 50);
           console.log(coordinates);
           marker.setPosition(cord);
