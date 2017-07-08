@@ -10,17 +10,10 @@ class TripRequestsController < ApplicationController
 		@trip_request.status = "new"
 		@trip_request.trip_request_id = TripRequest.create_id
 		if (@trip_request.save)
-			closest_driver = TripRequest.find_closest_driver(@trip_request.trip_request_id)
-			found_driver = "null"
-			if (closest_driver != "null")
-				found_driver = TripRequest.GPS_distance(closest_driver.current_longitude, closest_driver.current_latitude, @trip_request.pickup_longitude, @trip_request.pickup_latitude)
-				closest_driver.trip_status = "requesting"
-				closest_driver.trip_request_id = @trip_request.trip_request_id
-				closest_driver.save
-			end
-			render plain: @trip_request.trip_request_id+"mup_q"+found_driver.to_s
+			rejections = [-1]
+			driver_distance = TripRequest.find_driver(@trip_request, rejections)
+			render plain: @trip_request.trip_request_id+"mup_q"+driver_distance.to_s
 		else
-			puts "\n\n\n\n REDOING CREATE \n\n\n\n\n\n\n\n\n"
 			create
 		end
 	end
@@ -46,7 +39,6 @@ class TripRequestsController < ApplicationController
 		params[:trip_request][:map_provider_pickup_slug] = "mapUrl: "+ response["mapUrl"]
 		params[:trip_request][:map_provider_pickup_id] = "linkId: "+ response["linkId"]
 	end
-
 
 
 end

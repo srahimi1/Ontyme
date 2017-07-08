@@ -42,16 +42,17 @@ class TripRequest < ApplicationRecord
 	end
 
 
-	def self.find_closest_driver(trip_request_id)
+	def self.find_closest_driver(trip_request_id, rejections)
 		trip_request = TripRequest.find_by(trip_request_id: trip_request_id)
-		drivers = DriverCurrentStatus.where(trip_status: 'available', status: 'Online')
+		drivers = DriverCurrentStatus.where(trip_status: 'available', status: 'Online').where("id NOT IN (?)", rejections)
+		puts "\n\n\n\nhere\n\n\n\n\n\n\n"
 		if (!drivers.empty?)
 			drivers_sorted = drivers.all.sort_by {|driver| GPS_distance(driver.current_longitude, driver.current_latitude, trip_request.pickup_longitude, trip_request.pickup_latitude)}
 			closest_driver = DriverCurrentStatus.find_by(driver_id: drivers_sorted.first.driver_id) 
-			if ((closest_driver.trip_status == "available") && (closest_driver.status == "Online"))
+			if ((closest_driver.trip_status == "available") && (closest_driver.status == "Online") )
 				return closest_driver
 			else
-				find_closest_driver(trip_request_id)
+				find_closest_driver(trip_request_id, rejections)
 			end
 		else
 			return "null"
@@ -111,5 +112,52 @@ class TripRequest < ApplicationRecord
 		end
 		return address
 	end
+
+
+
+	def self.find_driver(trip_request, rejections)
+		closest_driver = find_closest_driver(trip_request.trip_request_id, rejections)
+		driver_distance = "null"
+		if (closest_driver != "null")
+			driver_distance = GPS_distance(closest_driver.current_longitude, closest_driver.current_latitude, trip_request.pickup_longitude, trip_request.pickup_latitude)
+			closest_driver.trip_status = "requesting"
+			closest_driver.trip_request_id = trip_request.trip_request_id
+			closest_driver.save
+			a = driver_response(closest_driver, Time.now)
+			if (a == -1)
+				rejections.push(closest_driver.id)
+				find_driver(trip_request, rejections)
+			else
+
+			end
+		end
+		return driver_distance
+	end
+
+
+	def self.driver_response(driver_chosen, time_chosen)
+		value = -1
+		driver = DriverCurrentStatus.find(driver_chosen.id)
+		time_elapsed = Time.now - time_chosen
+		while ( ( (driver.trip_status != "available") || (driver.trip_status != "time_ran_out") ) && ( time_elapsed < 25) )
+			if (driver.trip_status == "accepted")
+				a = {}
+				value = 1
+			end
+			driver = DriverCurrentStatus.find(driver_chosen.id)
+			time_elapsed = Time.now - time_chosen
+		end
+		if (time_elapsed >= 24)
+			driver.trip_status = 'time_ran_out'
+			driver.save
+		end
+		return value
+	end
+
+
+
+
+
+
 
 end

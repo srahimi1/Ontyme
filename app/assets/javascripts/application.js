@@ -27,11 +27,14 @@ var options = {
 };
 
 function acceptRequest(sel) {
+  var ajaxRequest = new XMLHttpRequest();
   audio.play();
   var url = "/drivers/acceptrequest?trip_request_id="+document.getElementById("trip_request_id").value+"&acceptance_code="+sel
   ajaxRequest.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
-          
+          if (this.responseText == "time_ran_out") alert("sorry time ran out");
+          else if (this.responseText == "accepted") alert("You accepted job");
+          else if (this.responseText == "available") alert("You rejected successfully");
       } // end this.readyState ...
     } // end onreadystatechange
     ajaxRequest.open("GET", url, true);
@@ -135,8 +138,12 @@ function submitTripRequestForm() {
   httpRequest.onreadystatechange = function() {
       if ((this.readyState == 4) && (this.status == 200)) {
         var res = httpRequest.responseText + "";
-        if (res != "BAD")
-          alert("your newer trip request id is:\n "+ res.split("mup_q")[0] + "\nAnd they are "+res.split("mup_q")[1]+" km away");}
+        if (res != "BAD") {
+          if (res.split("mup_q")[1] == "null")
+            alert("no drivers found");
+          else
+            alert("your newer trip request id is:\n "+ res.split("mup_q")[0] + "\nAnd they are "+res.split("mup_q")[1]+" km away");}
+        }
   }
   httpRequest.open("POST", "/users/3/trip_requests", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -290,7 +297,6 @@ function changeDriverStatus() {
   audio = new Audio("/sounds/DriverRideRequestMusic3.mp3");
   audio.muted = true;
   audio.oncanplaythrough = function() {
-    console.log("canplauth");
     audio.play();}
   var button = document.getElementById("becomeActiveBtn");
   button.disabled = true;
@@ -319,10 +325,12 @@ function changeDriverStatus() {
           if (response == "Offline") { 
             wp();
             checkForRideRequests();
+            document.getElementById("driverCurrentStatus").innerHTML = "You are Online";
           }
           else {
             webWorker.terminate();
             webWorker = undefined;
+            document.getElementById("driverCurrentStatus").innerHTML = "You are Offline";
           }
           button.innerHTML = "Go " + response;
           button.disabled = false; 
