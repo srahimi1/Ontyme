@@ -137,14 +137,15 @@ class TripRequest < ApplicationRecord
 
 	def self.driver_response(driver_chosen, time_chosen)
 		value = -1
-		driver = DriverCurrentStatus.find(driver_chosen.id)
+		driver = DriverCurrentStatus.find_by(trip_request_id: trip_request_id, id: driver_chosen.id)
 		time_elapsed = Time.now - time_chosen
-		while ( ( (driver.trip_status != "available") || (driver.trip_status != "time_ran_out") ) && ( time_elapsed < 25) )
+		while ( (driver.trip_status != "available") && (driver.trip_status != "time_ran_out") && ( time_elapsed < 25) )
+			puts "\n\nWaiting for driver response\n\n"
 			if (driver.trip_status == "accepted")
 				a = {}
 				value = 1
 			end
-			driver = DriverCurrentStatus.find(driver_chosen.id)
+			driver = DriverCurrentStatus.find_by(trip_request_id: trip_request_id, id: driver_chosen.id)
 			time_elapsed = Time.now - time_chosen
 		end
 		if (time_elapsed >= 24)

@@ -78,7 +78,9 @@ function checkForRideRequests() {
     webWorker = new Worker("/javascripts/checkForRideRequests.js");
     webWorker.onmessage = function(event) {
       var data = event.data;
-      alert(data);
+      console.log("this is checkForRideRequests in main");
+      console.log(data);
+      console.log("\n\n\n\n\n\n");
       if (receivedRequest == 0) showDriverRideRequestModal(data);
     } // end webWorker.onmessage = function(event)
   } // end if (!!window.Worker)

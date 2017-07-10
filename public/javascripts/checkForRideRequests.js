@@ -11,6 +11,9 @@ function startEventStream() {
 	if (!!event) {
 		event.onmessage = function(event) {
 			var data = event.data;
+			console.log("This is in startEventStream in checkForRideRequests in worker");
+			console.log(data);
+			console.log("\n\n\n\n\n");
 			if ((data != "cancelled") && (data != "null")) {
 				data = JSON.parse(data);
 				rideRequestSent = 1;
