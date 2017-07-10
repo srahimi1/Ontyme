@@ -74,6 +74,7 @@ function error2() {
 
 
 function checkForRideRequests() {
+  console.log("this is checkforriderequests main before request sent");
   if (!!window.Worker) {
     webWorker = new Worker("/javascripts/checkForRideRequests.js");
     webWorker.onmessage = function(event) {
