@@ -45,11 +45,14 @@ class TripRequest < ApplicationRecord
 	def self.find_closest_driver(trip_request_id, rejections)
 		trip_request = TripRequest.find_by(trip_request_id: trip_request_id)
 		drivers = DriverCurrentStatus.where(trip_status: 'available', status: 'Online').where("id NOT IN (?)", rejections)
-		puts "\n\n\n\nhere\n\n\n\n\n\n\n"
+		puts "\n\n\n\nIn find_closest_driver\n\n\n\n\n\n\n"
 		if (!drivers.empty?)
+			puts "\n\nIn !drivers.empty?\n\n"
 			drivers_sorted = drivers.all.sort_by {|driver| GPS_distance(driver.current_longitude, driver.current_latitude, trip_request.pickup_longitude, trip_request.pickup_latitude)}
 			closest_driver = DriverCurrentStatus.find_by(driver_id: drivers_sorted.first.driver_id) 
+			puts "\n\nafter closest_drivers sorted and chosen\n\n"
 			if ((closest_driver.trip_status == "available") && (closest_driver.status == "Online") )
+				puts "\n\nchecking availability of closest_driver\n\n"
 				return closest_driver
 			else
 				find_closest_driver(trip_request_id, rejections)
