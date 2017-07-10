@@ -48,8 +48,12 @@ class TripRequest < ApplicationRecord
 		puts "\n\n\n\nIn find_closest_driver\n\n\n\n\n\n\n"
 		if (!drivers.empty?)
 			puts "\n\nIn !drivers.empty?\n\n"
+			puts drivers.inspect
+			puts "\n\n"
 			drivers_sorted = drivers.all.sort_by {|driver| GPS_distance(driver.current_longitude, driver.current_latitude, trip_request.pickup_longitude, trip_request.pickup_latitude)}
 			closest_driver = DriverCurrentStatus.find_by(driver_id: drivers_sorted.first.driver_id) 
+			puts closest_driver.inspect
+			puts "\n\n"
 			puts "\n\nafter closest_drivers sorted and chosen\n\n"
 			if ((closest_driver.trip_status == "available") && (closest_driver.status == "Online") )
 				puts "\n\nchecking availability of closest_driver\n\n"
