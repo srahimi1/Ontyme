@@ -1,7 +1,7 @@
 class DriversController < ApplicationController
 
 	def show
-		@driver = Driver.find(params[:id])
+		@driver = Driver.find_by(driver_id: params[:id])
 		if @driver
 			session[:driver_id] = @driver.driver_id
 			cookies[:driver_id] = @driver.driver_id

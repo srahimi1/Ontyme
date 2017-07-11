@@ -7,16 +7,13 @@ Rails.application.routes.draw do
 
 	resources :users do 
 		resources :trip_requests
+		resources :active_trips
 		resources :completed_trips
 	end
 
 	resources :drivers do
+		resources :active_trips
 		resources :completed_trips
-	end
-
-	resources :active_trips do
-		resources :driver
-		resources :user
 	end
 
   	root 'welcome#index'
