@@ -306,6 +306,7 @@ function changeDriverStatus() {
   button.disabled = true;
   var status = button.innerHTML.split("Go ")[1];
   var url;
+  console.log("a");
   if ((status == "Online") && (coordinates == 0) && !findLatLngCalled) {
     findLatLng(1,1,1);
     timeoutID = setTimeout(function() {changeDriverStatus()}, 50);
@@ -314,6 +315,7 @@ function changeDriverStatus() {
     timeoutID = setTimeout(function() {changeDriverStatus()}, 50);
   }
   else {
+    console.log("b");
     var request = new XMLHttpRequest();
     if (status == "Online") 
       url = "/drivers/changecurrentstatus?status="+status+"&longitude="+coordinates.longitude+"&latitude="+coordinates.latitude;
@@ -324,6 +326,7 @@ function changeDriverStatus() {
     request.send();
     request.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
+        console.log("c");
         var response = request.responseText + "";
         if (response != "BAD") { 
           if (response == "Offline") { 
