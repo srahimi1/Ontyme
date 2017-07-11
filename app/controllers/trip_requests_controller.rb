@@ -14,6 +14,7 @@ class TripRequestsController < ApplicationController
 			driver_distance = TripRequest.find_driver(@trip_request, rejections)
 			render plain: @trip_request.trip_request_id+"mup_q"+driver_distance.to_s
 		else
+			puts "\n\n\nstuck creating\n\n\n"
 			create
 		end
 	end

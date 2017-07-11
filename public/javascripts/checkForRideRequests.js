@@ -7,6 +7,7 @@ onmessage = function(event) {
 }
 
 function startEventStream() {
+	console.log("this is in riderequests worker before event request");
 	event = new EventSource("/drivers/checkForRideRequests?longitude="+coordinates.longitude+"&latitude="+coordinates.latitude);
 	if (!!event) {
 		event.onmessage = function(event) {
