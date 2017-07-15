@@ -1,3 +1,3 @@
 class DriverReceivePaymentMethod < ApplicationRecord
-	belongs_to :driver
+	belongs_to :driver, :foreign_key => "driver_id"
 end

@@ -2,7 +2,7 @@ class WelcomeController < ApplicationController
   include ApplicationHelper
 
   def index
-    findIcons
+    #findIcons
     @user = User.new
     @users = User.all
   end
