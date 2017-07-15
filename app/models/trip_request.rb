@@ -1,4 +1,5 @@
 class TripRequest < ApplicationRecord
+	self.primary_key = "trip_request_id2"
 	belongs_to :user, :class_name => 'User', :foreign_key => 'user_id2'
 	validates :trip_request_id2, uniqueness: true, :allow_nil => true, :allow_blank => true
 
