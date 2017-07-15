@@ -11,6 +11,7 @@ function startEventStream() {
 	if (!!event) {
 		event.onmessage = function(event) {
 			var data = event.data;
+			console.log(data);
 			if ((data != "cancelled") && (data != "null")) {
 				data = JSON.parse(data);
 				rideRequestSent = 1;
