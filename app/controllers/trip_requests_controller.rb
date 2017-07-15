@@ -9,6 +9,9 @@ class TripRequestsController < ApplicationController
 		@trip_request.user_id = params["user_id"]
 		@trip_request.status = "new"
 		@trip_request.trip_request_id = TripRequest.create_id
+		puts "\n\n"
+		puts @trip_request.inspect
+		puts "\n\n"
 		if (@trip_request.save)
 			rejections = [-1]
 			driver_distance = TripRequest.find_driver(@trip_request, rejections)
