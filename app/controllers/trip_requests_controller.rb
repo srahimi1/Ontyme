@@ -2,6 +2,9 @@ class TripRequestsController < ApplicationController
 	
 	def create
 		@user = User.find_by(user_id: params["user_id"])
+		puts "\nfound user\n"
+		puts @user.inspect
+		puts "\n\n"
 		if (params[:trip_request][:input_changed] == "1") 
 			getLongitudeLatitude
 		end
