@@ -1,5 +1,5 @@
 class TripRequest < ApplicationRecord
-	belongs_to :user, :foreign_key => "user_id"
+	belongs_to :user, :foreign_key => "user_id2"
 	validates :trip_request_id, uniqueness: true, :allow_nil => true, :allow_blank => true
 
 	@digits = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
@@ -9,14 +9,14 @@ class TripRequest < ApplicationRecord
 
 
 	def self.create_id
-		@last = TripRequest.order(:trip_request_id).last
+		@last = TripRequest.order(:trip_request_id2).last
 		puts "\n\n\nThis is @last = last trip_request_id\n\n\n"
 		puts @last.inspect
 		puts !!@last
 		puts "\n\n\n"
 		@tmp_id = ""
 		if (!!@last)
-			@tmp_id2 = @last.trip_request_id
+			@tmp_id2 = @last.trip_request_id2
 			@last_value = @tmp_id2[-1]
 			@tmp_id2 = @tmp_id2.chop
 			new_index = @reverse_digits[@last_value] + 1
@@ -46,8 +46,8 @@ class TripRequest < ApplicationRecord
 	end
 
 
-	def self.find_closest_driver(trip_request_id, rejections)
-		trip_request = TripRequest.find_by(trip_request_id: trip_request_id)
+	def self.find_closest_driver(trip_request_id2, rejections)
+		trip_request = TripRequest.find_by(trip_request_id2: trip_request_id2)
 		drivers = DriverCurrentStatus.where(trip_status: 'available', status: 'Online').where("id NOT IN (?)", rejections)
 		puts "\n\n\n\nIn find_closest_driver\n\n\n\n\n\n\n"
 		if (!drivers.empty?)
@@ -55,7 +55,7 @@ class TripRequest < ApplicationRecord
 			puts drivers.inspect
 			puts "\n\n"
 			drivers_sorted = drivers.all.sort_by {|driver| GPS_distance(driver.current_longitude, driver.current_latitude, trip_request.pickup_longitude, trip_request.pickup_latitude)}
-			closest_driver = DriverCurrentStatus.find_by(driver_id: drivers_sorted.first.driver_id) 
+			closest_driver = DriverCurrentStatus.find_by(driver_id2: drivers_sorted.first.driver_id2) 
 			puts closest_driver.inspect
 			puts "\n\n"
 			puts "\n\nafter closest_drivers sorted and chosen\n\n"
@@ -63,7 +63,7 @@ class TripRequest < ApplicationRecord
 				puts "\n\nchecking availability of closest_driver\n\n"
 				return closest_driver
 			else
-				find_closest_driver(trip_request_id, rejections)
+				find_closest_driver(trip_request_id2, rejections)
 			end
 		else
 			return "null"
@@ -127,14 +127,14 @@ class TripRequest < ApplicationRecord
 
 
 	def self.find_driver(trip_request, rejections)
-		closest_driver = find_closest_driver(trip_request.trip_request_id, rejections)
+		closest_driver = find_closest_driver(trip_request.trip_request_id2, rejections)
 		driver_distance = "null"
 		if (closest_driver != "null")
 			driver_distance = GPS_distance(closest_driver.current_longitude, closest_driver.current_latitude, trip_request.pickup_longitude, trip_request.pickup_latitude)
 			closest_driver.trip_status = "requesting"
-			closest_driver.trip_request_id = trip_request.trip_request_id
+			closest_driver.trip_request_id2 = trip_request.trip_request_id2
 			closest_driver.save
-			a = driver_response(closest_driver, Time.now)
+			a = driver_response(closest_driver, Time.now, trip_request)
 			if (a == -1)
 				rejections.push(closest_driver.id)
 				find_driver(trip_request, rejections)
@@ -146,9 +146,9 @@ class TripRequest < ApplicationRecord
 	end
 
 
-	def self.driver_response(driver_chosen, time_chosen)
+	def self.driver_response(driver_chosen, time_chosen, trip_request)
 		value = -1
-		driver = DriverCurrentStatus.find_by(trip_request_id: trip_request_id, id: driver_chosen.id)
+		driver = DriverCurrentStatus.find_by(trip_request_id2: trip_request.trip_request_id2, id: driver_chosen.id)
 		time_elapsed = Time.now - time_chosen
 		while ( (driver.trip_status != "available") && (driver.trip_status != "time_ran_out") && ( time_elapsed < 25) )
 			puts "\n\nWaiting for driver response\n\n"
@@ -156,7 +156,7 @@ class TripRequest < ApplicationRecord
 				a = {}
 				value = 1
 			end
-			driver = DriverCurrentStatus.find_by(trip_request_id: trip_request_id, id: driver_chosen.id)
+			driver = DriverCurrentStatus.find_by(trip_request_id2: trip_request.trip_request_id2, id: driver_chosen.id)
 			time_elapsed = Time.now - time_chosen
 		end
 		if (time_elapsed >= 24)

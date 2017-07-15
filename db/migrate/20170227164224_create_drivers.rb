@@ -1,7 +1,7 @@
 class CreateDrivers < ActiveRecord::Migration[5.0]
   def change
     create_table :drivers do |t|
-        t.string :driver_id
+        t.string :driver_id2
     	t.string :first_name
     	t.string :middle_name
         t.string :last_name

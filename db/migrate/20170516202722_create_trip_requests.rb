@@ -1,8 +1,8 @@
 class CreateTripRequests < ActiveRecord::Migration[5.0]
   def change
     create_table :trip_requests do |t|
-        t.text :trip_request_id
-        t.string :user_id, foreign_key: true
+        t.text :trip_request_id2
+        t.string :user_id2, foreign_key: true
         t.string :map_provider
         t.text :map_provider_url
         t.string :destination_street
@@ -25,7 +25,7 @@ class CreateTripRequests < ActiveRecord::Migration[5.0]
         t.timestamps
     end
   
-    add_index :trip_requests, :trip_request_id, unique: true
+    add_index :trip_requests, :trip_request_id2, unique: true
 
   end
 end

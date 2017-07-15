@@ -1,7 +1,7 @@
 class CreatePaymentMethods < ActiveRecord::Migration[5.0]
   def change
     create_table :payment_methods do |t|
-    	t.string :user_id, foreign_key: true
+    	t.string :user_id2, foreign_key: true
     	t.string :name
     	t.string :description
     	t.string :method

@@ -16,10 +16,10 @@ ActiveRecord::Schema.define(version: 20170516223337) do
   enable_extension "plpgsql"
 
   create_table "active_trips", force: :cascade do |t|
-    t.text     "active_trip_id"
-    t.integer  "user_id"
-    t.integer  "driver_id"
-    t.integer  "trip_request_id"
+    t.text     "active_trip_id2"
+    t.string   "user_id2"
+    t.string   "driver_id2"
+    t.text     "trip_request_id2"
     t.string   "map_provider"
     t.text     "map_provider_url"
     t.string   "destination_street"
@@ -37,17 +37,14 @@ ActiveRecord::Schema.define(version: 20170516223337) do
     t.string   "status"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
-    t.index ["driver_id"], name: "index_active_trips_on_driver_id", using: :btree
-    t.index ["trip_request_id"], name: "index_active_trips_on_trip_request_id", using: :btree
-    t.index ["user_id"], name: "index_active_trips_on_user_id", using: :btree
   end
 
   create_table "completed_trips", force: :cascade do |t|
-    t.text     "completed_trip_id"
-    t.integer  "user_id"
-    t.integer  "driver_id"
-    t.integer  "trip_request_id"
-    t.integer  "active_trip_id"
+    t.text     "completed_trip_id2"
+    t.string   "user_id2"
+    t.string   "driver_id2"
+    t.text     "trip_request_id2"
+    t.text     "active_trip_id2"
     t.string   "map_provider"
     t.text     "map_provider_url"
     t.string   "destination_street"
@@ -64,26 +61,22 @@ ActiveRecord::Schema.define(version: 20170516223337) do
     t.string   "payment_status"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
-    t.index ["active_trip_id"], name: "index_completed_trips_on_active_trip_id", using: :btree
-    t.index ["driver_id"], name: "index_completed_trips_on_driver_id", using: :btree
-    t.index ["trip_request_id"], name: "index_completed_trips_on_trip_request_id", using: :btree
-    t.index ["user_id"], name: "index_completed_trips_on_user_id", using: :btree
   end
 
   create_table "driver_current_statuses", force: :cascade do |t|
-    t.string   "driver_id"
+    t.string   "driver_id2"
     t.string   "status"
     t.string   "current_longitude"
     t.string   "current_latitude"
     t.string   "trip_status"
-    t.text     "trip_request_id"
+    t.text     "trip_request_id2"
     t.integer  "override"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
   end
 
   create_table "driver_receive_payment_methods", force: :cascade do |t|
-    t.string   "driver_id"
+    t.string   "driver_id2"
     t.string   "name"
     t.string   "description"
     t.string   "method"
@@ -104,7 +97,7 @@ ActiveRecord::Schema.define(version: 20170516223337) do
   end
 
   create_table "drivers", force: :cascade do |t|
-    t.string   "driver_id"
+    t.string   "driver_id2"
     t.string   "first_name"
     t.string   "middle_name"
     t.string   "last_name"
@@ -125,7 +118,7 @@ ActiveRecord::Schema.define(version: 20170516223337) do
   end
 
   create_table "payment_methods", force: :cascade do |t|
-    t.string   "user_id"
+    t.string   "user_id2"
     t.string   "name"
     t.string   "description"
     t.string   "method"
@@ -146,8 +139,8 @@ ActiveRecord::Schema.define(version: 20170516223337) do
   end
 
   create_table "trip_requests", force: :cascade do |t|
-    t.text     "trip_request_id"
-    t.string   "user_id"
+    t.text     "trip_request_id2"
+    t.string   "user_id2"
     t.string   "map_provider"
     t.text     "map_provider_url"
     t.string   "destination_street"
@@ -169,11 +162,11 @@ ActiveRecord::Schema.define(version: 20170516223337) do
     t.string   "status"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
-    t.index ["trip_request_id"], name: "index_trip_requests_on_trip_request_id", unique: true, using: :btree
+    t.index ["trip_request_id2"], name: "index_trip_requests_on_trip_request_id2", unique: true, using: :btree
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "user_id"
+    t.string   "user_id2"
     t.string   "first_name"
     t.string   "middle_name"
     t.string   "last_name"
@@ -194,11 +187,4 @@ ActiveRecord::Schema.define(version: 20170516223337) do
     t.datetime "updated_at",            null: false
   end
 
-  add_foreign_key "active_trips", "drivers"
-  add_foreign_key "active_trips", "trip_requests"
-  add_foreign_key "active_trips", "users"
-  add_foreign_key "completed_trips", "active_trips"
-  add_foreign_key "completed_trips", "drivers"
-  add_foreign_key "completed_trips", "trip_requests"
-  add_foreign_key "completed_trips", "users"
 end

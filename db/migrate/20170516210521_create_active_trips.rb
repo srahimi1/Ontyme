@@ -1,10 +1,10 @@
 class CreateActiveTrips < ActiveRecord::Migration[5.0]
   def change
     create_table :active_trips do |t|
-    	t.text :active_trip_id
-   		t.references :user, foreign_key: true
-    	t.references :driver, foreign_key: true
-    	t.references :trip_request, foreign_key: true
+    	t.text :active_trip_id2
+   		t.string :user_id2, foreign_key: true
+    	t.string :driver_id2, foreign_key: true
+    	t.text :trip_request_id2, foreign_key: true
     	t.string :map_provider
         t.text :map_provider_url
         t.string :destination_street

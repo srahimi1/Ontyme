@@ -1,10 +1,10 @@
 class DriversController < ApplicationController
 
 	def show
-		@driver = Driver.find_by(driver_id: params[:id])
+		@driver = Driver.find_by(driver_id2: params[:id])
 		if @driver
-			session[:driver_id] = @driver.driver_id
-			cookies[:driver_id] = @driver.driver_id
+			session[:driver_id2] = @driver.driver_id2
+			cookies[:driver_id2] = @driver.driver_id2
 			render :show
 		else
 			redirect_to root_path
@@ -12,7 +12,7 @@ class DriversController < ApplicationController
 	end
 
 	def changeCurrentStatus
-		driverCurrentStatus = DriverCurrentStatus.find_by(driver_id: session[:driver_id]) 
+		driverCurrentStatus = DriverCurrentStatus.find_by(driver_id2: session[:driver_id2]) 
 		if driverCurrentStatus
 			if (driverCurrentStatus.override == 0)
 				driverCurrentStatus.status = params[:status]
@@ -40,11 +40,11 @@ class DriversController < ApplicationController
 		if ((params[:longitude] != "null") && (params[:latitude] != "null"))
 			updatePosition(params[:longitude], params[:latitude])
 		end
-		driverCurrentStatus = DriverCurrentStatus.find_by(driver_id: session[:driver_id])
+		driverCurrentStatus = DriverCurrentStatus.find_by(driver_id2: session[:driver_id2])
 		if (driverCurrentStatus.trip_status == "requesting")
-			tripRequest = TripRequest.find_by(trip_request_id: driverCurrentStatus.trip_request_id)
+			tripRequest = TripRequest.find_by(trip_request_id2: driverCurrentStatus.trip_request_id2)
 			if (tripRequest.status != "cancelled")
-				requestData = "data: {\"trip_request_id\" : \""+tripRequest.trip_request_id+"\", \"destination_street\" : \""+tripRequest.destination_street+"\", \"destination_city\" : \""+tripRequest.destination_city+"\", \"destination_state\" : \""+tripRequest.destination_state+"\", \"destination_postalcode\" : \""+tripRequest.destination_postalcode+"\", \"pickup_street\" : \""+tripRequest.pickup_street+"\", \"pickup_city\" : \""+tripRequest.pickup_city+"\", \"pickup_state\" : \""+tripRequest.pickup_state+"\", \"pickup_postalcode\" : \""+tripRequest.pickup_postalcode+"\"}\n\n"
+				requestData = "data: {\"trip_request_id\" : \""+tripRequest.trip_request_id2+"\", \"destination_street\" : \""+tripRequest.destination_street+"\", \"destination_city\" : \""+tripRequest.destination_city+"\", \"destination_state\" : \""+tripRequest.destination_state+"\", \"destination_postalcode\" : \""+tripRequest.destination_postalcode+"\", \"pickup_street\" : \""+tripRequest.pickup_street+"\", \"pickup_city\" : \""+tripRequest.pickup_city+"\", \"pickup_state\" : \""+tripRequest.pickup_state+"\", \"pickup_postalcode\" : \""+tripRequest.pickup_postalcode+"\"}\n\n"
 				render plain: requestData, :content_type => "text/event-stream"
 			else
 				render plain: "retry: 1500\ndata: cancelled", :content_type => "text/event-stream"
@@ -56,14 +56,14 @@ class DriversController < ApplicationController
 
 
 	def updatePosition(long, lat)
-		driverCurrentStatus = DriverCurrentStatus.find_by(driver_id: session[:driver_id])
+		driverCurrentStatus = DriverCurrentStatus.find_by(driver_id2: session[:driver_id2])
 		driverCurrentStatus.current_longitude = long
 		driverCurrentStatus.current_latitude = lat
 		driverCurrentStatus.save
 	end
 
 	def acceptRequest
-		tripRequest = DriverCurrentStatus.find_by(trip_request_id: params[:trip_request_id], driver_id: session[:driver_id])
+		tripRequest = DriverCurrentStatus.find_by(trip_request_id2: params[:trip_request_id], driver_id2: session[:driver_id2])
 		if (!!tripRequest & (params[:acceptance_code] == "1") & (tripRequest.trip_status != "time_ran_out"))
 			tripRequest.trip_status = "accepted"
 		elsif (!!tripRequest & (params[:acceptance_code] == "0"))
@@ -73,7 +73,7 @@ class DriversController < ApplicationController
 		while (!a)
 			a = tripRequest.save
 		end
-		tripRequest = DriverCurrentStatus.find_by(trip_request_id: params[:trip_request_id], driver_id: session[:driver_id])
+		tripRequest = DriverCurrentStatus.find_by(trip_request_id2: params[:trip_request_id], driver_id2: session[:driver_id2])
 		render plain: tripRequest.trip_status
 	end
 
