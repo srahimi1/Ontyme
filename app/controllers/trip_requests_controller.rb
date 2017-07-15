@@ -2,9 +2,6 @@ class TripRequestsController < ApplicationController
 	
 	def create
 		@user = User.find_by(user_id2: params["user_id"])
-		puts "\nfound user\n"
-		puts @user.inspect
-		puts "\n\n"
 		if (params[:trip_request][:input_changed] == "1") 
 			getLongitudeLatitude
 		end
@@ -12,19 +9,11 @@ class TripRequestsController < ApplicationController
 		@trip_request.user_id2 = params["user_id"]
 		@trip_request.status = "new"
 		@trip_request.trip_request_id2 = TripRequest.create_id
-		puts "\n\n"
-		puts @trip_request.inspect
-		puts "\n\n"
 		if (@trip_request.save!)
 			rejections = [-1]
 			driver_distance = TripRequest.find_driver(@trip_request, rejections)
 			render plain: @trip_request.trip_request_id2+"mup_q"+driver_distance.to_s
 		else
-			@trip_request.errors.full_messages.each do |x|
-				puts x
-				puts "\n\nnext line"
-			end
-			puts "\n\n\nstuck creating\n\n\n"
 			create
 		end
 	end

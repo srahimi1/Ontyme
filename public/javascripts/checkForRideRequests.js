@@ -7,15 +7,10 @@ onmessage = function(event) {
 }
 
 function startEventStream() {
-	console.log("this is in riderequests worker before event request");
 	event = new EventSource("/drivers/checkForRideRequests?longitude="+coordinates.longitude+"&latitude="+coordinates.latitude);
-	console.log("d");
 	if (!!event) {
 		event.onmessage = function(event) {
 			var data = event.data;
-			console.log("This is in startEventStream in checkForRideRequests in worker");
-			console.log(data);
-			console.log("\n\n\n\n\n");
 			if ((data != "cancelled") && (data != "null")) {
 				data = JSON.parse(data);
 				rideRequestSent = 1;

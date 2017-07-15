@@ -74,14 +74,10 @@ function error2() {
 
 
 function checkForRideRequests() {
-  console.log("this is checkforriderequests main before request sent");
   if (!!window.Worker) {
     webWorker = new Worker("/javascripts/checkForRideRequests.js");
     webWorker.onmessage = function(event) {
       var data = event.data;
-      console.log("this is checkForRideRequests in main");
-      console.log(data);
-      console.log("\n\n\n\n\n\n");
       if (receivedRequest == 0) showDriverRideRequestModal(data);
     } // end webWorker.onmessage = function(event)
   } // end if (!!window.Worker)
@@ -114,7 +110,6 @@ function showDriverRideRequestModal(data) {
 
 
 function unmuteAudio() {
-  console.log("unmuteAudio");
   audio.currentTime = 0;
   audio.muted = false;
 }
@@ -306,7 +301,6 @@ function changeDriverStatus() {
   button.disabled = true;
   var status = button.innerHTML.split("Go ")[1];
   var url;
-  console.log("a");
   if ((status == "Online") && (coordinates == 0) && !findLatLngCalled) {
     findLatLng(1,1,1);
     timeoutID = setTimeout(function() {changeDriverStatus()}, 50);
@@ -315,7 +309,6 @@ function changeDriverStatus() {
     timeoutID = setTimeout(function() {changeDriverStatus()}, 50);
   }
   else {
-    console.log("b");
     var request = new XMLHttpRequest();
     if (status == "Online") 
       url = "/drivers/changecurrentstatus?status="+status+"&longitude="+coordinates.longitude+"&latitude="+coordinates.latitude;
@@ -326,7 +319,6 @@ function changeDriverStatus() {
     request.send();
     request.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
-        console.log("c");
         var response = request.responseText + "";
         if (response != "BAD") { 
           if (response == "Offline") { 
