@@ -8,7 +8,7 @@
 <div id="midSectionDiv">
 
 
-<h2 id="driverCurrentStatus">You are <%= DriverCurrentStatus.find_by(driver_id: params[:id] ).status %> </h2>
+<h2 id="driverCurrentStatus">You are <%= DriverCurrentStatus.find_by(driver_id2: params[:id] ).status %> </h2>
 <div id="requestRideBtnDiv">
   <button id="becomeActiveBtn" type="button" onclick="changeDriverStatus()">Go Online</button>
 </div>
