@@ -513,7 +513,7 @@ function fillCarAnim(value, currentFrame, TotalFrames) {
     carPart1.setAttribute("fill-opacity",opacity);
     carPart2.setAttribute("fill-opacity",opacity);
     carPart3.setAttribute("fill-opacity",opacity);
-    if (  (opacity > (value/2)) && (opacity < (value/2 + 1))     ) buttonAnim(0,50);
+    if (  (opacity > (value/2)) && (opacity < (value/2 + 1))     ) buttonAnim(0,15);
     currentFrame++;
     carAnimID = setInterval(function() {fillCarAnim(value, currentFrame, TotalFrames)}, 1500/TotalFrames);
   } // if (currentFrame != TotalFrames)

@@ -11,7 +11,8 @@ class TripRequest < ApplicationRecord
 	def self.create_id
 		@last = TripRequest.order(:trip_request_id).last
 		puts "\n\n\nThis is @last = last trip_request_id\n\n\n"
-		puts @last
+		puts @last.inspect
+		puts !!@last
 		puts "\n\n\n"
 		@tmp_id = ""
 		if (!!@last)
