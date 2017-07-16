@@ -17,7 +17,7 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID, webWorker, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null};
+timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null};
 
 var coordinates2 = nullCoords;
 
@@ -76,10 +76,18 @@ function error2() {
 function checkForRideRequests() {
   if (!!window.Worker) {
     webWorker = new Worker("/javascripts/checkForRideRequests.js");
+    if (coordinates == 0)
+      webWorker.postMessage({"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude});
+    else
+      webWorker.postMessage({"longitude" : coordinates.longitude , "latitude" : coordinates.latitude});
+    console.log("worker started\n");
     webWorker.onmessage = function(event) {
       var data = event.data;
       if (receivedRequest == 0) showDriverRideRequestModal(data);
     } // end webWorker.onmessage = function(event)
+  
+
+
   } // end if (!!window.Worker)
 
   else {}

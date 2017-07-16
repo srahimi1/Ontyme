@@ -1,16 +1,21 @@
-var event, trip_request_id = "null", coordinates, audio, rideRequestSent = 0;
+var event = null, trip_request_id = "null", coordinates = {"latitude" : null, "longitude": null}, audio, rideRequestSent = 0;
 
-onmessage = function(event) {
-	var data = event.data;
-	coordinates = data; 
+var url = "/drivers/checkForRideRequests?longitude="+coordinates.longitude+"&latitude="+coordinates.latitude;
+startEventStream();
+
+onmessage = function(event2) {
+	coordinates = event2.data; 
+	url = "/drivers/checkForRideRequests?longitude="+coordinates.longitude+"&latitude="+coordinates.latitude;
 	startEventStream();
 }
 
 function startEventStream() {
-	event = new EventSource("/drivers/checkForRideRequests?longitude="+coordinates.longitude+"&latitude="+coordinates.latitude);
+	console.log("event-stream started");
+	if (!!event) event.close();
+	event = new EventSource(url);
 	if (!!event) {
-		event.onmessage = function(event) {
-			var data = event.data;
+		event.onmessage = function(event2) {
+			var data = event2.data;
 			console.log(data);
 			if ((data != "cancelled") && (data != "null")) {
 				data = JSON.parse(data);

@@ -53,10 +53,10 @@ class DriversController < ApplicationController
 				requestData = "data: {\"trip_request_id\" : \""+tripRequest.trip_request_id2+"\", \"destination_street\" : \""+tripRequest.destination_street+"\", \"destination_city\" : \""+tripRequest.destination_city+"\", \"destination_state\" : \""+tripRequest.destination_state+"\", \"destination_postalcode\" : \""+tripRequest.destination_postalcode+"\", \"pickup_street\" : \""+tripRequest.pickup_street+"\", \"pickup_city\" : \""+tripRequest.pickup_city+"\", \"pickup_state\" : \""+tripRequest.pickup_state+"\", \"pickup_postalcode\" : \""+tripRequest.pickup_postalcode+"\"}\n\n"
 				render plain: requestData, :content_type => "text/event-stream"
 			else
-				render plain: "retry: 1500\ndata: cancelled", :content_type => "text/event-stream"
+				render plain: "retry: 1500\ndata: cancelled\n\n", :content_type => "text/event-stream"
 			end
 		else
-			render plain: "retry: 1500\ndata: null", :content_type => "text/event-stream"
+			render plain: "retry: 1500\ndata: null\n\n", :content_type => "text/event-stream"
 		end
 	end
 
