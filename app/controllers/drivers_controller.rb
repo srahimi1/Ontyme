@@ -89,7 +89,7 @@ class DriversController < ApplicationController
 		while (!driverRequest.save)
 			driverRequest.save
 		end
-		driverRequest = DriverCurrentStatus.find_by(trip_request_id2: params[:trip_request_id], driver_id2: session[:driver_id2])
+		driverRequest = DriverCurrentStatus.find_by(trip_request_id2: params[:trip_request_id2], driver_id2: session[:driver_id2])
 		render plain: driverRequest.trip_status
 	end
 
