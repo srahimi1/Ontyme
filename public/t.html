@@ -19,7 +19,6 @@
         else a.innerHTML = "FAIL";
       }}
     ajaxRequest.open("GET", "/drivers/reset", true);
-    ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
     ajaxRequest.send();
     }
     </script>
