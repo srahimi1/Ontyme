@@ -58,14 +58,8 @@ class DriversController < ApplicationController
 			updatePosition(params[:longitude], params[:latitude])
 		end
 		driverCurrentStatus = DriverCurrentStatus.find_by(driver_id2: session[:driver_id2])
-		puts "driverCurrentStatus:\n\n"
-		puts driverCurrentStatus.inspect
-		puts "\n\n"
 		if (driverCurrentStatus.trip_status == "requesting")
 			tripRequest = TripRequest.find_by(trip_request_id2: driverCurrentStatus.trip_request_id2)
-			puts "\n\n"
-			puts tripRequest.inspect
-			puts "\n\n"
 			if (tripRequest.status != "cancelled")
 				requestData = "data: {\"trip_request_id\" : \""+tripRequest.trip_request_id2+"\", \"destination_street\" : \""+tripRequest.destination_street+"\", \"destination_city\" : \""+tripRequest.destination_city+"\", \"destination_state\" : \""+tripRequest.destination_state+"\", \"destination_postalcode\" : \""+tripRequest.destination_postalcode+"\", \"pickup_street\" : \""+tripRequest.pickup_street+"\", \"pickup_city\" : \""+tripRequest.pickup_city+"\", \"pickup_state\" : \""+tripRequest.pickup_state+"\", \"pickup_postalcode\" : \""+tripRequest.pickup_postalcode+"\"}\n\n"
 				render plain: requestData, :content_type => "text/event-stream"
@@ -86,18 +80,17 @@ class DriversController < ApplicationController
 	end
 
 	def acceptRequest
-		tripRequest = DriverCurrentStatus.find_by(trip_request_id2: params[:trip_request_id], driver_id2: session[:driver_id2])
-		if (!!tripRequest & (params[:acceptance_code] == "1") & (tripRequest.trip_status != "time_ran_out"))
-			tripRequest.trip_status = "accepted"
-		elsif (!!tripRequest & (params[:acceptance_code] == "0"))
-			tripRequest.trip_status = "available"
+		driverRequest = DriverCurrentStatus.find_by(trip_request_id2: params[:trip_request_id], driver_id2: session[:driver_id2])
+		if (!!driverRequest & (params[:acceptance_code] == "1") & (driverRequest.trip_status != "time_ran_out"))
+			driverRequest.trip_status = "accepted"
+		elsif (!!driverRequest & (params[:acceptance_code] == "0"))
+			driverRequest.trip_status = "available"
 		end
-		a = tripRequest.save
-		while (!a)
-			a = tripRequest.save
+		while (!driverRequest.save)
+			driverRequest.save
 		end
-		tripRequest = DriverCurrentStatus.find_by(trip_request_id2: params[:trip_request_id], driver_id2: session[:driver_id2])
-		render plain: tripRequest.trip_status
+		driverRequest = DriverCurrentStatus.find_by(trip_request_id2: params[:trip_request_id], driver_id2: session[:driver_id2])
+		render plain: driverRequest.trip_status
 	end
 
 
