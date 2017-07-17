@@ -100,8 +100,22 @@ function checkForRideRequests() {
 function showDriverRideRequestModal(data) {
   console.log("in show ride request modal");
   receivedRequest = 1;
+    $('#driverRideRequestModal').modal('show');
   if ((data != "null") && (data != "cancelled")) {
     driverRideRequestData = data;
+        document.getElementById("driverRequestData").style.display = "block";
+    document.getElementById("driverRequestCancel").style.display = "none";
+    for (var key in driverRideRequestData) {
+      if (driverRideRequestData.hasOwnProperty(key)) {
+        var el = key + "";
+        elObtained = document.getElementById(el);
+        if (!!(elObtained.value))
+          elObtained.value = driverRideRequestData[key];
+        else
+          elObtained.innerHTML = driverRideRequestData[key];
+      }
+    }
+    unmuteAudio();
   } // end if ((data != "null") && (data != "cancelled")) 
   else {
     document.getElementById("driverRequestData").style.display = "none";
@@ -109,7 +123,6 @@ function showDriverRideRequestModal(data) {
     el.innerHTML = "Request Cancelled";
     el.style.display = "block";
   }
-  $('#driverRideRequestModal').modal('show');
 } // end function showDrvierRideRequestModal(data)
 
 
@@ -178,23 +191,6 @@ $(window).load(function() {
       document.getElementById("destinationField").value = "";
       document.getElementById("listOfAddresses").innerHTML = "<p>&nbsp;</p>";
       document.getElementById("trip_requests_input_changed").value = "";
-    });
-
-
-     $('#driverRideRequestModal').on('show.bs.modal', function() {
-    document.getElementById("driverRequestData").style.display = "block";
-    document.getElementById("driverRequestCancel").style.display = "none";
-    for (var key in driverRideRequestData) {
-      if (driverRideRequestData.hasOwnProperty(key)) {
-        var el = key + "";
-        elObtained = document.getElementById(el);
-        if (!!(elObtained.value))
-          elObtained.value = driverRideRequestData[key];
-        else
-          elObtained.innerHTML = driverRideRequestData[key];
-      }
-    }
-    unmuteAudio();
     });
 
 
