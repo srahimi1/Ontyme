@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 	get '/drivers/changecurrentstatus', to: 'drivers#changeCurrentStatus'
 	get '/drivers/checkForRideRequests', to: 'drivers#checkForRideRequests'
 	get '/drivers/acceptrequest', to: 'drivers#acceptRequest'
+	get '/drivers/reset', to: 'drivers#reset'
 
 	resources :users do 
 		resources :trip_requests

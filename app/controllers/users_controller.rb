@@ -27,5 +27,4 @@ class UsersController < ApplicationController
 		render plain: output
 	end
 
-
 end

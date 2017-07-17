@@ -1,5 +1,22 @@
 class DriversController < ApplicationController
 
+	def reset
+		count = 0
+		DriverCurrentStatus.all.each do |x|
+			x.trip_status = "available";
+			x.status = "Offline";
+			if (x.save)
+				count += 1
+			end
+		end 
+		if (count == 5) 
+			render plain: "good"
+		else
+			render plain: "f"
+		end
+	end
+
+
 	def show
 		@driver = Driver.find_by(driver_id2: params[:id])
 		if @driver
@@ -82,6 +99,8 @@ class DriversController < ApplicationController
 		tripRequest = DriverCurrentStatus.find_by(trip_request_id2: params[:trip_request_id], driver_id2: session[:driver_id2])
 		render plain: tripRequest.trip_status
 	end
+
+
 
 
 end
