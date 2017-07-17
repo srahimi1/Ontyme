@@ -83,6 +83,7 @@ function checkForRideRequests() {
     console.log("worker started\n");
     webWorker.onmessage = function(event) {
       var data = event.data;
+      console.log("web worker received message");
       if (receivedRequest == 0) showDriverRideRequestModal(data);
     } // end webWorker.onmessage = function(event)
   
@@ -95,6 +96,7 @@ function checkForRideRequests() {
 
 
 function showDriverRideRequestModal(data) {
+  console.log("in show ride request modal");
   receivedRequest = 1;
   $('#driverRideRequestModal').modal('show');
   if ((data != "null") && (data != "cancelled")) {
