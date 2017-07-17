@@ -147,6 +147,7 @@ class TripRequest < ApplicationRecord
 			driver = DriverCurrentStatus.find_by(trip_request_id2: trip_request.trip_request_id2, id: driver_chosen.id)
 			time_elapsed = Time.now - time_chosen
 		end
+		driver = DriverCurrentStatus.find_by(trip_request_id2: trip_request.trip_request_id2, id: driver_chosen.id)
 		if ((time_elapsed >= 24) && (driver.trip_status == "requesting"))
 			driver.trip_status = 'time_ran_out'
 			driver.save
