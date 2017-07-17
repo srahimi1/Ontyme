@@ -29,7 +29,7 @@ var options = {
 function acceptRequest(sel) {
   var ajaxRequest = new XMLHttpRequest();
   audio.play();
-  var url = "/drivers/acceptrequest?trip_request_id="+document.getElementById("trip_request_id").value+"&acceptance_code="+sel
+  var url = "/drivers/acceptrequest?trip_request_id2="+document.getElementById("trip_request_id").value+"&acceptance_code="+sel
   ajaxRequest.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
           receivedRequest == 0;
@@ -106,7 +106,11 @@ function showDriverRideRequestModal(data) {
     for (var key in data) {
       if (data.hasOwnProperty(key)) {
         var el = key + "";
-        document.getElementById(el).innerHTML = data[key];
+        elObtained = document.getElementById(el);
+        if (!!(elObtained.value))
+          elObtained.value = data[key];
+        else
+          elObtained.innerHTML = data[key];
       }
     }
     unmuteAudio();
