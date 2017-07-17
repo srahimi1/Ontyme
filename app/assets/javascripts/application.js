@@ -17,7 +17,7 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null};
+timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData;
 
 var coordinates2 = nullCoords;
 
@@ -28,11 +28,12 @@ var options = {
 
 function acceptRequest(sel) {
   var ajaxRequest = new XMLHttpRequest();
-  audio.play();
   var url = "/drivers/acceptrequest?trip_request_id2="+document.getElementById("trip_request_id").value+"&acceptance_code="+sel
   ajaxRequest.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
           receivedRequest == 0;
+          audio.pause();
+          $('#driverRideRequestModal').modal('hide');
           if (this.responseText == "time_ran_out") alert("sorry time ran out");
           else if (this.responseText == "accepted") alert("You accepted job");
           else if (this.responseText == "available") alert("You rejected successfully");
@@ -99,21 +100,8 @@ function checkForRideRequests() {
 function showDriverRideRequestModal(data) {
   console.log("in show ride request modal");
   receivedRequest = 1;
-  $('#driverRideRequestModal').modal('show');
   if ((data != "null") && (data != "cancelled")) {
-    document.getElementById("driverRequestData").style.display = "block";
-    document.getElementById("driverRequestCancel").style.display = "none";
-    for (var key in data) {
-      if (data.hasOwnProperty(key)) {
-        var el = key + "";
-        elObtained = document.getElementById(el);
-        if (!!(elObtained.value))
-          elObtained.value = data[key];
-        else
-          elObtained.innerHTML = data[key];
-      }
-    }
-    unmuteAudio();
+    driverRideRequestData = data;
   } // end if ((data != "null") && (data != "cancelled")) 
   else {
     document.getElementById("driverRequestData").style.display = "none";
@@ -121,6 +109,7 @@ function showDriverRideRequestModal(data) {
     el.innerHTML = "Request Cancelled";
     el.style.display = "block";
   }
+  $('#driverRideRequestModal').modal('show');
 } // end function showDrvierRideRequestModal(data)
 
 
@@ -189,6 +178,23 @@ $(window).load(function() {
       document.getElementById("destinationField").value = "";
       document.getElementById("listOfAddresses").innerHTML = "<p>&nbsp;</p>";
       document.getElementById("trip_requests_input_changed").value = "";
+    });
+
+
+     $('#driverRideRequestModal').on('show.bs.modal', function() {
+    document.getElementById("driverRequestData").style.display = "block";
+    document.getElementById("driverRequestCancel").style.display = "none";
+    for (var key in driverRideRequestData) {
+      if (driverRideRequestData.hasOwnProperty(key)) {
+        var el = key + "";
+        elObtained = document.getElementById(el);
+        if (!!(elObtained.value))
+          elObtained.value = driverRideRequestData[key];
+        else
+          elObtained.innerHTML = driverRideRequestData[key];
+      }
+    }
+    unmuteAudio();
     });
 
 

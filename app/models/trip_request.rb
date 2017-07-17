@@ -139,7 +139,7 @@ class TripRequest < ApplicationRecord
 		value = -1
 		driver = DriverCurrentStatus.find_by(trip_request_id2: trip_request.trip_request_id2, id: driver_chosen.id)
 		time_elapsed = Time.now - time_chosen
-		while ( (driver.trip_status != "available") && (driver.trip_status != "time_ran_out") && ( time_elapsed < 25) )
+		while ( (driver.trip_status == "requesting") && (time_elapsed < 25) )
 			if (driver.trip_status == "accepted")
 				a = {}
 				value = 1
@@ -147,7 +147,7 @@ class TripRequest < ApplicationRecord
 			driver = DriverCurrentStatus.find_by(trip_request_id2: trip_request.trip_request_id2, id: driver_chosen.id)
 			time_elapsed = Time.now - time_chosen
 		end
-		if (time_elapsed >= 24)
+		if ((time_elapsed >= 24) && (driver.trip_status == "requesting"))
 			driver.trip_status = 'time_ran_out'
 			driver.save
 		end
