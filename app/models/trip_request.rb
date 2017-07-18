@@ -125,9 +125,7 @@ class TripRequest < ApplicationRecord
 		driver_distance = "null"
 		if (closest_driver != "null")
 			driver_distance = GPS_distance(closest_driver.current_longitude, closest_driver.current_latitude, trip_request.pickup_longitude, trip_request.pickup_latitude)
-			closest_driver.trip_status = "requesting"
-			closest_driver.trip_request_id2 = trip_request.trip_request_id2
-			closest_driver.save
+			closest_driver.update_attributes(:trip_status => "requesting", :trip_request_id2 => trip_request.trip_request_id2)
 			a = driver_response(closest_driver, Time.now, trip_request)
 			if (a == -1)
 				rejections.push(closest_driver.id)
@@ -149,13 +147,12 @@ class TripRequest < ApplicationRecord
 				a = {}
 				value = 1
 			end
-			driver = DriverCurrentStatus.find_by(trip_request_id2: trip_request.trip_request_id2, id: driver_chosen.id)
+			driver.reload
 			time_elapsed = Time.now - time_chosen
 		end
-		driver = DriverCurrentStatus.find_by(trip_request_id2: trip_request.trip_request_id2, id: driver_chosen.id)
-		if ((time_elapsed >= 24) && (driver.trip_status == "requesting"))
-			driver.trip_status = 'time_ran_out'
-			driver.save
+		driver.reload
+		if ((time_elapsed >= 24) && (driver.trip_status.to_s == "requesting"))
+			driver.update_attributes(:trip_status => 'time_ran_out')
 		end
 		return value
 	end
