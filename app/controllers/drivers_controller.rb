@@ -86,8 +86,8 @@ class DriversController < ApplicationController
 		elsif (!!driverRequest & (params[:acceptance_code] == "0"))
 			driverRequest.trip_status = "available"
 		end
-		while (!driverRequest.save)
-			driverRequest.save
+		while (!driverRequest.save!)
+			driverRequest.save!
 		end
 		driverRequest.reload
 		render plain: driverRequest.trip_status.to_s

@@ -144,22 +144,16 @@ class TripRequest < ApplicationRecord
 		driver = DriverCurrentStatus.find_by(trip_request_id2: trip_request.trip_request_id2, id: driver_chosen.id)
 		time_elapsed = Time.now - time_chosen
 		while ( (driver.trip_status.to_s == "requesting") && (time_elapsed < 25) )
-			if (driver.trip_status.to_s == "accepted")
-				a = {}
-				value = 1
-				puts "\n\n\nright before break\n\n\n"
-				puts value
-				puts "\n\n"
-				break
-			end
 			driver.reload
 			time_elapsed = Time.now - time_chosen
 		end
 		driver.reload
 		if ((time_elapsed >= 24) && (driver.trip_status.to_s == "requesting"))
 			driver.update_attributes(:trip_status => 'time_ran_out')
+		elsif (driver.trip_status.to_s == "accepted")
+				a = {}
+				value = 1
 		end
-		puts "\n\n\nat end\n\n\n"
 		return value
 	end
 
