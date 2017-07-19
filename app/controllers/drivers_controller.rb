@@ -81,7 +81,7 @@ class DriversController < ApplicationController
 
 	def acceptRequest
 		driverRequest = DriverCurrentStatus.find_by(trip_request_id2: params[:trip_request_id2], driver_id2: session[:driver_id2])
-		if (!!driverRequest & (params[:acceptance_code] == "1") & (driverRequest.trip_status != "time_ran_out"))
+		if (!!driverRequest & (params[:acceptance_code] == "1") & (driverRequest.trip_status.to_s != "time_ran_out"))
 			driverRequest.trip_status = "accepted"
 		elsif (!!driverRequest & (params[:acceptance_code] == "0"))
 			driverRequest.trip_status = "available"
@@ -89,8 +89,8 @@ class DriversController < ApplicationController
 		while (!driverRequest.save)
 			driverRequest.save
 		end
-		driverRequest = DriverCurrentStatus.find_by(trip_request_id2: params[:trip_request_id2], driver_id2: session[:driver_id2])
-		render plain: driverRequest.trip_status
+		driverRequest.reload
+		render plain: driverRequest.trip_status.to_s
 	end
 
 

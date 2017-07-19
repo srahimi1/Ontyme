@@ -143,10 +143,11 @@ class TripRequest < ApplicationRecord
 		value = -1
 		driver = DriverCurrentStatus.find_by(trip_request_id2: trip_request.trip_request_id2, id: driver_chosen.id)
 		time_elapsed = Time.now - time_chosen
-		while ( (driver.trip_status == "requesting") && (time_elapsed < 25) )
-			if (driver.trip_status == "accepted")
+		while ( (driver.trip_status.to_s == "requesting") && (time_elapsed < 25) )
+			if (driver.trip_status.to_s == "accepted")
 				a = {}
 				value = 1
+				break
 			end
 			driver.reload
 			time_elapsed = Time.now - time_chosen
