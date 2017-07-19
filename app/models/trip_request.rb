@@ -147,6 +147,9 @@ class TripRequest < ApplicationRecord
 			if (driver.trip_status.to_s == "accepted")
 				a = {}
 				value = 1
+				puts "\n\n\nright before break\n\n\n"
+				puts value
+				puts "\n\n"
 				break
 			end
 			driver.reload
@@ -156,6 +159,7 @@ class TripRequest < ApplicationRecord
 		if ((time_elapsed >= 24) && (driver.trip_status.to_s == "requesting"))
 			driver.update_attributes(:trip_status => 'time_ran_out')
 		end
+		puts "\n\n\nat end\n\n\n"
 		return value
 	end
 
