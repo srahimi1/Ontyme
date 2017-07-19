@@ -131,10 +131,11 @@ class TripRequest < ApplicationRecord
 				rejections.push(closest_driver.id)
 				find_driver(trip_request, rejections)
 			else
-
+				return driver_distance
 			end
+		else
+			return "null"
 		end
-		return driver_distance
 	end
 
 
