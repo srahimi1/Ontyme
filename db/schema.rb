@@ -30,13 +30,15 @@ ActiveRecord::Schema.define(version: 20170516223337) do
     t.string   "destination_latitude"
     t.text     "map_provider_destination_id"
     t.text     "map_provider_destination_slug"
-    t.datetime "trip_start_time"
     t.datetime "driver_connect_time"
+    t.datetime "trip_start_time"
     t.datetime "trip_end_time"
+    t.text     "response_from_routing_service_seg_1"
+    t.text     "response_from_routing_service_seg_2"
     t.text     "route_data"
     t.string   "status"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   create_table "completed_trips", force: :cascade do |t|
