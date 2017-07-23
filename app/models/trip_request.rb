@@ -152,7 +152,7 @@ class TripRequest < ApplicationRecord
 				a = ActiveTrip.find_by(active_trip_id2: trip_request.trip_request_id2)
 				if (!a)
 					a = ActiveTrip.new(active_trip_id2: trip_request.trip_request_id2, driver_id2: driver_chosen.driver_id2, driver_connect_time: Time.now)
-					a.attributes = trip_request.as_json
+					a.from_json(trip_request.as_json)
 					a.save!
 				end
 				value = 1
