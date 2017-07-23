@@ -149,9 +149,12 @@ class TripRequest < ApplicationRecord
 		if ((time_elapsed >= 24) && (driver.trip_status.to_s == "requesting"))
 			driver.update_attributes(:trip_status => 'time_ran_out')
 		elsif (driver.trip_status.to_s == "accepted")
-				a = ActiveTrip.new(active_trip_id2: trip_request.trip_request_id2, driver_id2: driver_chosen.driver_id2, driver_connect_time: Time.now)
-				a.attributes = trip_request.as_json
-				a.save!
+				a = ActiveTrip.find_by(active_trip_id2: trip_request.trip_request_id2)
+				if (!a)
+					a = ActiveTrip.new(active_trip_id2: trip_request.trip_request_id2, driver_id2: driver_chosen.driver_id2, driver_connect_time: Time.now)
+					a.attributes = trip_request.as_json
+					a.save!
+				end
 				value = 1
 		end
 		return value
