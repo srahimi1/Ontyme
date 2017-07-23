@@ -1,5 +1,6 @@
 class ActiveTrip < ApplicationRecord
 	include ActiveModel::AttributeAssignment
+	include ActiveModel::Serializers::JSON
 
 	self.primary_key = "active_trip_id2"
 	belongs_to :user, :foreign_key => "user_id2"
