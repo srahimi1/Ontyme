@@ -14,10 +14,6 @@ class TripRequestsController < ApplicationController
 			rejections = [-1]
 			closest_driver = TripRequest.find_driver(@trip_request, rejections)
 			if (closest_driver.to_s != "null")
-				a = ActiveTrip.find_by(active_trip_id2: @trip_request.trip_request_id2)
-				if (!a)
-					ActiveTrip.create(active_trip_id2: @trip_request.trip_request_id2, driver_id2: closest_driver.driver_id2, trip_request_id2: @trip_request.trip_request_id2, user_id2: params["user_id"].to_s)
-				end
 				driver_distance = TripRequest.GPS_distance(closest_driver.current_longitude, closest_driver.current_latitude, @trip_request.pickup_longitude, @trip_request.pickup_latitude)
 			end
 			render plain: @trip_request.trip_request_id2+"mup_q"+driver_distance.to_s

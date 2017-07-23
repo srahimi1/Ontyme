@@ -31,7 +31,7 @@ function acceptRequest(sel) {
   var url = "/drivers/acceptrequest?trip_request_id2="+document.getElementById("trip_request_id").value+"&acceptance_code="+sel
   ajaxRequest.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
-          receivedRequest == 0;
+          receivedRequest = 0;
           audio.pause();
           $('#driverRideRequestModal').modal('hide');
           if (this.responseText == "time_ran_out") alert("sorry time ran out");
@@ -100,10 +100,10 @@ function checkForRideRequests() {
 function showDriverRideRequestModal(data) {
   console.log("in show ride request modal");
   receivedRequest = 1;
-    $('#driverRideRequestModal').modal('show');
+  $('#driverRideRequestModal').modal('show');
   if ((data != "null") && (data != "cancelled")) {
     driverRideRequestData = data;
-        document.getElementById("driverRequestData").style.display = "block";
+    document.getElementById("driverRequestData").style.display = "block";
     document.getElementById("driverRequestCancel").style.display = "none";
     for (var key in driverRideRequestData) {
       if (driverRideRequestData.hasOwnProperty(key)) {
@@ -345,7 +345,7 @@ function changeDriverStatus() {
           }
           else {
             webWorker.terminate();
-            webWorker = undefined;
+            webWorker = null;
             document.getElementById("driverCurrentStatus").innerHTML = "You are Offline";
           }
           button.innerHTML = "Go " + response;
