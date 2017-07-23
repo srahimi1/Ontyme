@@ -86,6 +86,9 @@ class DriversController < ApplicationController
 			trip_request = TripRequest.find_by(trip_request_id2: params[:trip_request_id2])
 			a = ActiveTrip.new(active_trip_id2: params[:trip_request_id2].to_s, driver_id2: session[:driver_id2].to_s)
 			a.from_json(trip_request.as_json)
+			puts "\n\n"
+			puts a.inspect
+			puts "\n\n"
 			a.save!
 		elsif (!!driverRequest & (params[:acceptance_code] == "0"))
 			driverRequest.trip_status = "available"
