@@ -1,4 +1,6 @@
 class ActiveTrip < ApplicationRecord
+	include ActiveModel::AttributeAssignment
+
 	self.primary_key = "active_trip_id2"
 	belongs_to :user, :foreign_key => "user_id2"
 	belongs_to :driver, :foreign_key => "driver_id2"
