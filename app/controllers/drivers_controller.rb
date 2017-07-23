@@ -87,6 +87,10 @@ class DriversController < ApplicationController
 			a = ActiveTrip.create(active_trip_id2: params[:trip_request_id2].to_s, driver_id2: session[:driver_id2].to_s, driver_connect_time: Time.now)
 			a.attributes = trip_request.as_json
 			a.save!
+			a.errors.full_messages.each do |x|
+				puts x
+				puts "\n\n"
+			end
 		elsif (!!driverRequest & (params[:acceptance_code] == "0"))
 			driverRequest.trip_status = "available"
 		end
