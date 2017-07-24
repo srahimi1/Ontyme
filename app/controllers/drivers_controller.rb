@@ -84,11 +84,8 @@ class DriversController < ApplicationController
 		if (!!driverRequest & (params[:acceptance_code] == "1") & (driverRequest.trip_status.to_s != "time_ran_out"))
 			driverRequest.trip_status = "accepted"
 			trip_request = TripRequest.find_by(trip_request_id2: params[:trip_request_id2])
-			a = ActiveTrip.new(active_trip_id2: params[:trip_request_id2].to_s, driver_id2: session[:driver_id2].to_s)
-			a.from_json(trip_request.as_json)
-			puts "\n\n"
-			puts a.inspect
-			puts "\n\n"
+			a = ActiveTrip.new(active_trip_id2: params[:trip_request_id2].to_s, driver_id2: session[:driver_id2].to_s, driver_connect_time: Time.now)
+			a.attributes=trip_request.as_json(only: [:user_id2, :trip_request_id2, :map_provider, :map_provider_url, :destination_street, :destination_city, :destination_state, :destination_postalcode, :destination_longitude, :destination_latitude, :map_provider_destination_id, :map_provider_destination_slug])
 			a.save!
 		elsif (!!driverRequest & (params[:acceptance_code] == "0"))
 			driverRequest.trip_status = "available"

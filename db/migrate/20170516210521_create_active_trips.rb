@@ -15,6 +15,8 @@ class CreateActiveTrips < ActiveRecord::Migration[5.0]
         t.string :destination_latitude
         t.text :map_provider_destination_id
         t.text :map_provider_destination_slug
+        t.string :pickup_longitude
+        t.string :pickup_latitude
         t.datetime :driver_connect_time
         t.datetime :trip_start_time
         t.datetime :trip_end_time
