@@ -87,6 +87,9 @@ class DriversController < ApplicationController
 			a = ActiveTrip.new(active_trip_id2: params[:trip_request_id2].to_s, driver_id2: session[:driver_id2].to_s, driver_connect_time: Time.now)
 			a.attributes=trip_request.as_json(only: [:user_id2, :trip_request_id2, :map_provider, :map_provider_url, :destination_street, :destination_city, :destination_state, :destination_postalcode, :destination_longitude, :destination_latitude, :map_provider_destination_id, :map_provider_destination_slug])
 			a.save!
+			driverRequest.reload
+			trip_request.reload
+			get_directions(a.active_trip_id2, driverRequest.current_longitude, driverRequest.current_latitude, trip_request.pickup_longitude, trip_request.pickup_latitude)
 		elsif (!!driverRequest & (params[:acceptance_code] == "0"))
 			driverRequest.trip_status = "available"
 		end
@@ -97,7 +100,15 @@ class DriversController < ApplicationController
 		render plain: driverRequest.trip_status.to_s
 	end
 
-
+	def get_directions(active_trip_id, long1, lat1, long2, lat2)
+		url = "http://router.project-osrm.org/route/v1/driving/{long1},{lat1};{long2},{lat2}"
+		uri = URI.parse(url)
+		connection = Net::HTTP.new(uri.host, uri.port)
+		res = connection.get(uri.request_uri)
+		a = ActiveTrip.find_by(active_trip_id2: active_trip_id)
+		a.update_attributes(:response_from_routing_service_seg_1 => res.body)
+		#a = JSON.parse(res.body)
+	end
 
 
 end
