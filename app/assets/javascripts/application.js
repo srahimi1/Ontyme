@@ -61,11 +61,13 @@ function requestAccepted(extentTemp) {
   var cord2 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
  
   var marker1 = new ol.Overlay({
-    element: document.getElementById("marker")
+    element: document.getElementById("marker"),
+    positioning: 'center-center'    
   });
 
   var marker2 = new ol.Overlay({
-    element: document.getElementById("marker")
+    element: document.getElementById("marker2"),
+    positioning: 'center-center'
   });
 
 
