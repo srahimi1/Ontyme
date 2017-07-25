@@ -17,7 +17,7 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData;
+timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map;
 
 var coordinates2 = nullCoords;
 
@@ -49,8 +49,8 @@ function acceptRequest(sel) {
 }
 
 function requestAccepted(extentTemp) {
-  map = document.getElementById("map");
-  map.style.height = "100%";
+  mapDiv = document.getElementById("map");
+  mapDiv.style.height = "100%";
   map.updateSize();
   extent = extentTemp.split(",");
   extent2 = ol.proj.transformExtent([parseFloat(extent[0]), parseFloat(extent[1]), parseFloat(extent[2]), parseFloat(extent[3])], 'EPSG:4326', 'EPSG:3857');
@@ -870,7 +870,7 @@ function startMap() {
             .replace('{y}', String(-tileCoord[2] - 1));
       }
 
-      var map = new ol.Map({
+      map = new ol.Map({
         layers: [
           new ol.layer.Tile({
             source: new ol.source.XYZ({
