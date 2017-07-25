@@ -38,9 +38,9 @@ function acceptRequest(sel) {
           status = this.responseText + "";
           status1 = status.split("!");
           console.log(status1);
-          if (status[0] == "time_ran_out") alert("sorry time ran out");
-          else if (status[0] == "accepted") {alert("You accepted job"); requestAccepted(status[1]);}
-          else if (status[0] == "available") alert("You rejected successfully");
+          if (status1[0] == "time_ran_out") alert("sorry time ran out");
+          else if (status1[0] == "accepted") {alert("You accepted job"); requestAccepted(status1[1]);}
+          else if (status1[0] == "available") alert("You rejected successfully");
       } // end this.readyState ...
     } // end onreadystatechange
     ajaxRequest.open("GET", url, true);
