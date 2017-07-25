@@ -100,7 +100,7 @@ class DriversController < ApplicationController
 		end
 		driverRequest.reload
 		if driverRequest.trip_status.to_s == "accepted"
-			output = "accepted!#{trip_request.pickup_longitude},#{trip_request.pickup_latitude},#{trip_request.destination_longitude},#{trip_request.destination_latitude}"
+			output = "accepted!#{driverRequest.current_longitude},#{driverRequest.current_latitude},#{trip_request.pickup_longitude},#{trip_request.pickup_latitude},#{trip_request.destination_longitude},#{trip_request.destination_latitude}"
 		else
 			output = driverRequest.trip_status.to_s
 		end

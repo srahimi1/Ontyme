@@ -53,12 +53,12 @@ function requestAccepted(extentTemp) {
   mapDiv.style.height = "100%";
   //map.updateSize();
   extent = extentTemp.split(",");
-  extent2 = ol.proj.transformExtent([parseFloat(extent[0]), parseFloat(extent[1]), parseFloat(extent[2]), parseFloat(extent[3])], 'EPSG:4326', 'EPSG:3857');
+  extent2 = ol.proj.transformExtent([parseFloat(extent[0]), parseFloat(extent[1]), parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
   map.getView().fit(extent2, map.getSize());
   map.updateSize();
   var p = map.getView().getProjection();
-  var cord1 = ol.proj.fromLonLat([parseFloat(extent[0]), parseFloat(extent[1])], p);
-  var cord2 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
+  var cord1 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
+  var cord2 = ol.proj.fromLonLat([parseFloat(extent[4]), parseFloat(extent[5])], p);
  
   var marker1 = new ol.Overlay({
     element: document.getElementById("marker"),
