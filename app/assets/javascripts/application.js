@@ -55,22 +55,25 @@ function requestAccepted(extentTemp) {
   extent = extentTemp.split(",");
   extent2 = ol.proj.transformExtent([parseFloat(extent[0]), parseFloat(extent[1]), parseFloat(extent[2]), parseFloat(extent[3])], 'EPSG:4326', 'EPSG:3857');
   map.getView().fit(extent2, map.getSize());
+  map.updateSize();
   var p = map.getView().getProjection();
-  var cord = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
+  var cord1 = ol.proj.fromLonLat([parseFloat(extent[0]), parseFloat(extent[1])], p);
+  var cord2 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
  
+  var marker1 = new ol.Overlay({
+    element: document.getElementById("marker")
+  });
+
   var marker2 = new ol.Overlay({
-    element: document.getElementById("marker"),
-    positioning: 'center-center',
-    autoPan: true
+    element: document.getElementById("marker")
   });
 
 
   map.addOverlay(marker2);
-  marker2.setPosition(cord);
+  marker2.setPosition(cord2);
+  map.addOverlay(marker1);
+  marker1.setPosition(cord1);
 
-
-
-  map.updateSize();
 }
 
 function inputChanged() {
