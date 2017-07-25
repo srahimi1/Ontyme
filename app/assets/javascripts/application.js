@@ -51,11 +51,11 @@ function acceptRequest(sel) {
 function requestAccepted(extentTemp) {
   mapDiv = document.getElementById("map");
   mapDiv.style.height = "100%";
-  map.updateSize();
+  //map.updateSize();
   extent = extentTemp.split(",");
   extent2 = ol.proj.transformExtent([parseFloat(extent[0]), parseFloat(extent[1]), parseFloat(extent[2]), parseFloat(extent[3])], 'EPSG:4326', 'EPSG:3857');
   map.getView().fit(extent2, map.getSize());
-  map.updateSize();
+ // map.updateSize();
 }
 
 function inputChanged() {
@@ -903,7 +903,7 @@ function startMap() {
           map.getView().setZoom(13);
           setTimeout(function() {map.updateSize()}, 50);
           marker.setPosition(cord);
-          watchPos();
+         // watchPos();
         } else {
           setTimeout(function() {recenterMap()}, 100);
         }
