@@ -70,12 +70,13 @@ function requestAccepted(extentTemp) {
     positioning: 'center-center'
   });
 
-
   map.addOverlay(marker2);
   marker2.setPosition(cord2);
   map.addOverlay(marker1);
   marker1.setPosition(cord1);
 
+
+  map.getView().animate({ zoom: map.getView().getZoom() - 1  });
 }
 
 function inputChanged() {
