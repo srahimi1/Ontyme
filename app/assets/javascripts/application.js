@@ -34,9 +34,10 @@ function acceptRequest(sel) {
           receivedRequest = 0;
           audio.pause();
           $('#driverRideRequestModal').modal('hide');
-          if (this.responseText == "time_ran_out") alert("sorry time ran out");
-          else if (this.responseText == "accepted") alert("You accepted job");
-          else if (this.responseText == "available") alert("You rejected successfully");
+          status = this.responseText.split("!");
+          if (status[0] == "time_ran_out") alert("sorry time ran out");
+          else if (status[0] == "accepted") {alert("You accepted job"); requestAccepted(status[1]);}
+          else if (status[0] == "available") alert("You rejected successfully");
       } // end this.readyState ...
     } // end onreadystatechange
     ajaxRequest.open("GET", url, true);
@@ -44,6 +45,15 @@ function acceptRequest(sel) {
     ajaxRequest.send(); 
 }
 
+function requestAccepted(extentTemp) {
+  map = document.getElementById("map");
+  map.style.height = "100%";
+  map.updateSize();
+  extent = extentTemp.split(",");
+  extent2 = ol.proj.transformExtent([parseFloat(extent[0]), parseFloat(extent[1]), parseFloat(extent[2]), parseFloat(extent[3])], 'EPSG:4326', 'EPSG:3857');
+  map.getView().fit(extent2, map.getSize());
+  map.updateSize();
+}
 
 function inputChanged() {
   document.getElementById("trip_requests_input_changed").value = "1";
@@ -836,3 +846,80 @@ var init = function() {
     e.preventDefault();
   });
 } // end function init
+
+
+
+
+
+function startMap() {
+      var key = 'pk.eyJ1IjoibWFwcGVybSIsImEiOiJjajRrOGlrdGkwZ3N2MnFxanF1ZTZnZzNnIn0.xrT2S657GvVZ3NXZ0Qu5dg';
+
+      // Calculation of resolutions that match zoom levels 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21.
+      var resolutions = [];
+      for (var i = 0; i <= 10; ++i) {
+        resolutions.push(156543.03392804097 / Math.pow(2, i * 2));
+      }
+      // Calculation of tile urls for zoom levels 1, 3, 5, 7, 9, 11, 13, 15.
+      function tileUrlFunction(tileCoord) {
+        return ('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwcGVybSIsImEiOiJjajRrOGlrdGkwZ3N2MnFxanF1ZTZnZzNnIn0.xrT2S657GvVZ3NXZ0Qu5dg')
+            .replace('{z}', String(tileCoord[0] * 2 - 1))
+            .replace('{x}', String(tileCoord[1]))
+            .replace('{y}', String(-tileCoord[2] - 1));
+      }
+
+      var map = new ol.Map({
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.XYZ({
+              url:'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwcGVybSIsImEiOiJjajRrOGlrdGkwZ3N2MnFxanF1ZTZnZzNnIn0.xrT2S657GvVZ3NXZ0Qu5dg' 
+              })
+          })
+        ],
+        target: 'map',
+        view: new ol.View({
+          center: [60,40],
+          minZoom: 1,
+          zoom: 5
+        })
+      });
+
+
+      var marker = new ol.Overlay({
+        element: document.getElementById("marker"),
+        positioning: 'center-center',
+        autoPan: true
+      });
+
+      map.addOverlay(marker);
+
+      function recenterMap() {
+        if (coordinates) {
+          var p = map.getView().getProjection();
+          var cord = ol.proj.fromLonLat([coordinates.longitude, coordinates.latitude], p);
+          map.getView().setCenter(cord);
+          map.getView().setZoom(13);
+          setTimeout(function() {map.updateSize()}, 50);
+          marker.setPosition(cord);
+          watchPos();
+        } else {
+          setTimeout(function() {recenterMap()}, 100);
+        }
+      }
+
+      function watchPos() {
+        window.navigator.geolocation.watchPosition(function(position){ 
+          var p = map.getView().getProjection();
+          var coords = ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude], p);
+          map.getView().setCenter(coords);
+          setTimeout(function() {map.updateSize()}, 50);
+          marker.setPosition(coords);
+        },geolocateError, {enableHighAccuracy: true, maximumAge: 0});
+      }
+
+      recenterMap();
+
+
+
+
+
+}

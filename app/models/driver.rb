@@ -14,6 +14,7 @@ class Driver < ApplicationRecord
 		res = connection.get(uri.request_uri)
 		a = ActiveTrip.find_by(active_trip_id2: active_trip_id)
 		a.update_attributes(:response_from_routing_service_seg_1 => res.body)
+		return res.body
 		#a = JSON.parse(res.body)
 	end
 
