@@ -35,7 +35,8 @@ function acceptRequest(sel) {
           audio.pause();
           $('#driverRideRequestModal').modal('hide');
           console.log(this.responseText);
-          status = this.responseText.split("!");
+          status = this.responseText + "";
+          status = status.split("!");
           console.log(status);
           if (status[0] == "time_ran_out") alert("sorry time ran out");
           else if (status[0] == "accepted") {alert("You accepted job"); requestAccepted(status[1]);}
