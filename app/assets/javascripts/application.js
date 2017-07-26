@@ -111,7 +111,7 @@ function startDirections() {
   distance = document.getElementById("distance");
   instruction = document.getElementById("instruction");
   distance.innerHTML = "1";
-  instruction.innerHTML = "Turn<br>Right"
+  instruction.innerHTML = "Turn<br>Right";
 }
 
 
