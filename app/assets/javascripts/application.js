@@ -17,7 +17,7 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map;
+timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, layer1;
 
 var coordinates2 = nullCoords;
 
@@ -75,8 +75,14 @@ function requestAccepted(extentTemp) {
   map.addOverlay(marker1);
   marker1.setPosition(cord1);
 
+  layer1.on("postcompose", function(event){
+    if (layer1.getVisible()) {
+      map.getView().animate({ zoom: map.getView().getZoom() - 1  });
+    }
+  });
 
-  map.getView().animate({ zoom: map.getView().getZoom() - 1  });
+
+  
 }
 
 function inputChanged() {
@@ -891,14 +897,14 @@ function startMap() {
             .replace('{y}', String(-tileCoord[2] - 1));
       }
 
-      map = new ol.Map({
-        layers: [
-          new ol.layer.Tile({
+      layer1 = new ol.layer.Tile({
             source: new ol.source.XYZ({
               url:'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwcGVybSIsImEiOiJjajRrOGlrdGkwZ3N2MnFxanF1ZTZnZzNnIn0.xrT2S657GvVZ3NXZ0Qu5dg' 
               })
-          })
-        ],
+          });
+
+      map = new ol.Map({
+        layers: [layer1],
         target: 'map',
         view: new ol.View({
           center: [60,40],
