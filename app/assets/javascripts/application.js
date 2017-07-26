@@ -75,10 +75,8 @@ function requestAccepted(extentTemp) {
   map.addOverlay(marker1);
   marker1.setPosition(cord1);
 
-  layer1.on("postcompose", function(event){
-    if (layer1.getVisible()) {
+  layer1.once("postcompose", function(event){
       map.getView().animate({ zoom: map.getView().getZoom() - 1  });
-    }
   });
 
 
