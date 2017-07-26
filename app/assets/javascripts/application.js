@@ -76,7 +76,7 @@ function requestAccepted(extentTemp) {
   marker1.setPosition(cord1);
 
   layer1.once("postcompose", function(event){
-      map.getView().animate({ zoom: map.getView().getZoom() - 1  });
+      setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() - 1  }) }, 50);
   });
 
 
