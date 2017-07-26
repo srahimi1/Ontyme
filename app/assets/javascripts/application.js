@@ -85,6 +85,14 @@ function requestAccepted(extentTemp, directionsTemp) {
     geometry: route
   });
 
+
+  feature.setStyle( new ol.style.Style({
+    stroke: new ol.style.Stroke({ width: 6, color: [40, 40, 40, 0.8] })
+  }) );
+  
+
+
+
   vectorSource.addFeature(feature);
 
   layer1.once("postcompose", function(event){
