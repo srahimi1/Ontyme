@@ -91,7 +91,7 @@ class DriversController < ApplicationController
 			a.save!
 			driverRequest.reload
 			trip_request.reload
-			directions = Driver.get_directions(a.active_trip_id2, driverRequest.current_longitude, driverRequest.current_latitude, trip_request.pickup_longitude, trip_request.pickup_latitude)
+			directions = Driver.get_directions(a.active_trip_id2, trip_request.pickup_longitude, trip_request.pickup_latitude, trip_request.destination_longitude, trip_request.destination_latitude)
 			driverRequest.trip_status = "accepted"
 		elsif (!!driverRequest & (params[:acceptance_code] == "0"))
 			driverRequest.trip_status = "available"
