@@ -81,8 +81,9 @@ class DriversController < ApplicationController
 
 	def acceptRequest
 		output = ""
-		trip_request = nil
+		trip_request = ""
 		driverRequest = DriverCurrentStatus.find_by(trip_request_id2: params[:trip_request_id2], driver_id2: session[:driver_id2])
+		directions = ""
 		if (!!driverRequest & (params[:acceptance_code] == "1") & (driverRequest.trip_status.to_s != "time_ran_out"))
 			trip_request = TripRequest.find_by(trip_request_id2: params[:trip_request_id2])
 			a = ActiveTrip.new(active_trip_id2: params[:trip_request_id2].to_s, driver_id2: session[:driver_id2].to_s, driver_connect_time: Time.now)
@@ -90,7 +91,7 @@ class DriversController < ApplicationController
 			a.save!
 			driverRequest.reload
 			trip_request.reload
-			Driver.get_directions(a.active_trip_id2, driverRequest.current_longitude, driverRequest.current_latitude, trip_request.pickup_longitude, trip_request.pickup_latitude)
+			directions = Driver.get_directions(a.active_trip_id2, driverRequest.current_longitude, driverRequest.current_latitude, trip_request.pickup_longitude, trip_request.pickup_latitude)
 			driverRequest.trip_status = "accepted"
 		elsif (!!driverRequest & (params[:acceptance_code] == "0"))
 			driverRequest.trip_status = "available"
@@ -100,7 +101,7 @@ class DriversController < ApplicationController
 		end
 		driverRequest.reload
 		if driverRequest.trip_status.to_s == "accepted"
-			output = "accepted!#{driverRequest.current_longitude},#{driverRequest.current_latitude},#{trip_request.pickup_longitude},#{trip_request.pickup_latitude},#{trip_request.destination_longitude},#{trip_request.destination_latitude}"
+			output = "accepted!#{driverRequest.current_longitude},#{driverRequest.current_latitude},#{trip_request.pickup_longitude},#{trip_request.pickup_latitude},#{trip_request.destination_longitude},#{trip_request.destination_latitude}!#{directions}"
 		else
 			output = driverRequest.trip_status.to_s
 		end

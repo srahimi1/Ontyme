@@ -39,7 +39,7 @@ function acceptRequest(sel) {
           status1 = status.split("!");
           console.log(status1);
           if (status1[0] == "time_ran_out") alert("sorry time ran out");
-          else if (status1[0] == "accepted") {alert("You accepted job"); requestAccepted(status1[1]);}
+          else if (status1[0] == "accepted") {alert("You accepted job"); requestAccepted(status1[1], status1[2]);}
           else if (status1[0] == "available") alert("You rejected successfully");
       } // end this.readyState ...
     } // end onreadystatechange
@@ -48,7 +48,7 @@ function acceptRequest(sel) {
     ajaxRequest.send(); 
 }
 
-function requestAccepted(extentTemp) {
+function requestAccepted(extentTemp, directionsTemp) {
   mapDiv = document.getElementById("map");
   mapDiv.style.height = "100%";
   //map.updateSize();
@@ -75,13 +75,26 @@ function requestAccepted(extentTemp) {
   map.addOverlay(marker1);
   marker1.setPosition(cord1);
 
+  directions = JSON.parse(directionsTemp);
+  console.log(directions);
+
+
+
   layer1.once("postcompose", function(event){
-      setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() - 1  }) }, 50);
+      setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() - 1  }) }, 100);
   });
 
 
   
 }
+
+
+function getRoute() {
+
+}
+
+
+
 
 function inputChanged() {
   document.getElementById("trip_requests_input_changed").value = "1";
