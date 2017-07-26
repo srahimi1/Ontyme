@@ -17,7 +17,7 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, layer1;
+timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, layer1, vectorSource;
 
 var coordinates2 = nullCoords;
 
@@ -79,6 +79,13 @@ function requestAccepted(extentTemp, directionsTemp) {
   console.log(directions);
 
 
+  var route = new ol.format.Polyline().readGeometry(directions.routes[0].geometry, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+  var feature = new ol.Feature({
+    type: 'route',
+    geometry: route
+  });
+
+  vectorSource.addFeature(feature);
 
   layer1.once("postcompose", function(event){
       setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() - 1  }) }, 100);
@@ -914,8 +921,14 @@ function startMap() {
               })
           });
 
+      vectorSource = new ol.source.Vector({});
+
+      var layer2 = new ol.layer.Vector({
+        source: vectorSource
+      });
+
       map = new ol.Map({
-        layers: [layer1],
+        layers: [layer1, layer2],
         target: 'map',
         view: new ol.View({
           center: [60,40],
