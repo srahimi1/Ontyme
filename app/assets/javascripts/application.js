@@ -49,8 +49,10 @@ function acceptRequest(sel) {
 }
 
 function requestAccepted(extentTemp, directionsTemp) {
+  directionsDiv = document.getElementById("directions");
+  directionsDiv.style.height = "20%";
   mapDiv = document.getElementById("map");
-  mapDiv.style.height = "100%";
+  mapDiv.style.height = "80%";
   //map.updateSize();
   extent = extentTemp.split(",");
   extent2 = ol.proj.transformExtent([parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
@@ -97,6 +99,7 @@ function requestAccepted(extentTemp, directionsTemp) {
 
   layer1.once("postcompose", function(event){
       setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() - 1  }) }, 100);
+      startDirections();
   });
 
 
@@ -104,8 +107,11 @@ function requestAccepted(extentTemp, directionsTemp) {
 }
 
 
-function getRoute() {
-
+function startDirections() {
+  distance = document.getElementById("distance");
+  instruction = document.getElementById("instruction");
+  distance.innerHTML = "1";
+  instruction.innerHTML = "Turn<br>Right"
 }
 
 
