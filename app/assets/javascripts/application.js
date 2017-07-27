@@ -100,7 +100,7 @@ function requestAccepted(extentTemp, directionsTemp) {
   vectorSource.addFeature(feature);
 
   layer1.once("postcompose", function(event){
-      setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() - 4  }) }, 100);
+      setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() + 4  }) }, 100);
       startDirections(directions.routes[0].duration, directions.routes[0].legs);
   });
 
