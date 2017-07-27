@@ -39,7 +39,7 @@ function acceptRequest(sel) {
           status1 = status.split("!");
           console.log(status1);
           if (status1[0] == "time_ran_out") alert("sorry time ran out");
-          else if (status1[0] == "accepted") {alert("You accepted job"); requestAccepted(status1[1], status1[2]);}
+          else if (status1[0] == "accepted") {requestAccepted(status1[1], status1[2]);}
           else if (status1[0] == "available") alert("You rejected successfully");
       } // end this.readyState ...
     } // end onreadystatechange
@@ -56,8 +56,10 @@ function requestAccepted(extentTemp, directionsTemp) {
   //map.updateSize();
   extent = extentTemp.split(",");
   extent2 = ol.proj.transformExtent([parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
-  map.getView().fit(extent2, map.getSize());
+  var view = map.getView();
+  view.fit(extent2, map.getSize());
   map.updateSize();
+  view.setZoom(view.getZoom()-4);
   var p = map.getView().getProjection();
   var cord1 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
   var cord2 = ol.proj.fromLonLat([parseFloat(extent[4]), parseFloat(extent[5])], p);
@@ -98,7 +100,7 @@ function requestAccepted(extentTemp, directionsTemp) {
   vectorSource.addFeature(feature);
 
   layer1.once("postcompose", function(event){
-      setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() - 1  }) }, 100);
+      setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() - 4  }) }, 100);
       startDirections(directions.routes[0].duration, directions.routes[0].legs);
   });
 
