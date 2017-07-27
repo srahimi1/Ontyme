@@ -99,7 +99,7 @@ function requestAccepted(extentTemp, directionsTemp) {
 
   layer1.once("postcompose", function(event){
       setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() - 1  }) }, 100);
-      startDirections();
+      startDirections(directions.routes[0].duration, directions.routes[0].legs);
   });
 
 
@@ -107,7 +107,7 @@ function requestAccepted(extentTemp, directionsTemp) {
 }
 
 
-function startDirections() {
+function startDirections(duration, legs) {
   distance = document.getElementById("distance");
   instruction = document.getElementById("instruction");
   distance.innerHTML = "1";
