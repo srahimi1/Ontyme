@@ -59,7 +59,7 @@ function requestAccepted(extentTemp, directionsTemp) {
   var view = map.getView();
   view.fit(extent2, map.getSize());
   map.updateSize();
-  view.setZoom(view.getZoom()-4);
+  view.setZoom(view.getZoom()-3);
   var p = map.getView().getProjection();
   var cord1 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
   var cord2 = ol.proj.fromLonLat([parseFloat(extent[4]), parseFloat(extent[5])], p);
@@ -100,7 +100,7 @@ function requestAccepted(extentTemp, directionsTemp) {
   vectorSource.addFeature(feature);
 
   layer1.once("postcompose", function(event){
-      setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() + 4  }) }, 100);
+      setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() + 3  }) }, 100);
       startDirections(directions.routes[0].duration, directions.routes[0].legs);
   });
 
