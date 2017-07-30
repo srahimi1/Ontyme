@@ -52,14 +52,17 @@ function requestAccepted(extentTemp, directionsTemp) {
   directionsDiv = document.getElementById("directions");
   directionsDiv.style.height = "20%";
   mapDiv = document.getElementById("map");
-  mapDiv.style.height = "80%";
+  mapDiv.style.height = "55%";
+  startNavButtonDiv = document.getElementById("startNavButton");
+  startNavButtonDiv.style.height = "20%";
+
   //map.updateSize();
   extent = extentTemp.split(",");
   extent2 = ol.proj.transformExtent([parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
   var view = map.getView();
   view.fit(extent2, map.getSize());
   map.updateSize();
-  view.setZoom(view.getZoom()-3);
+  view.setZoom(view.getZoom()-2);
   var p = map.getView().getProjection();
   var cord1 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
   var cord2 = ol.proj.fromLonLat([parseFloat(extent[4]), parseFloat(extent[5])], p);
@@ -100,7 +103,7 @@ function requestAccepted(extentTemp, directionsTemp) {
   vectorSource.addFeature(feature);
 
   layer1.once("postcompose", function(event){
-      setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() + 3  }) }, 100);
+      setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() + 1 }) }, 100);
       startDirections(directions.routes[0].duration, directions.routes[0].legs);
   });
 
@@ -954,13 +957,30 @@ function startMap() {
       });
 
 
+      map_on_request = new ol.Map({
+        layers: [layer1, layer2],
+        target: 'map_on_request',
+          view: new ol.View({
+            center: [60,40],
+            minZoom: 1,
+            zoom: 5
+        })
+      });
+
+
       var marker = new ol.Overlay({
         element: document.getElementById("marker"),
         positioning: 'center-center',
         autoPan: true
       });
 
+      var marker3 = new ol.Overlay({
+        element: document.getElementById("marker3"),
+        positioning: 'center-center',
+        autoPan: true
+      })
 
+      map_on_request.addOverlay(marker3);
       map.addOverlay(marker);
 
 
