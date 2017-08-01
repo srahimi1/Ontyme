@@ -960,7 +960,7 @@ function startMap() {
       map_on_request = new ol.Map({
         layers: [layer1, layer2],
         target: 'map_on_request',
-          view: new ol.View({
+        view: new ol.View({
             center: [60,40],
             minZoom: 1,
             zoom: 5
