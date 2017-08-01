@@ -161,9 +161,10 @@ function checkForRideRequests() {
       webWorker.postMessage({"longitude" : coordinates.longitude , "latitude" : coordinates.latitude});
     console.log("worker started\n");
     webWorker.onmessage = function(event) {
-      var data = event.data;
+      var dataTemp = event.data + "";
+      var data = dataTemp.split("!");
       console.log("web worker received message");
-      if (receivedRequest == 0) showDriverRideRequestModal(data);
+      if (receivedRequest == 0) showDriverRideRequestModal(data[0], data[1], data[2]);
     } // end webWorker.onmessage = function(event)
   
 
@@ -174,7 +175,7 @@ function checkForRideRequests() {
 } // end of function checkForRideRequests
 
 
-function showDriverRideRequestModal(data) {
+function showDriverRideRequestModal(data, extentTemp, directionsTemp) {
   console.log("in show ride request modal");
   receivedRequest = 1;
   $('#driverRideRequestModal').modal('show');
@@ -192,7 +193,7 @@ function showDriverRideRequestModal(data) {
           elObtained.innerHTML = driverRideRequestData[key];
       }
     }
-   // doMap();
+    doMap(extentTemp, directionsTemp);
     unmuteAudio();
   } // end if ((data != "null") && (data != "cancelled")) 
   else {
@@ -204,7 +205,7 @@ function showDriverRideRequestModal(data) {
 } // end function showDrvierRideRequestModal(data)
 
 
-function doMap() {
+function doMap(extentTemp, directionsTemp) {
        map_on_request = new ol.Map({
         layers: [mainLayer],
         target: 'map-on-request',
@@ -215,13 +216,56 @@ function doMap() {
         })
       });
 
-      var marker3 = new ol.Overlay({
-        element: document.getElementById("marker3"),
-        positioning: 'center-center',
-        autoPan: true
-      })
+  extent = extentTemp.split(",");
+  extent2 = ol.proj.transformExtent([parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
+  var view = map_on_request.getView();
+  view.fit(extent2, map_on_request.getSize());
+  map_on_request.updateSize();
+  view.setZoom(view.getZoom()-2);
+  var p = map_on_request.getView().getProjection();
+  var cord1 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
+  var cord2 = ol.proj.fromLonLat([parseFloat(extent[4]), parseFloat(extent[5])], p);
+ 
+  var marker1 = new ol.Overlay({
+    element: document.getElementById("marker"),
+    positioning: 'center-center'    
+  });
 
-      map_on_request.addOverlay(marker3);
+  var marker2 = new ol.Overlay({
+    element: document.getElementById("marker2"),
+    positioning: 'center-center'
+  });
+
+  map_on_request.addOverlay(marker2);
+  marker2.setPosition(cord2);
+  map_on_request.addOverlay(marker1);
+  marker1.setPosition(cord1);
+
+  directions = JSON.parse(directionsTemp);
+  console.log(directions);
+
+
+  var route = new ol.format.Polyline().readGeometry(directions.routes[0].geometry, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+  var feature = new ol.Feature({
+    type: 'route',
+    geometry: route
+  });
+
+
+  feature.setStyle( new ol.style.Style({
+    stroke: new ol.style.Stroke({ width: 6, color: [40, 40, 40, 0.8] })
+  }) );
+  
+
+
+
+  vectorSource.addFeature(feature);
+
+  mainLayer.once("postcompose", function(event){
+      setTimeout(function () { map_on_request.getView().animate({ zoom: map_on_request.getView().getZoom() + 1 }) }, 100);
+      startDirections(directions.routes[0].duration, directions.routes[0].legs);
+  });
+
 
 
 
