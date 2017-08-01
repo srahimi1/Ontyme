@@ -17,7 +17,7 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, layer1, vectorSource;
+timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource;
 
 var coordinates2 = nullCoords;
 
@@ -102,7 +102,7 @@ function requestAccepted(extentTemp, directionsTemp) {
 
   vectorSource.addFeature(feature);
 
-  layer1.once("postcompose", function(event){
+  mainLayer.once("postcompose", function(event){
       setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() + 1 }) }, 100);
       startDirections(directions.routes[0].duration, directions.routes[0].legs);
   });
@@ -192,6 +192,7 @@ function showDriverRideRequestModal(data) {
           elObtained.innerHTML = driverRideRequestData[key];
       }
     }
+    doMap();
     unmuteAudio();
   } // end if ((data != "null") && (data != "cancelled")) 
   else {
@@ -201,6 +202,30 @@ function showDriverRideRequestModal(data) {
     el.style.display = "block";
   }
 } // end function showDrvierRideRequestModal(data)
+
+
+function doMap() {
+       map_on_request = new ol.Map({
+        layers: [mainLayer],
+        target: 'map_on_request',
+        view: new ol.View({
+            center: [60,40],
+            minZoom: 1,
+            zoom: 5
+        })
+      });
+
+      var marker3 = new ol.Overlay({
+        element: document.getElementById("marker3"),
+        positioning: 'center-center',
+        autoPan: true
+      })
+
+      map_on_request.addOverlay(marker3);
+
+
+
+}
 
 
 function unmuteAudio() {
@@ -934,7 +959,7 @@ function startMap() {
             .replace('{y}', String(-tileCoord[2] - 1));
       }
 
-      layer1 = new ol.layer.Tile({
+      mainLayer = new ol.layer.Tile({
             source: new ol.source.XYZ({
               url:'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwcGVybSIsImEiOiJjajRrOGlrdGkwZ3N2MnFxanF1ZTZnZzNnIn0.xrT2S657GvVZ3NXZ0Qu5dg' 
               })
@@ -947,7 +972,7 @@ function startMap() {
       });
 
       map = new ol.Map({
-        layers: [layer1, layer2],
+        layers: [mainLayer, layer2],
         target: 'map',
         view: new ol.View({
           center: [60,40],
@@ -958,7 +983,7 @@ function startMap() {
 
 
       map_on_request = new ol.Map({
-        layers: [layer1, layer2],
+        layers: [mainLayer, layer2],
         target: 'map_on_request',
         view: new ol.View({
             center: [60,40],
@@ -974,13 +999,7 @@ function startMap() {
         autoPan: true
       });
 
-      var marker3 = new ol.Overlay({
-        element: document.getElementById("marker3"),
-        positioning: 'center-center',
-        autoPan: true
-      })
-
-      map_on_request.addOverlay(marker3);
+     
       map.addOverlay(marker);
 
 
