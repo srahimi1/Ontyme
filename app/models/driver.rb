@@ -12,7 +12,7 @@ class Driver < ApplicationRecord
 		uri = URI.parse(url)
 		connection = Net::HTTP.new(uri.host, uri.port)
 		res = connection.get(uri.request_uri)
-		if active_trip_id != nil
+		if !!active_trip_id
 			a = ActiveTrip.find_by(active_trip_id2: active_trip_id)
 			a.update_attributes(:response_from_routing_service_seg_1 => res.body)
 		end
