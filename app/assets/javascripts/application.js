@@ -192,7 +192,7 @@ function showDriverRideRequestModal(data) {
           elObtained.innerHTML = driverRideRequestData[key];
       }
     }
-    doMap();
+   // doMap();
     unmuteAudio();
   } // end if ((data != "null") && (data != "cancelled")) 
   else {
@@ -207,7 +207,7 @@ function showDriverRideRequestModal(data) {
 function doMap() {
        map_on_request = new ol.Map({
         layers: [mainLayer],
-        target: 'map_on_request',
+        target: 'map-on-request',
         view: new ol.View({
             center: [60,40],
             minZoom: 1,
@@ -984,7 +984,7 @@ function startMap() {
 
       map_on_request = new ol.Map({
         layers: [mainLayer, layer2],
-        target: 'map_on_request',
+        target: 'map-on-request',
         view: new ol.View({
             center: [60,40],
             minZoom: 1,
