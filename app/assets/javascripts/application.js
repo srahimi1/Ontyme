@@ -163,10 +163,7 @@ function checkForRideRequests() {
     webWorker.onmessage = function(event) {
       var data = event.data;
       console.log("web worker received message");
-      $('#driverRideRequestModal').on('shown', function() {
-        console.log("shown\n\n\n\n\n\n");
-        doMap(data[1], data[2]);
-      });
+      
       if (receivedRequest == 0) showDriverRideRequestModal(data[0], data[1], data[2]);
     } // end webWorker.onmessage = function(event)
   
@@ -181,6 +178,11 @@ function checkForRideRequests() {
 function showDriverRideRequestModal(data, extentTemp, directionsTemp) {
   console.log("in show ride request modal");
   receivedRequest = 1;
+  $('#driverRideRequestModal').on('shown.bs.modal', function() {
+        console.log("shown\n\n\n\n\n\n");
+        doMap(data[1], data[2]);
+      });
+
   $('#driverRideRequestModal').modal('show');
   if ((data != "null") && (data != "cancelled")) {
     driverRideRequestData = data;
