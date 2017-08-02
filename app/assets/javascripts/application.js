@@ -161,8 +161,7 @@ function checkForRideRequests() {
       webWorker.postMessage({"longitude" : coordinates.longitude , "latitude" : coordinates.latitude});
     console.log("worker started\n");
     webWorker.onmessage = function(event) {
-      var dataTemp = event.data + "";
-      var data = dataTemp.split("!");
+      var data = event.data;
       console.log("web worker received message");
       if (receivedRequest == 0) showDriverRideRequestModal(data[0], data[1], data[2]);
     } // end webWorker.onmessage = function(event)
