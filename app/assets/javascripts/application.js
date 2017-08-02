@@ -265,6 +265,7 @@ function doMap(extentTemp, directionsTemp) {
 
   vectorSource.addFeature(feature);
 
+  map_on_request.updateSize();
   mainLayer.once("postcompose", function(event){
       setTimeout(function () { map_on_request.getView().animate({ zoom: map_on_request.getView().getZoom() + 1 }) }, 100);
       startDirections(directions.routes[0].duration, directions.routes[0].legs);
