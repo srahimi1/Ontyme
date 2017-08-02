@@ -192,7 +192,7 @@ function showDriverRideRequestModal(data, extentTemp, directionsTemp) {
           elObtained.innerHTML = driverRideRequestData[key];
       }
     }
-    $('#driverRideRequestModal').on('shown', function {
+    $('#driverRideRequestModal').on('shown', function() {
       doMap(extentTemp, directionsTemp);
     });
     
