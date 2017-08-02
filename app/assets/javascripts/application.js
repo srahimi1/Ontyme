@@ -225,7 +225,7 @@ function doMap(extentTemp, directionsTemp) {
   var view = map_on_request.getView();
   view.fit(extent2, map_on_request.getSize());
   map_on_request.updateSize();
-  view.setZoom(view.getZoom()-2);
+  //view.setZoom(view.getZoom()-2);
   var p = map_on_request.getView().getProjection();
   var cord1 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
   var cord2 = ol.proj.fromLonLat([parseFloat(extent[4]), parseFloat(extent[5])], p);
@@ -266,13 +266,6 @@ function doMap(extentTemp, directionsTemp) {
   vectorSource.addFeature(feature);
 
   map_on_request.updateSize();
-  mainLayer.once("postcompose", function(event){
-      setTimeout(function () { map_on_request.getView().animate({ zoom: map_on_request.getView().getZoom() + 1 }) }, 100);
-      startDirections(directions.routes[0].duration, directions.routes[0].legs);
-  });
-
-
-
 
 }
 
