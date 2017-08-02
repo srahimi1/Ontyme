@@ -20,7 +20,13 @@ function startEventStream() {
 			rideRequestSent = 0;
 			console.log(data);
 			if ((data != "cancelled") && (data != "null")) {
-				data = JSON.parse(data);
+				dataSend = [];
+				var dataTemp = data + "";
+      			var dataSet = dataTemp.split("!");
+				dataSend.push(JSON.parse(dataSet[0]));
+				dataSend.push(dataSet[1]);
+				dataSend.push(dataSet[2]);
+				data = dataSend;
 				rideRequestSent = 1;
 			}
 			if ((rideRequestSent != 2) && (data != "null")) {
