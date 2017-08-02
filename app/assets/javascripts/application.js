@@ -198,6 +198,7 @@ function showDriverRideRequestModal(data, extentTemp, directionsTemp) {
           elObtained.innerHTML = driverRideRequestData[key];
       }
     }
+    doMap(extentTemp, directionsTemp);
     unmuteAudio();
   } // end if ((data != "null") && (data != "cancelled")) 
   else {
