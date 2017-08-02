@@ -205,8 +205,13 @@ function showDriverRideRequestModal(data, extentTemp, directionsTemp) {
 
 
 function doMap(extentTemp, directionsTemp) {
-       map_on_request = new ol.Map({
-        layers: [mainLayer],
+
+      var layer2 = new ol.layer.Vector({
+        source: vectorSource
+      });
+
+    map_on_request = new ol.Map({
+        layers: [mainLayer, layer2],
         target: 'map-on-request',
         view: new ol.View({
             center: [60,40],
