@@ -182,7 +182,8 @@ function showDriverRideRequestModal(data, extentTemp, directionsTemp) {
   receivedRequest = 1;
   $('#driverRideRequestModal').on('shown.bs.modal', function() {
         console.log("shown\n\n\n\n\n\n");
-        map_on_request.updateSize();
+        doMap(extentTemp, directionsTemp);
+        //map_on_request.updateSize();
       });
 
   $('#driverRideRequestModal').modal('show');
@@ -200,7 +201,7 @@ function showDriverRideRequestModal(data, extentTemp, directionsTemp) {
           elObtained.innerHTML = driverRideRequestData[key];
       }
     }
-    doMap(extentTemp, directionsTemp);
+
     unmuteAudio();
   } // end if ((data != "null") && (data != "cancelled")) 
   else {
