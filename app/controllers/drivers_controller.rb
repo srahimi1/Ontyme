@@ -60,9 +60,9 @@ class DriversController < ApplicationController
 		driverCurrentStatus = DriverCurrentStatus.find_by(driver_id2: session[:driver_id2])
 		if (driverCurrentStatus.trip_status == "requesting")
 			tripRequest = TripRequest.find_by(trip_request_id2: driverCurrentStatus.trip_request_id2)
-			directions = Driver.get_directions("", trip_request.pickup_longitude, trip_request.pickup_latitude, trip_request.destination_longitude, trip_request.destination_latitude)
+			directions = Driver.get_directions(nil, tripRequest.pickup_longitude, tripRequest.pickup_latitude, tripRequest.destination_longitude, tripRequest.destination_latitude)
 			if (tripRequest.status != "cancelled")
-				requestData = "data: {\"trip_request_id\" : \""+tripRequest.trip_request_id2+"\", \"destination_street\" : \""+tripRequest.destination_street+"\", \"destination_city\" : \""+tripRequest.destination_city+"\", \"destination_state\" : \""+tripRequest.destination_state+"\", \"destination_postalcode\" : \""+tripRequest.destination_postalcode+"\", \"pickup_street\" : \""+tripRequest.pickup_street+"\", \"pickup_city\" : \""+tripRequest.pickup_city+"\", \"pickup_state\" : \""+tripRequest.pickup_state+"\", \"pickup_postalcode\" : \""+tripRequest.pickup_postalcode+"\"}!#{driverCurrentStatus.current_longitude},#{driverCurrentStatus.current_latitude}\n\n"
+				requestData = "data: {\"trip_request_id\" : \""+tripRequest.trip_request_id2+"\", \"destination_street\" : \""+tripRequest.destination_street+"\", \"destination_city\" : \""+tripRequest.destination_city+"\", \"destination_state\" : \""+tripRequest.destination_state+"\", \"destination_postalcode\" : \""+tripRequest.destination_postalcode+"\", \"pickup_street\" : \""+tripRequest.pickup_street+"\", \"pickup_city\" : \""+tripRequest.pickup_city+"\", \"pickup_state\" : \""+tripRequest.pickup_state+"\", \"pickup_postalcode\" : \""+tripRequest.pickup_postalcode+"\"}!#{driverCurrentStatus.current_longitude},#{driverCurrentStatus.current_latitude},#{tripRequest.pickup_longitude},#{tripRequest.pickup_latitude},#{tripRequest.destination_longitude},#{tripRequest.destination_latitude}!#{directions}\n\n"
 				render plain: requestData, :content_type => "text/event-stream"
 			else
 				render plain: "retry: 1500\ndata: cancelled\n\n", :content_type => "text/event-stream"
