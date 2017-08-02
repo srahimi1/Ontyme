@@ -107,10 +107,12 @@ function requestAccepted(extentTemp, directionsTemp) {
       startDirections(directions.routes[0].duration, directions.routes[0].legs);
   });
 
-
-  
 }
 
+
+function startNav() {
+  
+}
 
 function startDirections(duration, legs) {
   distance = document.getElementById("distance");
