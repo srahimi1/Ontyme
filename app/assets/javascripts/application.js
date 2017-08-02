@@ -163,6 +163,10 @@ function checkForRideRequests() {
     webWorker.onmessage = function(event) {
       var data = event.data;
       console.log("web worker received message");
+      $('#driverRideRequestModal').on('shown', function() {
+        console.log("shown\n\n\n\n\n\n");
+        doMap(data[1], data[2]);
+      });
       if (receivedRequest == 0) showDriverRideRequestModal(data[0], data[1], data[2]);
     } // end webWorker.onmessage = function(event)
   
@@ -192,10 +196,6 @@ function showDriverRideRequestModal(data, extentTemp, directionsTemp) {
           elObtained.innerHTML = driverRideRequestData[key];
       }
     }
-    $('#driverRideRequestModal').on('shown', function() {
-      doMap(extentTemp, directionsTemp);
-    });
-    
     unmuteAudio();
   } // end if ((data != "null") && (data != "cancelled")) 
   else {
