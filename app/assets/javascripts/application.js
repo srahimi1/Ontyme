@@ -17,7 +17,7 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource;
+timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request;
 
 var coordinates2 = nullCoords;
 
@@ -180,7 +180,7 @@ function showDriverRideRequestModal(data, extentTemp, directionsTemp) {
   receivedRequest = 1;
   $('#driverRideRequestModal').on('shown.bs.modal', function() {
         console.log("shown\n\n\n\n\n\n");
-        doMap(data[1], data[2]);
+        map_on_request.updateSize();
       });
 
   $('#driverRideRequestModal').modal('show');
