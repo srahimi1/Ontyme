@@ -164,7 +164,7 @@ function startDirections(duration, legs) {
 }
 
 function showNavigation(instance, step, instructionsDiv, distanceDiv) {  
-  instructionsDiv.innerHTML = step.maneuver.type + " " + (!!step.maneuver.modifier ? step.maneuver.modifier : "");
+  instructionsDiv.innerHTML = step.maneuver.type + (!!step.maneuver.modifier ? (" " + step.maneuver.modifier) : "") + (!!step.name ? (" on " + step.name) : "");
   instance.updateDistance();
   distanceDiv.innerHTML = instance.currentStepDistanceRemaining;
 
