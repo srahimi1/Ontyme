@@ -32,6 +32,11 @@ class TripRequestsController < ApplicationController
 		address2after = TripRequest.modifyAddress(address2before)
 		address1 = TripRequest.removeNonAlphaNumeric(address1after[0] + ", " + address1after[1] + ", " + address1after[2] + " " + address1after[3])
 		address2 = TripRequest.removeNonAlphaNumeric(address2after[0] + ", " + address2after[1] + ", " + address2after[2] + " " + address2after[3])
+		puts address1
+		puts address1.inspect
+		puts address2
+		puts address2.inspect
+		puts "\n\n\n\n\n\n\n\n\n\n"
 		response = TripRequest.getLatLng(address1)
 		params[:trip_request][:destination_longitude] = response["latLng"]["lng"].to_s
 		params[:trip_request][:destination_latitude] = response["latLng"]["lat"].to_s

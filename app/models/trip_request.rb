@@ -122,6 +122,10 @@ class TripRequest < ApplicationRecord
 		while(@allowed[address[-1].to_s] == nil)
 			address = address.chop
 		end
+		puts "this is address"
+		puts address
+		puts address.inspect
+		puts "\n\n\n\n\n\n\n\n\n"
 		return address
 	end
 
