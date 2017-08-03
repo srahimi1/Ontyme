@@ -42,6 +42,9 @@ class TripRequestsController < ApplicationController
 		params[:trip_request][:pickup_latitude] =  response["latLng"]["lat"].to_s
 		params[:trip_request][:map_provider_pickup_slug] = "mapUrl: "+ response["mapUrl"]
 		params[:trip_request][:map_provider_pickup_id] = "linkId: "+ response["linkId"]
+		puts "\n\n\n\n\n"
+		puts params.inspect
+		puts "\n\n\n\n\n\n\n"
 	end
 
 
