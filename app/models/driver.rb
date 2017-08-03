@@ -9,6 +9,9 @@ class Driver < ApplicationRecord
 
 	def self.get_directions(active_trip_id, long1, lat1, long2, lat2)
 		url = "http://router.project-osrm.org/route/v1/driving/#{long1},#{lat1};#{long2},#{lat2}?overview=full&steps=true"
+		puts "\n\n\n\n\n\n"
+		puts url
+		puts "\n\n\n\n\n\n\n\n"
 		uri = URI.parse(url)
 		connection = Net::HTTP.new(uri.host, uri.port)
 		res = connection.get(uri.request_uri)
