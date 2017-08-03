@@ -34,10 +34,8 @@ function acceptRequest(sel) {
           receivedRequest = 0;
           audio.pause();
           $('#driverRideRequestModal').modal('hide');
-          console.log(this.responseText);
           status = this.responseText + "";
           status1 = status.split("!");
-          console.log(status1);
           if (status1[0] == "time_ran_out") alert("sorry time ran out");
           else if (status1[0] == "accepted") {requestAccepted(status1[1], status1[2]);}
           else if (status1[0] == "available") alert("You rejected successfully");
@@ -83,7 +81,6 @@ function requestAccepted(extentTemp, directionsTemp) {
   marker1.setPosition(cord1);
 
   directions = JSON.parse(directionsTemp);
-  console.log(directions);
 
 
   var route = new ol.format.Polyline().readGeometry(directions.routes[0].geometry, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
@@ -111,8 +108,19 @@ function requestAccepted(extentTemp, directionsTemp) {
 
 
 function startNav() {
-  
-}
+  var ajax = new XMLHttpRequest();
+  var url = "/drivers/getdirections?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude+"&trip_request_id="+document.getElementById("trip_request_id").value;
+  ajax.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      var directions = JSON.parse(this.responseText);
+      console.log(directions);
+    }
+
+  }
+  ajax.open("GET", url, true);
+  ajax.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
+  ajax.send(); 
+} // end function startNav()
 
 function startDirections(duration, legs) {
   distance = document.getElementById("distance");
@@ -135,10 +143,10 @@ function wp(){
 
 function success2(pos) {
   if (pos.coords.accuracy > 1500000000.0) {
+    window.navigator.geolocation.clearWatch(watchID);
     error2();
   }
   else {
-    window.navigator.geolocation.clearWatch(watchID);
     coordinates2 = pos.coords;
     if (!!webWorker) {
       webWorker.postMessage({"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude});
@@ -161,10 +169,8 @@ function checkForRideRequests() {
       webWorker.postMessage({"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude});
     else
       webWorker.postMessage({"longitude" : coordinates.longitude , "latitude" : coordinates.latitude});
-    console.log("worker started\n");
     webWorker.onmessage = function(event) {
       var data = event.data;
-      console.log("web worker received message");
       
       if (receivedRequest == 0) showDriverRideRequestModal(data[0], data[1], data[2]);
     } // end webWorker.onmessage = function(event)
@@ -178,10 +184,8 @@ function checkForRideRequests() {
 
 
 function showDriverRideRequestModal(data, extentTemp, directionsTemp) {
-  console.log("in show ride request modal");
   receivedRequest = 1;
   $('#driverRideRequestModal').on('shown.bs.modal', function() {
-        console.log("shown\n\n\n\n\n\n");
         doMap(extentTemp, directionsTemp);
         //map_on_request.updateSize();
       });
@@ -255,7 +259,6 @@ function doMap(extentTemp, directionsTemp) {
   marker1.setPosition(cord1);
 
   directions = JSON.parse(directionsTemp);
-  console.log(directions);
 
 
   var route = new ol.format.Polyline().readGeometry(directions.routes[0].geometry, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});

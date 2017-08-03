@@ -10,7 +10,6 @@ onmessage = function(event2) {
 }
 
 function startEventStream() {
-	console.log("event-stream started");
 	if (!!event) {event.close();
 		event = null;}
 	event = new EventSource(url);
@@ -18,7 +17,6 @@ function startEventStream() {
 		event.onmessage = function(event2) {
 			var data = event2.data;
 			rideRequestSent = 0;
-			console.log(data);
 			if ((data != "cancelled") && (data != "null")) {
 				dataSend = [];
 				var dataTemp = data + "";

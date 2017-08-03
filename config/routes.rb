@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 	get '/drivers/checkForRideRequests', to: 'drivers#checkForRideRequests'
 	get '/drivers/acceptrequest', to: 'drivers#acceptRequest'
 	get '/drivers/reset', to: 'drivers#reset'
+	get '/drivers/getdirections', to: 'drivers#getDirections'
 
 	resources :users do 
 		resources :trip_requests
