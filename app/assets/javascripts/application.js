@@ -166,7 +166,7 @@ function startDirections(duration, legs) {
 function showNavigation(instance, step, instructionsDiv, distanceDiv) {  
   instructionsDiv.innerHTML = step.maneuver.type + (!!step.maneuver.modifier ? (" " + step.maneuver.modifier) : "") + (!!step.name ? (" on " + step.name) : "");
   instance.updateDistance();
-  distanceDiv.innerHTML = instance.currentStepDistanceRemaining;
+  distanceDiv.innerHTML = "In<br>" + instance.currentStepDistanceRemaining + "<br>meters";
 
 //  var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, step.maneuver.location[0], step.maneuver.location[1]];
   showOnMap(null, null, step.geometry, [45,210,125,0.8]);
