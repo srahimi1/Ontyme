@@ -69,41 +69,50 @@ function requestAccepted(extentTemp, directionsTemp) {
   startNavButtonDiv.style.height = "20%";
 
   //map.updateSize();
-  showOnMap(extentTemp, directionsTemp, null);
+  showOnMap(extentTemp, directionsTemp, null, [45,45,45,0.8]);
 
 }
 
-function showOnMap(extentTemp, directionsTemp, geometryTemp) {
+function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   var extent2;
-  if (typeof extentTemp == "string") {
-    extent = extentTemp.split(",");
-    extent2 = ol.proj.transformExtent([parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
+  
+  if (!!extentTemp) {
+
+      if (typeof extentTemp == "string") {
+        extent = extentTemp.split(",");
+        extent2 = ol.proj.transformExtent([parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
+      }
+      else {
+        extent2 = ol.proj.transformExtent([extentTemp[2], extentTemp[3], extentTemp[4], extentTemp[5]], 'EPSG:4326', 'EPSG:3857');
+      }  
+      var view = map.getView();
+      view.fit(extent2, map.getSize());
+      map.updateSize();
+      view.setZoom(view.getZoom()-4);
+      var p = map.getView().getProjection();
+      var cord1 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
+      var cord2 = ol.proj.fromLonLat([parseFloat(extent[4]), parseFloat(extent[5])], p);
+     
+      var marker1 = new ol.Overlay({
+        element: document.getElementById("marker"),
+        positioning: 'center-center'    
+      });
+
+      var marker2 = new ol.Overlay({
+        element: document.getElementById("marker2"),
+        positioning: 'center-center'
+      });
+
+      map.addOverlay(marker2);
+      marker2.setPosition(cord2);
+      map.addOverlay(marker1);
+      marker1.setPosition(cord1);
+
+      mainLayer.once("postcompose", function(event){
+          setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() + 3 }) }, 100);
+         // startDirections(directions.routes[0].duration, directions.routes[0].legs);
+      });
   }
-  else {
-    extent2 = ol.proj.transformExtent([extentTemp[2], extentTemp[3], extentTemp[4], extentTemp[5]], 'EPSG:4326', 'EPSG:3857');
-  }  
-  var view = map.getView();
-  view.fit(extent2, map.getSize());
-  map.updateSize();
-  view.setZoom(view.getZoom()-4);
-  var p = map.getView().getProjection();
-  var cord1 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
-  var cord2 = ol.proj.fromLonLat([parseFloat(extent[4]), parseFloat(extent[5])], p);
- 
-  var marker1 = new ol.Overlay({
-    element: document.getElementById("marker"),
-    positioning: 'center-center'    
-  });
-
-  var marker2 = new ol.Overlay({
-    element: document.getElementById("marker2"),
-    positioning: 'center-center'
-  });
-
-  map.addOverlay(marker2);
-  marker2.setPosition(cord2);
-  map.addOverlay(marker1);
-  marker1.setPosition(cord1);
 
   var directions = (!!directionsTemp ? JSON.parse(directionsTemp) : "");
   var geometry = (!!geometryTemp ? geometryTemp : directions.routes[0].geometry);
@@ -116,18 +125,12 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp) {
 
 
   feature.setStyle( new ol.style.Style({
-    stroke: new ol.style.Stroke({ width: 6, color: [40, 40, 40, 0.8] })
+    stroke: new ol.style.Stroke({ width: 6, color: colorTemp })
   }) );
   
-
-
-
   vectorSource.addFeature(feature);
+  map.updateSize();
 
-  mainLayer.once("postcompose", function(event){
-      setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() + 3 }) }, 100);
-     // startDirections(directions.routes[0].duration, directions.routes[0].legs);
-  });
 }
 
 
@@ -140,6 +143,7 @@ function startNav() {
       var directions = JSON.parse(this.responseText);
       console.log("this is newer");
       console.log(directions);
+      showOnMap(null, null, directions.routes[0].geometry, [80,80,80,0.8]);
       router = null;
       router = new RouteNavigator(0,document.getElementById("instruction"),document.getElementById("distance"),directions.routes[0].legs[0]);
       router.showNav();
@@ -163,7 +167,7 @@ function showNavigation(instance, step, instructionsDiv, distanceDiv) {
   distanceDiv.innerHTML = instance.currentStepDistanceRemaining;
 
   var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, step.maneuver.location[0], step.maneuver.location[1]];
-  showOnMap(extentTemp, null, step.geometry);
+  showOnMap(extentTemp, null, step.geometry, [45,210,125,0.8]);
 } // end function showNavigation(...)
 
 function getGeodesicDistance(destination) {
