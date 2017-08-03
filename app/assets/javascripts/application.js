@@ -132,16 +132,13 @@ function startDirections(duration, legs) {
 function navigate(directions) {
   var overview = directions.routes[0].legs[0];
   var steps = overview.steps;
-  console.log(steps);
   var length = steps.length;
   var instructionsDiv = document.getElementById("instruction");
   var distanceDiv = document.getElementById("distance");
   var sphere = new ol.Sphere(6378137);
   var sourceProj = map.getView().getProjection();
   for (var i = 0; i < length; i++) {
-    console.log(steps[i]);
-    console.log(steps[i].type);
-    instructionsDiv.innerHTML = steps[i].type + " " + steps[i].modifier;
+    instructionsDiv.innerHTML = steps[i].maneuver.type + " " + steps[i].maneuver.modifier;
     var distance = getGeodesicDistance(sphere, sourceProj, steps[i].maneuver.location);
     while (distance > 10) {
       distance = getGeodesicDistance(sphere, sourceProj, steps[i].maneuver.location);
@@ -153,6 +150,8 @@ function navigate(directions) {
 function getGeodesicDistance(sphere, sourceProj, destination) {
   var c1 = ol.proj.transform([coordinates2.longitude, coordinates2.latitude], sourceProj, 'EPSG:4326');
   var c2 = ol.proj.transform(destination, sourceProj, 'EPSG:4326');
+  console.log(c1);
+  console.log(c2);
   return sphere.haversineDistance(c1, c2);
 }
 
