@@ -17,7 +17,7 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request;
+timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, router = null;
 
 var coordinates2 = nullCoords;
 
@@ -25,6 +25,16 @@ var options = {
   enableHighAccuracy: true,
   maximumAge: 0
 };
+
+var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp,overviewTemp) {
+  this.currentStepIndex = firstStep;
+  this.instructionDiv = instructionDivTemp;
+  this.distanceDiv = distanceDivTemp;
+  this.overview = overviewTemp;
+  this.steps = overviewTemp.steps;
+  this.showNav = function() { showNavigation(this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
+}
+
 
 function acceptRequest(sel) {
   var ajaxRequest = new XMLHttpRequest();
@@ -124,8 +134,11 @@ function startNav() {
   ajax.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var directions = JSON.parse(this.responseText);
+      console.log("this is new");
       console.log(directions);
-      navigate(directions);
+      router = null;
+      router = new RouteNavigator(0,document.getElementById("instruction"),document.getElementById("distance"),directions.routes[0].legs[0]);
+      router.showNav();
     }
   }
   ajax.open("GET", url, true);
@@ -140,23 +153,16 @@ function startDirections(duration, legs) {
   instruction.innerHTML = "Turn<br>Right";
 }
 
-function navigate(directions) {
-  var overview = directions.routes[0].legs[0];
-  var steps = overview.steps;
-  var length = steps.length;
-  var instructionsDiv = document.getElementById("instruction");
-  var distanceDiv = document.getElementById("distance");
+function showNavigation(step, instructionsDiv, distanceDiv) {
   var sphere = new ol.Sphere(6378137);
   var sourceProj = map.getView().getProjection();
-  for (var i = 0; i < 1; i++) {  
-    instructionsDiv.innerHTML = steps[i].maneuver.type + " " + (!!steps[i].maneuver.modifier ? steps[i].maneuver.modifier : "");
-    var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, steps[i].maneuver.location[0], steps[i].maneuver.location[1]];
-    showOnMap(extentTemp, null, steps[i].geometry);
-    var distance = getGeodesicDistance(sphere, sourceProj, steps[i].maneuver.location);
-    console.log(distance);
-    distanceDiv.innerHTML = distance;
-  }  // end for loop
-} // end function navigate(...)
+  
+  instructionsDiv.innerHTML = step.maneuver.type + " " + (!!step.maneuver.modifier ? step.maneuver.modifier : "");
+  distanceDiv.innerHTML = getGeodesicDistance(sphere, sourceProj, step.maneuver.location);
+
+  var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, step.maneuver.location[0], step.maneuver.location[1]];
+  showOnMap(extentTemp, null, step.geometry);
+} // end function showNavigation(...)
 
 function getGeodesicDistance(sphere, sourceProj, destination) {
   var c1 = [coordinates2.longitude, coordinates2.latitude]; //ol.proj.transform([coordinates2.longitude, coordinates2.latitude], sourceProj, 'EPSG:4326');
