@@ -55,6 +55,11 @@ function requestAccepted(extentTemp, directionsTemp) {
   startNavButtonDiv.style.height = "20%";
 
   //map.updateSize();
+  showOnMap(extentTemp, directionsTemp, null);
+
+}
+
+function showOnMap(extentTemp, directionsTemp, geometryTemp) {
   extent = extentTemp.split(",");
   extent2 = ol.proj.transformExtent([parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
   var view = map.getView();
@@ -80,10 +85,10 @@ function requestAccepted(extentTemp, directionsTemp) {
   map.addOverlay(marker1);
   marker1.setPosition(cord1);
 
-  directions = JSON.parse(directionsTemp);
+  var directions = (!!directionsTemp ? JSON.parse(directionsTemp) : "");
+  var geometry = (!!geometryTemp ? geometryTemp : directions.routes[0].geometry);
 
-
-  var route = new ol.format.Polyline().readGeometry(directions.routes[0].geometry, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+  var route = new ol.format.Polyline().readGeometry(geometry, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
   var feature = new ol.Feature({
     type: 'route',
     geometry: route
@@ -101,10 +106,10 @@ function requestAccepted(extentTemp, directionsTemp) {
 
   mainLayer.once("postcompose", function(event){
       setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() + 3 }) }, 100);
-      startDirections(directions.routes[0].duration, directions.routes[0].legs);
+     // startDirections(directions.routes[0].duration, directions.routes[0].legs);
   });
-
 }
+
 
 
 function startNav() {
@@ -137,9 +142,12 @@ function navigate(directions) {
   var distanceDiv = document.getElementById("distance");
   var sphere = new ol.Sphere(6378137);
   var sourceProj = map.getView().getProjection();
-  for (var i = 0; i < length; i++) {
-    instructionsDiv.innerHTML = steps[i].maneuver.type + " " + steps[i].maneuver.modifier;
+  for (var i = 0; i < length; i++) {  
+    instructionsDiv.innerHTML = steps[i].maneuver.type + " " + (!!steps[i].maneuver.modifier ? steps[i].maneuver.modifier : "");
+    var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, steps[i].maneuver.location[0], steps[i].maneuver.location[1]]
+    showOnMap(extentTemp, null, steps[i].geometry);
     var distance = getGeodesicDistance(sphere, sourceProj, steps[i].maneuver.location);
+    console.log(distance);
     while (distance > 10) {
       distance = getGeodesicDistance(sphere, sourceProj, steps[i].maneuver.location);
       console.log(distance);

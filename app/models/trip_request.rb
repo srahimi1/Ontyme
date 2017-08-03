@@ -117,7 +117,7 @@ class TripRequest < ApplicationRecord
 		end
 		return modifiedAddress
 	end
-
+ 
 	def self.removeNonAlphaNumeric(address)
 		while(@allowed[address[-1].to_s] == nil)
 			address = address.chop
