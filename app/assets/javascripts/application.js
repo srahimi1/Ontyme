@@ -17,7 +17,7 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, router = null;
+timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, router = null, mainDirections = {};
 
 var sphere = new ol.Sphere(6378137);
 var coordinates2 = nullCoords;
@@ -34,6 +34,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp,overv
   this.overview = overviewTemp; 
   this.steps = overviewTemp.steps;
   this.currentStepDistanceRemaining = 9999;
+  this.mDirections = {};
   this.checkForNextStep = function() { if ((this.currentStepDistanceRemaining < 10) && (this.currentStepIndex < (this.steps.length - 1))) this.currentStepIndex++; }
   this.updateDistance = function() { this.currentStepDistanceRemaining = getGeodesicDistance(this.steps[this.currentStepIndex].maneuver.location)}
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
@@ -67,7 +68,7 @@ function requestAccepted(extentTemp, directionsTemp) {
   mapDiv.style.height = "55%";
   startNavButtonDiv = document.getElementById("startNavButton");
   startNavButtonDiv.style.height = "20%";
-
+  mainDirections = JSON.parse(directionsTemp);
   //map.updateSize();
   showOnMap(extentTemp, directionsTemp, null, [45,45,45,0.8]);
 
@@ -145,7 +146,7 @@ function startNav() {
       console.log(directions);
       var temp = directions.waypoints[directions.waypoints.length -1].location;
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
-      showOnMap(extentTemp, null, directions.routes[0].geometry, [45,125,210,0.8]);
+      showOnMap(extentTemp, null, directions.routes[0].geometry, [45,125,210,0.8]); 
       router = null;
       router = new RouteNavigator(0,document.getElementById("instruction"),document.getElementById("distance"),directions.routes[0].legs[0]);
       router.showNav();
@@ -169,7 +170,7 @@ function showNavigation(instance, step, instructionsDiv, distanceDiv) {
   distanceDiv.innerHTML = "In<br>" + instance.currentStepDistanceRemaining + "<br>meters";
 
 //  var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, step.maneuver.location[0], step.maneuver.location[1]];
-  showOnMap(null, null, step.geometry, [45,210,125,0.8]);
+  showOnMap(null, null, instance., [45,210,125,0.8]);
 } // end function showNavigation(...)
 
 function getGeodesicDistance(destination) {
