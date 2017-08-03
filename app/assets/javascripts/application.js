@@ -110,11 +110,11 @@ function requestAccepted(extentTemp, directionsTemp) {
 function startNav() {
   var ajax = new XMLHttpRequest();
   var url = "/drivers/getdirections?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude+"&trip_request_id="+document.getElementById("trip_request_id").value;
-  console.log(url);
   ajax.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var directions = JSON.parse(this.responseText);
       console.log(directions);
+      navigate(directions);
     }
   }
   ajax.open("GET", url, true);
@@ -129,7 +129,29 @@ function startDirections(duration, legs) {
   instruction.innerHTML = "Turn<br>Right";
 }
 
+function navigate(directions) {
+  var overview = directions.routes[0].legs[0];
+  var steps = overview.steps;
+  var length = steps.length;
+  var instructionsDiv = document.getElementById("instruction");
+  var distanceDiv = document.getElementById("distance");
+  var sphere = new ol.Sphere(6378137);
+  var sourceProj = map.getView().getProjection();
+  for (i = 0; i < length; i++) {
+    instructionsDiv.innerHTML = steps[i].type + " " + steps[i].modifier;
+    var distance = getGeodesicDistance(sphere, sourceProj, steps[i].maneuver.location);
+    while (distance > 10) {
+      distance = getGeodesicDistance(sphere, sourceProj, steps[i].maneuver.location);
+      distanceDiv.innerHTML = distance;
+    } // end while loop
+  }  // end for loop
+} // end function navigate(...)
 
+function getGeodesicDistance(sphere, sourceProj, destination) {
+  var c1 = ol.proj.transform([coordinates2.longitude, coordinates2.latitude], sourceProj, 'EPSG:4326');
+  var c2 = ol.proj.transform(destination, sourceProj, 'EPSG:4326');
+  return sphere.haversineDistance(c1, c2);
+}
 
 
 function inputChanged() {
