@@ -163,8 +163,9 @@ function navigate(directions) {
 } // end function navigate(...)
 
 function getGeodesicDistance(sphere, sourceProj, destination) {
-  var c1 = ol.proj.transform([coordinates2.longitude, coordinates2.latitude], sourceProj, 'EPSG:4326');
-  var c2 = ol.proj.transform(destination, sourceProj, 'EPSG:4326');
+  var c1 = [coordinates2.longitude, coordinates2.latitude]; //ol.proj.transform([coordinates2.longitude, coordinates2.latitude], sourceProj, 'EPSG:4326');
+  var c2 = destination; //ol.proj.transform(destination, sourceProj, 'EPSG:4326');
+  
   console.log(c1);
   console.log(c2);
   return sphere.haversineDistance(c1, c2);

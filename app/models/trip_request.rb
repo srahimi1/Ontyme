@@ -97,15 +97,10 @@ class TripRequest < ApplicationRecord
 
 	def self.sendGetLatLngRequest(address)
 		url = "http://www.mapquestapi.com/geocoding/v1/address?key=rKMTmlr5sRG1k5KKm6peLS9hYRgM966u&location="+address
-		puts "\n\n\n\n\n"
-		puts url
-		puts "\n\n\n\n\n\n\n\n"
 		uri = URI.parse(url)
 		connection = Net::HTTP.new(uri.host, uri.port)
 		res = connection.get(uri.request_uri)
 		a = JSON.parse(res.body)
-		puts a.inspect
-		puts "\n\n\n\n\n\n\n"
 		return a["results"][0]["locations"][0]
 	end
 
@@ -119,13 +114,9 @@ class TripRequest < ApplicationRecord
 	end
  
 	def self.removeNonAlphaNumeric(address)
-		while(@allowed[address[-1].to_s] == nil)
+		while( (@allowed[address[-1].to_s] == nil) && (address.length > 0))
 			address = address.chop
 		end
-		puts "this is address"
-		puts address
-		puts address.inspect
-		puts "\n\n\n\n\n\n\n\n\n"
 		return address
 	end
 
