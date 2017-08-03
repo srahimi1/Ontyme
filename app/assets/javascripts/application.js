@@ -154,11 +154,7 @@ function navigate(directions) {
     showOnMap(extentTemp, null, steps[i].geometry);
     var distance = getGeodesicDistance(sphere, sourceProj, steps[i].maneuver.location);
     console.log(distance);
-    while (distance > 10) {
-      distance = getGeodesicDistance(sphere, sourceProj, steps[i].maneuver.location);
-      console.log(distance);
-      distanceDiv.innerHTML = distance;
-    } // end while loop
+    distanceDiv.innerHTML = distance;
   }  // end for loop
 } // end function navigate(...)
 
