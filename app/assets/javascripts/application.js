@@ -132,12 +132,15 @@ function startDirections(duration, legs) {
 function navigate(directions) {
   var overview = directions.routes[0].legs[0];
   var steps = overview.steps;
+  console.log(steps);
   var length = steps.length;
   var instructionsDiv = document.getElementById("instruction");
   var distanceDiv = document.getElementById("distance");
   var sphere = new ol.Sphere(6378137);
   var sourceProj = map.getView().getProjection();
-  for (i = 0; i < length; i++) {
+  for (var i = 0; i < length; i++) {
+    console.log(steps[i]);
+    console.log(steps[i].type);
     instructionsDiv.innerHTML = steps[i].type + " " + steps[i].modifier;
     var distance = getGeodesicDistance(sphere, sourceProj, steps[i].maneuver.location);
     while (distance > 10) {
