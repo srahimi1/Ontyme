@@ -143,7 +143,9 @@ function startNav() {
       var directions = JSON.parse(this.responseText);
       console.log("this is newer");
       console.log(directions);
-      showOnMap(null, null, directions.routes[0].geometry, [80,80,80,0.8]);
+      var temp = directions.waypoints[directions.waypoints.length -1].location;
+      var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
+      showOnMap(extentTemp, null, directions.routes[0].geometry, [80,80,80,0.8]);
       router = null;
       router = new RouteNavigator(0,document.getElementById("instruction"),document.getElementById("distance"),directions.routes[0].legs[0]);
       router.showNav();
@@ -166,8 +168,8 @@ function showNavigation(instance, step, instructionsDiv, distanceDiv) {
   instance.updateDistance();
   distanceDiv.innerHTML = instance.currentStepDistanceRemaining;
 
-  var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, step.maneuver.location[0], step.maneuver.location[1]];
-  showOnMap(extentTemp, null, step.geometry, [45,210,125,0.8]);
+//  var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, step.maneuver.location[0], step.maneuver.location[1]];
+  showOnMap(null, null, step.geometry, [45,210,125,0.8]);
 } // end function showNavigation(...)
 
 function getGeodesicDistance(destination) {
