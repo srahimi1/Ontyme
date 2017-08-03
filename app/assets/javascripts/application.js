@@ -110,12 +110,12 @@ function requestAccepted(extentTemp, directionsTemp) {
 function startNav() {
   var ajax = new XMLHttpRequest();
   var url = "/drivers/getdirections?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude+"&trip_request_id="+document.getElementById("trip_request_id").value;
+  console.log(url);
   ajax.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var directions = JSON.parse(this.responseText);
       console.log(directions);
     }
-
   }
   ajax.open("GET", url, true);
   ajax.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
