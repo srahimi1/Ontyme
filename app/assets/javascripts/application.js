@@ -60,8 +60,13 @@ function requestAccepted(extentTemp, directionsTemp) {
 }
 
 function showOnMap(extentTemp, directionsTemp, geometryTemp) {
-  extent = extentTemp.split(",");
-  extent2 = ol.proj.transformExtent([parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
+  if (typeof extentTemp == "string") {
+    extent = extentTemp.split(",");
+    extent2 = ol.proj.transformExtent([parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
+  }
+  else {
+    extent2 = ol.proj.transformExtent([extent[2], extent[3], extent[4], extent[5]], 'EPSG:4326', 'EPSG:3857');
+  }  
   var view = map.getView();
   view.fit(extent2, map.getSize());
   map.updateSize();
