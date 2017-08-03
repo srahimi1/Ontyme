@@ -34,7 +34,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp,overv
   this.overview = overviewTemp; 
   this.steps = overviewTemp.steps;
   this.currentStepDistanceRemaining = 9999;
-  this.checkForNextStep = function() { if (this.currentStepDistanceRemaining < 25) this.currentStepIndex++; }
+  this.checkForNextStep = function() { if (this.currentStepDistanceRemaining < 10) this.currentStepIndex++; }
   this.updateDistance = function() { this.currentStepDistanceRemaining = getGeodesicDistance(this.steps[this.currentStepIndex].maneuver.location)}
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
 }
