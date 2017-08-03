@@ -170,7 +170,7 @@ function showNavigation(instance, step, instructionsDiv, distanceDiv) {
   distanceDiv.innerHTML = "In<br>" + instance.currentStepDistanceRemaining + "<br>meters";
 
 //  var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, step.maneuver.location[0], step.maneuver.location[1]];
-  showOnMap(null, null, instance., [45,210,125,0.8]);
+  showOnMap(null, null, step.geometry, [45,210,125,0.8]);
 } // end function showNavigation(...)
 
 function getGeodesicDistance(destination) {
