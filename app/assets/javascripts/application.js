@@ -142,6 +142,7 @@ function navigate(directions) {
     var distance = getGeodesicDistance(sphere, sourceProj, steps[i].maneuver.location);
     while (distance > 10) {
       distance = getGeodesicDistance(sphere, sourceProj, steps[i].maneuver.location);
+      console.log(distance);
       distanceDiv.innerHTML = distance;
     } // end while loop
   }  // end for loop
