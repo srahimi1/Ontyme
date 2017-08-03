@@ -148,7 +148,7 @@ function navigate(directions) {
   var distanceDiv = document.getElementById("distance");
   var sphere = new ol.Sphere(6378137);
   var sourceProj = map.getView().getProjection();
-  for (var i = 0; i < length; i++) {  
+  for (var i = 0; i < 1; i++) {  
     instructionsDiv.innerHTML = steps[i].maneuver.type + " " + (!!steps[i].maneuver.modifier ? steps[i].maneuver.modifier : "");
     var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, steps[i].maneuver.location[0], steps[i].maneuver.location[1]];
     showOnMap(extentTemp, null, steps[i].geometry);
