@@ -149,7 +149,7 @@ function navigate(directions) {
   var sourceProj = map.getView().getProjection();
   for (var i = 0; i < length; i++) {  
     instructionsDiv.innerHTML = steps[i].maneuver.type + " " + (!!steps[i].maneuver.modifier ? steps[i].maneuver.modifier : "");
-    var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, steps[i].maneuver.location[0], steps[i].maneuver.location[1]]
+    var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, steps[i].maneuver.location[0], steps[i].maneuver.location[1]];
     showOnMap(extentTemp, null, steps[i].geometry);
     var distance = getGeodesicDistance(sphere, sourceProj, steps[i].maneuver.location);
     console.log(distance);
