@@ -34,7 +34,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp,overv
   this.overview = overviewTemp; 
   this.steps = overviewTemp.steps;
   this.currentStepDistanceRemaining = 9999;
-  this.checkForNextStep = function() { if (this.currentStepDistanceRemaining < 10) this.currentStepIndex++; }
+  this.checkForNextStep = function() { if ((this.currentStepDistanceRemaining < 10) && (this.currentStepIndex < (this.steps.length - 1))) this.currentStepIndex++; }
   this.updateDistance = function() { this.currentStepDistanceRemaining = getGeodesicDistance(this.steps[this.currentStepIndex].maneuver.location)}
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
 }
@@ -145,7 +145,7 @@ function startNav() {
       console.log(directions);
       var temp = directions.waypoints[directions.waypoints.length -1].location;
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
-      showOnMap(extentTemp, null, directions.routes[0].geometry, [80,80,80,0.8]);
+      showOnMap(extentTemp, null, directions.routes[0].geometry, [45,125,210,0.8]);
       router = null;
       router = new RouteNavigator(0,document.getElementById("instruction"),document.getElementById("distance"),directions.routes[0].legs[0]);
       router.showNav();
