@@ -19,6 +19,7 @@ var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, r
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
 timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, router = null;
 
+var sphere = new ol.Sphere(6378137);
 var coordinates2 = nullCoords;
 
 var options = {
@@ -30,9 +31,12 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp,overv
   this.currentStepIndex = firstStep;
   this.instructionDiv = instructionDivTemp;
   this.distanceDiv = distanceDivTemp;
-  this.overview = overviewTemp;
+  this.overview = overviewTemp; 
   this.steps = overviewTemp.steps;
-  this.showNav = function() { showNavigation(this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
+  this.currentStepDistanceRemaining = 9999;
+  this.checkForNextStep = function() { if (this.currentStepDistanceRemaining < 25) this.currentStepIndex++; }
+  this.updateDistance = function() { this.currentStepDistanceRemaining = getGeodesicDistance(this.steps[this.currentStepIndex].maneuver.location)}
+  this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
 }
 
 
@@ -134,7 +138,7 @@ function startNav() {
   ajax.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var directions = JSON.parse(this.responseText);
-      console.log("this is new");
+      console.log("this is newer");
       console.log(directions);
       router = null;
       router = new RouteNavigator(0,document.getElementById("instruction"),document.getElementById("distance"),directions.routes[0].legs[0]);
@@ -153,23 +157,20 @@ function startDirections(duration, legs) {
   instruction.innerHTML = "Turn<br>Right";
 }
 
-function showNavigation(step, instructionsDiv, distanceDiv) {
-  var sphere = new ol.Sphere(6378137);
-  var sourceProj = map.getView().getProjection();
-  
+function showNavigation(instance, step, instructionsDiv, distanceDiv) {  
   instructionsDiv.innerHTML = step.maneuver.type + " " + (!!step.maneuver.modifier ? step.maneuver.modifier : "");
-  distanceDiv.innerHTML = getGeodesicDistance(sphere, sourceProj, step.maneuver.location);
+  instance.updateDistance();
+  distanceDiv.innerHTML = instance.currentStepDistanceRemaining;
 
   var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, step.maneuver.location[0], step.maneuver.location[1]];
   showOnMap(extentTemp, null, step.geometry);
 } // end function showNavigation(...)
 
-function getGeodesicDistance(sphere, sourceProj, destination) {
+function getGeodesicDistance(destination) {
+  var sourceProj = map.getView().getProjection();
   var c1 = [coordinates2.longitude, coordinates2.latitude]; //ol.proj.transform([coordinates2.longitude, coordinates2.latitude], sourceProj, 'EPSG:4326');
   var c2 = destination; //ol.proj.transform(destination, sourceProj, 'EPSG:4326');
   
-  console.log(c1);
-  console.log(c2);
   return sphere.haversineDistance(c1, c2);
 }
 
@@ -190,6 +191,11 @@ function success2(pos) {
   }
   else {
     coordinates2 = pos.coords;
+    if (!!router) {
+      router.updateDistance();
+      router.checkForNextStep();
+      router.showNav();
+    }
     if (!!webWorker) {
       webWorker.postMessage({"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude});
     }
