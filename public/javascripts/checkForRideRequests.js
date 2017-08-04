@@ -24,7 +24,7 @@ function sendCoordinates() {
 	if (!!event) {event.close();
 		event = null;}
 	url = "/drivers/logTripCoordinates?coordinates="+coords;
-	console.log("this is in web worker. URL = "= url);
+	console.log("this is in web worker. URL = " + url);
 	event = new EventSource(url);
 	event.onmessage = function(event2) {
 			var data = event2.data + "";
