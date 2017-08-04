@@ -58,7 +58,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
       coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
       this.updateDistance(coordsA);
     }
-    else if ((this.currentStepDistanceRemaining < 15) && (this.currentStepIndex == (this.steps.length - 1))) {
+    else if ((this.currentStepDistanceRemaining < 15) && (this.currentStepIndex == (this.steps.length - 1)) && (!this.arrived) ) {
       this.arrived = 1;
       arrived(); }
   };
