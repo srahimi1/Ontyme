@@ -62,6 +62,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
 function arrived() {
   router.directions.pop();
   router.update();
+  $("#driverArrivedModal").modal('show');
   document.getElementById("startNavButton").innerHTML = "Navigate to Rider Destination";
 }
 
@@ -176,7 +177,10 @@ function startNav() {
       router.directions.push(directions);
       router.update();
       router.status = 1;
+      map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
+      setTimeout(function () { map.getView().animate({ zoom: 18 }) }, 100);
       router.showNav();
+
     }
   }
   ajax.open("GET", url, true);
@@ -227,6 +231,7 @@ function success2(pos) {
     coordinates2 = pos.coords;
     if (!!router) {
       if (!router.arrived && router.status) {
+        map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
         router.updateDistance();
         router.checkForNextStep();
         router.showNav(); }
