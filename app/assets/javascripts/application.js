@@ -27,19 +27,43 @@ var options = {
   maximumAge: 0
 };
 
-var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp,overviewTemp) {
+var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firstDirections) {
+  this.status = 0;
+  this.directions = [firstDirections];
+  this.currentDirectionsIndex = this.directions.length - 1;
   this.currentStepIndex = firstStep;
   this.instructionDiv = instructionDivTemp;
   this.distanceDiv = distanceDivTemp;
-  this.overview = overviewTemp; 
-  this.steps = overviewTemp.steps;
+  this.overview = this.directions[this.currentDirectionsIndex].routes[0].legs[0]; 
+  this.steps = this.overview.steps;
   this.currentStepDistanceRemaining = 9999;
   this.mDirections = {};
-  this.checkForNextStep = function() { if ((this.currentStepDistanceRemaining < 10) && (this.currentStepIndex < (this.steps.length - 1))) this.currentStepIndex++; }
+  this.arrived = 0;
+  this.update = function() {
+      this.currentDirectionsIndex = this.directions.length - 1;
+      this.currentStepIndex = 0;
+      this.overview = this.directions[this.currentDirectionsIndex].routes[0].legs[0]; 
+      this.steps = this.overview.steps;
+      this.currentStepDistanceRemaining = 9999;
+      this.arrived = 0;
+      this.status = 0;
+  }
+  this.checkForNextStep = function() { 
+    if ( (this.currentStepDistanceRemaining < 10) && (this.currentStepIndex < (this.steps.length - 1)) ) 
+      this.currentStepIndex++; 
+    else if ((this.currentStepDistanceRemaining < 15) && (this.currentStepIndex == (this.steps.length - 1))) {
+      this.arrived = 1;
+      arrived(); }
+  }
   this.updateDistance = function() { this.currentStepDistanceRemaining = getGeodesicDistance(this.steps[this.currentStepIndex].maneuver.location)}
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
 }
 
+function arrived() {
+  router.directions.pop();
+  router.update();
+  document.getElementById("startNavButton").innerHTML = "Navigate to Rider Destination";
+}
 
 function acceptRequest(sel) {
   var ajaxRequest = new XMLHttpRequest();
@@ -66,11 +90,13 @@ function requestAccepted(extentTemp, directionsTemp) {
   directionsDiv.style.height = "20%";
   mapDiv = document.getElementById("map");
   mapDiv.style.height = "55%";
-  startNavButtonDiv = document.getElementById("startNavButton");
+  startNavButtonDiv = document.getElementById("startNavButtonDiv");
   startNavButtonDiv.style.height = "20%";
   mainDirections = JSON.parse(directionsTemp);
+  router = null;
+  router = new RouteNavigator(0,document.getElementById("instruction"),document.getElementById("distance"),mainDirections);
   //map.updateSize();
-  showOnMap(extentTemp, directionsTemp, null, [45,45,45,0.8]);
+  showOnMap(extentTemp, null, router.directions[router.currentDirectionsIndex].routes[0].geometry, [45,45,45,0.8]);
 
 }
 
@@ -147,8 +173,9 @@ function startNav() {
       var temp = directions.waypoints[directions.waypoints.length -1].location;
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
       showOnMap(extentTemp, null, directions.routes[0].geometry, [45,125,210,0.8]); 
-      router = null;
-      router = new RouteNavigator(0,document.getElementById("instruction"),document.getElementById("distance"),directions.routes[0].legs[0]);
+      router.directions.push(directions);
+      router.update();
+      router.status = 1;
       router.showNav();
     }
   }
@@ -199,9 +226,10 @@ function success2(pos) {
   else {
     coordinates2 = pos.coords;
     if (!!router) {
-      router.updateDistance();
-      router.checkForNextStep();
-      router.showNav();
+      if (!router.arrived && router.status) {
+        router.updateDistance();
+        router.checkForNextStep();
+        router.showNav(); }
     }
     if (!!webWorker) {
       webWorker.postMessage({"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude});
