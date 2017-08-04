@@ -291,9 +291,9 @@ function checkForRideRequests() {
   if (!!window.Worker) {
     webWorker = new Worker("/javascripts/checkForRideRequests.js");
     if (coordinates == 0)
-      webWorker.postMessage({"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude});
+      webWorker.postMessage([{"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude},0]);
     else
-      webWorker.postMessage({"longitude" : coordinates.longitude , "latitude" : coordinates.latitude});
+      webWorker.postMessage([{"longitude" : coordinates.longitude , "latitude" : coordinates.latitude},0]);
     webWorker.onmessage = function(event) {
       var data = event.data;
       
