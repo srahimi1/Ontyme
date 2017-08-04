@@ -4,10 +4,13 @@ var url = "/drivers/checkForRideRequests?longitude="+coordinates.longitude+"&lat
 startEventStream();
 coords = [];
 coordsLength = 0;
+var aa;
 
 onmessage = function(event2) {
 	var coordinates2 = event2.data[0]; 
-	console.log(event2.data);
+	aa = event2.data;
+	console.log(event2.data[0]);
+	
 	status = event2.data[1];
 	if (!status) {
 		url = "/drivers/checkForRideRequests?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude;
