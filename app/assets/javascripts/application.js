@@ -50,14 +50,18 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
       this.arrived = 0;
       this.status = 0;
   };
+  this.updateDistance = function(currentCoordinates) { this.currentStepDistanceRemaining = getGeodesicDistance(currentCoordinates, this.steps[this.currentStepIndex].maneuver.location)};
   this.checkForNextStep = function() { 
-    if ( (this.currentStepDistanceRemaining < 10) && (this.currentStepIndex < (this.steps.length - 1)) ) 
+    if ( (this.currentStepDistanceRemaining < 10) && (this.currentStepIndex < (this.steps.length - 1)) ) {
       this.currentStepIndex++; 
+      var coordsA = null;
+      coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
+      this.updateDistance(coordsA);
+    }
     else if ((this.currentStepDistanceRemaining < 15) && (this.currentStepIndex == (this.steps.length - 1))) {
       this.arrived = 1;
       arrived(); }
   };
-  this.updateDistance = function(currentCoordinates) { this.currentStepDistanceRemaining = getGeodesicDistance(currentCoordinates, this.steps[this.currentStepIndex].maneuver.location)};
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
 }
 
@@ -180,8 +184,12 @@ function startNav() {
 }
 
 function Nav() {
-  router.status = 1;
   router.update();
+  router.status = 1;
+  var coordsA = null;
+  coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
+  router.updateDistance(coordsA);
+  router.checkForNextStep();
   router.showNav();
 }
 
