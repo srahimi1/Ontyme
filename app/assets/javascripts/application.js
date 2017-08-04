@@ -186,7 +186,10 @@ function getDirections() {
       showOnMap(extentTemp, null, directions.routes[0].geometry, [45,125,210,0.8]); 
       
       map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
-      setTimeout(function () { map.getView().animate({ zoom: 18 }) }, 100);
+      mainLayer.once("postcompose", function(event){
+          setTimeout(function () { map.getView().animate({ zoom: 17 }) }, 100);
+      });
+
     
       Nav(0);
     }
