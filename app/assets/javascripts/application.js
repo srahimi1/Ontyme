@@ -106,6 +106,17 @@ function requestAccepted(extentTemp, directionsTemp) {
 function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   var extent2;
   
+  var marker1 = new ol.Overlay({
+    element: document.getElementById("marker"),
+    positioning: 'center-center'    
+  });
+
+  var marker2 = new ol.Overlay({
+    element: document.getElementById("marker2"),
+    positioning: 'center-center'
+  });
+
+
   if (!!extentTemp) {
 
       if (typeof extentTemp == "string") {
@@ -118,31 +129,22 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
       var view = map.getView();
       view.fit(extent2, map.getSize());
       map.updateSize();
-      view.setZoom(view.getZoom()-4);
+      view.setZoom(view.getZoom()-3);
       var p = map.getView().getProjection();
       var cord1 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
       var cord2 = ol.proj.fromLonLat([parseFloat(extent[4]), parseFloat(extent[5])], p);
-     
-      var marker1 = new ol.Overlay({
-        element: document.getElementById("marker"),
-        positioning: 'center-center'    
-      });
 
-      var marker2 = new ol.Overlay({
-        element: document.getElementById("marker2"),
-        positioning: 'center-center'
-      });
-
-      map.addOverlay(marker2);
-      marker2.setPosition(cord2);
       map.addOverlay(marker1);
       marker1.setPosition(cord1);
+      map.addOverlay(marker2);
+      marker2.setPosition(cord2);
+      
 
       mainLayer.once("postcompose", function(event){
           setTimeout(function () { map.getView().animate({ zoom: map.getView().getZoom() + 3 }) }, 100);
          // startDirections(directions.routes[0].duration, directions.routes[0].legs);
       });
-  }
+  } // end if (!!extentTemp)
 
   var directions = (!!directionsTemp ? JSON.parse(directionsTemp) : "");
   var geometry = (!!geometryTemp ? geometryTemp : directions.routes[0].geometry);
@@ -161,7 +163,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   vectorSource.addFeature(feature);
   map.updateSize();
 
-}
+} // end function showOnMap(...)
 
 
 function startNav() {
@@ -189,10 +191,6 @@ function getDirections() {
       showOnMap(extentTemp, null, directions.routes[0].geometry, [45,125,210,0.8]); 
       
       map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
-      mainLayer.once("postcompose", function(event){
-          setTimeout(function () { map.getView().animate({ zoom: 15 }) }, 100);
-      });
-
     
       Nav();
     }
