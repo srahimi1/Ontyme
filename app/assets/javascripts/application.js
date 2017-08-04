@@ -61,7 +61,6 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
 
 function arrived() {
   router.directions.pop();
-  router.update();
   $("#driverArrivedModal").modal('show');
   document.getElementById("startNavButton").innerHTML = "Navigate to Rider Destination";
 }
@@ -162,25 +161,29 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
 }
 
 
-
 function startNav() {
+  $("#driverArrivedModal").modal('hide');
+  if (!router.arrived) getDirections();
+  router.update();
+  router.status = 1;
+  router.showNav();
+}
+
+function getDirections() {
   var ajax = new XMLHttpRequest();
   var url = "/drivers/getdirections?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude+"&trip_request_id="+document.getElementById("trip_request_id").value;
   ajax.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var directions = JSON.parse(this.responseText);
-      console.log("this is newer");
       console.log(directions);
+      router.directions.push(directions);
       var temp = directions.waypoints[directions.waypoints.length -1].location;
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
       showOnMap(extentTemp, null, directions.routes[0].geometry, [45,125,210,0.8]); 
-      router.directions.push(directions);
-      router.update();
-      router.status = 1;
+      
       map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
       setTimeout(function () { map.getView().animate({ zoom: 18 }) }, 100);
-      router.showNav();
-
+    
     }
   }
   ajax.open("GET", url, true);
