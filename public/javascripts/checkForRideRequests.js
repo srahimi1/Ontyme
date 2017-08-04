@@ -2,12 +2,41 @@ var event = null, trip_request_id = "null", coordinates = {"latitude" : null, "l
 
 var url = "/drivers/checkForRideRequests?longitude="+coordinates.longitude+"&latitude="+coordinates.latitude;
 startEventStream();
+coords = [];
+coordsLength = 0;
 
-onmessage = function(event2) {
+onmessage = function(event2, status) {
 	coordinates2 = event2.data; 
-	url = "/drivers/checkForRideRequests?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude;
-	startEventStream();
+	if (!status) {
+		url = "/drivers/checkForRideRequests?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude;
+		startEventStream();
+	}
+	else {
+		coords.push([coordinates2.longitude, coordinates2.latitude]);
+		if (coordsLength == 0) {
+			coordsLength = coords.length;
+			sendCoordinates();}
+	}
 }
+
+function sendCoordinates() {
+	if (!!event) {event.close();
+		event = null;}
+	url = "/drivers/logTripCoordinates?coordinates="+coords;
+	event = new EventSource(url);
+	event.onmessage = function(event2) {
+			var data = event2.data + "";
+			if (data == "ok") {
+				for (var i = 0; i < coordsLength; i++) coords.shift();
+				coordsLength = 0;
+			} // end if (data == "ok")
+	} // end event.onmessage = function(event2)
+
+} // end function sendCoordinates()
+
+
+
+
 
 function startEventStream() {
 	if (!!event) {event.close();

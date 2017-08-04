@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 	get '/drivers/acceptrequest', to: 'drivers#acceptRequest'
 	get '/drivers/reset', to: 'drivers#reset'
 	get '/drivers/getdirections', to: 'drivers#getDirections'
-
+	get '/drivers/logTripCoordinates', to: 'drivers#logTripCoordinates'
 	resources :users do 
 		resources :trip_requests
 		resources :active_trips

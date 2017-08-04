@@ -72,6 +72,12 @@ class DriversController < ApplicationController
 		end
 	end
 
+	def logTripCoordinates
+		activeTrip = ActiveTrip.find_by(driver_id2: session[:driver_id2])
+		routeData = activeTrip.route_data
+		
+	end
+
 
 	def updatePosition(long, lat)
 		driverCurrentStatus = DriverCurrentStatus.find_by(driver_id2: session[:driver_id2])
@@ -114,5 +120,7 @@ class DriversController < ApplicationController
 		directions = Driver.get_directions(nil, params[:longitude].to_s, params[:latitude].to_s, trip_request.pickup_longitude, trip_request.pickup_latitude)
 		render plain: directions
 	end
+
+
 
 end

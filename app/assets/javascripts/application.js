@@ -164,8 +164,12 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
 function startNav() {
   $("#driverArrivedModal").modal('hide');
   if (!router.arrived) getDirections();
+  else Nav(1);
+}
+
+function Nav(mainTripCode) {
   router.update();
-  router.status = 1;
+  mainTripCode ? router.status = 2 : router.status = 1;
   router.showNav();
 }
 
@@ -184,6 +188,7 @@ function getDirections() {
       map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
       setTimeout(function () { map.getView().animate({ zoom: 18 }) }, 100);
     
+      Nav(0);
     }
   }
   ajax.open("GET", url, true);
@@ -240,7 +245,9 @@ function success2(pos) {
         router.showNav(); }
     }
     if (!!webWorker) {
-      webWorker.postMessage({"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude});
+      var status;
+      !!router ? ((router.status == 2) ? status = 1 : status = 0 ) : status = 0; 
+      webWorker.postMessage({"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude}, status);
     }
   }
 }
