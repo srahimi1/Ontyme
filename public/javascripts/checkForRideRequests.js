@@ -5,8 +5,9 @@ startEventStream();
 coords = [];
 coordsLength = 0;
 
-onmessage = function(event2, status) {
-	coordinates2 = event2.data; 
+onmessage = function(event2) {
+	coordinates2 = event2.data[0]; 
+	status = event2.data[1];
 	if (!status) {
 		url = "/drivers/checkForRideRequests?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude;
 		startEventStream();
@@ -23,6 +24,7 @@ function sendCoordinates() {
 	if (!!event) {event.close();
 		event = null;}
 	url = "/drivers/logTripCoordinates?coordinates="+coords;
+	console.log("this is in web worker. URL = "= url);
 	event = new EventSource(url);
 	event.onmessage = function(event2) {
 			var data = event2.data + "";

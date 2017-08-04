@@ -17,7 +17,8 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, router = null, mainDirections = {};
+timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, 
+router = null, mainDirections = {}, GPSTrackCounter = 6;
 
 var sphere = new ol.Sphere(6378137);
 var coordinates2 = nullCoords;
@@ -29,6 +30,7 @@ var options = {
 
 var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firstDirections) {
   this.status = 0;
+  this.onMainTrip = 0;
   this.directions = [firstDirections];
   this.currentDirectionsIndex = this.directions.length - 1;
   this.currentStepIndex = firstStep;
@@ -47,21 +49,22 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
       this.currentStepDistanceRemaining = 9999;
       this.arrived = 0;
       this.status = 0;
-  }
+  };
   this.checkForNextStep = function() { 
     if ( (this.currentStepDistanceRemaining < 10) && (this.currentStepIndex < (this.steps.length - 1)) ) 
       this.currentStepIndex++; 
     else if ((this.currentStepDistanceRemaining < 15) && (this.currentStepIndex == (this.steps.length - 1))) {
       this.arrived = 1;
       arrived(); }
-  }
-  this.updateDistance = function() { this.currentStepDistanceRemaining = getGeodesicDistance(this.steps[this.currentStepIndex].maneuver.location)}
+  };
+  this.updateDistance = function(currentCoordinates) { this.currentStepDistanceRemaining = getGeodesicDistance(currentCoordinates, this.steps[this.currentStepIndex].maneuver.location)};
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
 }
 
 function arrived() {
   router.directions.pop();
   $("#driverArrivedModal").modal('show');
+  router.onMainTrip = 1;
   document.getElementById("startNavButton").innerHTML = "Navigate to Rider Destination";
 }
 
@@ -163,13 +166,13 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
 
 function startNav() {
   $("#driverArrivedModal").modal('hide');
-  if (!router.arrived) getDirections();
-  else Nav(1);
+  if (!router.onMainTrip) getDirections();
+  else Nav();
 }
 
-function Nav(mainTripCode) {
+function Nav() {
+  router.status = 1;
   router.update();
-  mainTripCode ? router.status = 2 : router.status = 1;
   router.showNav();
 }
 
@@ -187,17 +190,17 @@ function getDirections() {
       
       map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
       mainLayer.once("postcompose", function(event){
-          setTimeout(function () { map.getView().animate({ zoom: 17 }) }, 100);
+          setTimeout(function () { map.getView().animate({ zoom: 15 }) }, 100);
       });
 
     
-      Nav(0);
+      Nav();
     }
   }
   ajax.open("GET", url, true);
   ajax.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
   ajax.send(); 
-} // end function startNav()
+} // end function getDirections()
 
 function startDirections(duration, legs) {
   distance = document.getElementById("distance");
@@ -210,14 +213,12 @@ function showNavigation(instance, step, instructionsDiv, distanceDiv) {
   instructionsDiv.innerHTML = step.maneuver.type + (!!step.maneuver.modifier ? (" " + step.maneuver.modifier) : "") + (!!step.name ? (" on " + step.name) : "");
   instance.updateDistance();
   distanceDiv.innerHTML = "In<br>" + instance.currentStepDistanceRemaining + "<br>meters";
-
-//  var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, step.maneuver.location[0], step.maneuver.location[1]];
   showOnMap(null, null, step.geometry, [45,210,125,0.8]);
 } // end function showNavigation(...)
 
-function getGeodesicDistance(destination) {
+function getGeodesicDistance(currentCoordinates, destination) {
   var sourceProj = map.getView().getProjection();
-  var c1 = [coordinates2.longitude, coordinates2.latitude]; //ol.proj.transform([coordinates2.longitude, coordinates2.latitude], sourceProj, 'EPSG:4326');
+  var c1 = [currentCoordinates.longitude, currentCoordinates.latitude]; //ol.proj.transform([coordinates2.longitude, coordinates2.latitude], sourceProj, 'EPSG:4326');
   var c2 = destination; //ol.proj.transform(destination, sourceProj, 'EPSG:4326');
   
   return sphere.haversineDistance(c1, c2);
@@ -243,17 +244,28 @@ function success2(pos) {
     if (!!router) {
       if (!router.arrived && router.status) {
         map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
-        router.updateDistance();
+        router.updateDistance(coordinates2);
         router.checkForNextStep();
-        router.showNav(); }
-    }
+        router.showNav(); 
+      } // end if (!router.arrived && router.status)
+    } // end if (!!router)
+    
     if (!!webWorker) {
-      var status;
-      !!router ? ((router.status == 2) ? status = 1 : status = 0 ) : status = 0; 
-      webWorker.postMessage({"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude}, status);
-    }
-  }
-}
+      if (!!router) {
+        if (router.onMainTrip) {
+          console.log("GPSTrackCounter = " + GPSTrackCounter);
+          if (GPSTrackCounter >= 6) {
+            GPSTrackCounter = 0;
+            webWorker.postMessage([{"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude}, 1]);
+          } // end if (GPSTrackCounter >= 6)
+          GPSTrackCounter++;
+        } // end if (router.onMainTrip)
+      } // end if (!!router) 
+      else 
+        webWorker.postMessage([{"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude}, 0]);
+    } // end if (!!webWorker)
+  } // end major else
+} // end function success2(pos
 
 function error2() {
   window.navigator.geolocation.clearWatch(watchID);
