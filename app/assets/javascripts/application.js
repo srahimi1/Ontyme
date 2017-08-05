@@ -267,10 +267,10 @@ function success2(pos) {
     
     if (!!webWorker) {
       if (!!router) {
-        var data;
-        webWorker.onmessage = function(event) {data = event.data;};
+        var data2;
+        webWorker.onmessage = function(event) {data2 = event.data;
         ih = router.instructionDiv.innerHTML;
-        router.instructionDiv.innerHTML = ih + data;
+        router.instructionDiv.innerHTML = data2;};
         if (router.onMainTrip) {
           console.log("GPSTrackCounter = " + GPSTrackCounter);
           if (GPSTrackCounter >= 6) {
