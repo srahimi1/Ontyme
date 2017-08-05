@@ -234,7 +234,7 @@ function startDirections(duration, legs) {
 }
 
 function showNavigation(instance, step, instructionsDiv, distanceDiv) {  
-  instructionsDiv.innerHTML = step.maneuver.type + (!!step.maneuver.modifier ? (" " + step.maneuver.modifier) : "") + (!!step.name ? (" on " + step.name) : "");
+  instructionsDiv.innerHTML = step.maneuver.type + (!!step.maneuver.modifier ? (" " + step.maneuver.modifier) : "") + (!!step.name ? (" on " + step.name) : "") + "<br><span id='headingS'></span>";
   distanceDiv.innerHTML = "In<br>" + instance.currentStepDistanceRemaining + "<br>meters";
   showOnMap(null, null, step.geometry, [45,210,125,0.8]);
 } // end function showNavigation(...)
@@ -265,8 +265,7 @@ function success2(pos) {
   else {
     coordinates2 = pos.coords;
     if (!!router) {
-      var t = router.instructionDiv.innerHTML;
-      router.instructionDiv.innerHTML = t + "<br>heading: " + coordinates2.heading;
+      document.getElementById("headingS").innerHTML = "heading: " + coordinates2.heading;
       if (!router.arrived && router.status) {
         var coordsCenter = ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]);
         map.getView().setCenter( coordsCenter );
