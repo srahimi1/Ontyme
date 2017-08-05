@@ -24,12 +24,12 @@ onmessage = function(event2) {
 function sendCoordinates() {
 	if (!!event) {event.close();
 		event = null;}
+	postMessage(coords);
 	url = "/drivers/logTripCoordinates?trip_request_id2="+tripRequestId+"&coordinates="+coords.toString();
 	event = new EventSource(url);
 	event.onmessage = function(event2) {
 			var data = event2.data + "";
 			if (data == "ok") {
-				postMessage(coords);
 				for (var i = 0; i < coordsLength; i++) coords.shift();
 				coordsLength = 0;
 				postMessage(coords);
