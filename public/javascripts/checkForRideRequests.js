@@ -31,6 +31,7 @@ function sendCoordinates() {
 			if (data == "ok") {
 				for (var i = 0; i < coordsLength; i++) coords.shift();
 				coordsLength = 0;
+				postMessage(coords);
 			} // end if (data == "ok")
 	} // end event.onmessage = function(event2)
 

@@ -52,7 +52,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   };
   this.updateDistance = function(currentCoordinates) { this.currentStepDistanceRemaining = getGeodesicDistance(currentCoordinates, this.steps[this.currentStepIndex].maneuver.location)};
   this.checkForNextStep = function() { 
-    if ( (this.currentStepDistanceRemaining < 75) && (this.currentStepIndex < (this.steps.length - 1)) ) {
+    if ( (this.currentStepDistanceRemaining < 45) && (this.currentStepIndex < (this.steps.length - 1)) ) {
       this.currentStepIndex++; 
       var coordsA = null;
       coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
@@ -150,6 +150,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
       map.addOverlay(marker2);
       marker2.setPosition(cord2);
       
+      if (!!router && router.status) zoomA = 15;
 
       mainLayer.once("postcompose", function(event){
           setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 100);
@@ -265,7 +266,11 @@ function success2(pos) {
     } // end if (!!router)
     
     if (!!webWorker) {
+      var data;
+      webWorker.onmessage = function(event) {data = event.data;};
       if (!!router) {
+        ih = router.instructionDiv.innerHTML;
+        router.instructionDiv.innerHTML = ih + data;
         if (router.onMainTrip) {
           console.log("GPSTrackCounter = " + GPSTrackCounter);
           if (GPSTrackCounter >= 6) {
@@ -298,7 +303,6 @@ function checkForRideRequests() {
       webWorker.postMessage([{"longitude" : coordinates.longitude , "latitude" : coordinates.latitude},0,0]);
     webWorker.onmessage = function(event) {
       var data = event.data;
-      
       if (receivedRequest == 0) showDriverRideRequestModal(data[0], data[1], data[2]);
     } // end webWorker.onmessage = function(event)
   
