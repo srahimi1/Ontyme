@@ -29,6 +29,7 @@ function sendCoordinates() {
 	event.onmessage = function(event2) {
 			var data = event2.data + "";
 			if (data == "ok") {
+				postMessage(coords);
 				for (var i = 0; i < coordsLength; i++) coords.shift();
 				coordsLength = 0;
 				postMessage(coords);
