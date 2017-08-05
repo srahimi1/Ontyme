@@ -176,7 +176,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   map.updateSize();
   //map.updateSize();
 
-  if (!!router && router.status) zoomA = 17;
+  if (!!router && router.status) zoomA = 13;
 
   mainLayer.once("postcompose", function(event){
     setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 100);
