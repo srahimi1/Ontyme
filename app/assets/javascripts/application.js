@@ -182,7 +182,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   } // end if (!!router && router.status && !extentTemp && !directionsTemp)
 
   mainLayer.once("postcompose", function(event){
-    setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 200);
+    setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 400);
   });
 
 
@@ -202,7 +202,7 @@ function Nav() {
   coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
   router.updateDistance(coordsA);
   router.checkForNextStep();
-  setTimeout(function () { router.showNav(); }, 1800);
+  setTimeout(function () { router.showNav(); }, 2800);
 }
 
 function getDirections() {
