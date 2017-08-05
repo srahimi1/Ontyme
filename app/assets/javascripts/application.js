@@ -202,7 +202,7 @@ function Nav() {
   coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
   router.updateDistance(coordsA);
   router.checkForNextStep();
-  setTimeout(function () { router.showNav(); }, 300);
+  setTimeout(function () { router.showNav(); }, 800);
 }
 
 function getDirections() {
