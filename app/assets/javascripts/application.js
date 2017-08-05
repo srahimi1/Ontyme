@@ -265,7 +265,8 @@ function success2(pos) {
   else {
     coordinates2 = pos.coords;
     if (!!router) {
-      router.instructionDiv.innerHTML = coordinates2.heading;
+      var t = router.instructionDiv.innerHTML;
+      router.instructionDiv.innerHTML = t + "<br>heading: " + coordinates2.heading;
       if (!router.arrived && router.status) {
         var coordsCenter = ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]);
         map.getView().setCenter( coordsCenter );
