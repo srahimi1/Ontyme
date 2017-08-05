@@ -18,7 +18,7 @@
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
 timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, 
-router = null, mainDirections = {}, GPSTrackCounter = 6;
+router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId;
 
 var sphere = new ol.Sphere(6378137);
 var coordinates2 = nullCoords;
@@ -268,13 +268,13 @@ function success2(pos) {
           console.log("GPSTrackCounter = " + GPSTrackCounter);
           if (GPSTrackCounter >= 6) {
             GPSTrackCounter = 0;
-            webWorker.postMessage([{"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude}, 1]);
+            webWorker.postMessage([{"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude}, 1, document.getElementById("trip_request_id").value]);
           } // end if (GPSTrackCounter >= 6)
           GPSTrackCounter++;
         } // end if (router.onMainTrip)
       } // end if (!!router) 
       else 
-        webWorker.postMessage([{"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude}, 0]);
+        webWorker.postMessage([{"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude}, 0, document.getElementById("trip_request_id").value]);
     } // end if (!!webWorker)
   } // end major else
 } // end function success2(pos
@@ -291,9 +291,9 @@ function checkForRideRequests() {
   if (!!window.Worker) {
     webWorker = new Worker("/javascripts/checkForRideRequests.js");
     if (coordinates == 0)
-      webWorker.postMessage([{"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude},0]);
+      webWorker.postMessage([{"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude},0,0]);
     else
-      webWorker.postMessage([{"longitude" : coordinates.longitude , "latitude" : coordinates.latitude},0]);
+      webWorker.postMessage([{"longitude" : coordinates.longitude , "latitude" : coordinates.latitude},0,0]);
     webWorker.onmessage = function(event) {
       var data = event.data;
       

@@ -2,35 +2,29 @@ var event = null, trip_request_id = "null", coordinates = {"latitude" : null, "l
 
 var url = "/drivers/checkForRideRequests?longitude="+coordinates.longitude+"&latitude="+coordinates.latitude;
 startEventStream();
-coords = [];
-coordsLength = 0;
-var aa;
+var coords = [];
+var coordsLength = 0;
+var tripRequestId = 0;
 
 onmessage = function(event2) {
-	var coordinates2 = event2.data[0]; 
-	aa = event2.data;
-	console.log(coordinates2);
-	
-	status = event2.data[1];
+	coordinates = event2.data[0]; 
+	var status = event2.data[1];
+	tripRequestId = event2.data[2];
 	if (!status) {
-		console.log(coordinates2);
-		console.log(coordinates2.longitude);
-		url = "/drivers/checkForRideRequests?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude;
+		url = "/drivers/checkForRideRequests?longitude="+coordinates.longitude+"&latitude="+coordinates.latitude;
 		startEventStream();
 	}
 	else {
-		coords.push([coordinates2.longitude, coordinates2.latitude]);
-		if (coordsLength == 0) {
-			coordsLength = coords.length;
-			sendCoordinates();}
+		coords.push([coordinates.longitude, coordinates.latitude]);
+		coordsLength = coords.length;
+		sendCoordinates();
 	}
 }
 
 function sendCoordinates() {
 	if (!!event) {event.close();
 		event = null;}
-	url = "/drivers/logTripCoordinates?coordinates="+coords;
-	console.log("this is in web worker. URL = " + url);
+	url = "/drivers/logTripCoordinates?trip_request_id2="+tripRequestId+"&coordinates="+coords.toString();
 	event = new EventSource(url);
 	event.onmessage = function(event2) {
 			var data = event2.data + "";
