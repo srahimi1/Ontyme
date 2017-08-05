@@ -52,7 +52,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   };
   this.updateDistance = function(currentCoordinates) { this.currentStepDistanceRemaining = getGeodesicDistance(currentCoordinates, this.steps[this.currentStepIndex].maneuver.location)};
   this.checkForNextStep = function() { 
-    if ( (this.currentStepDistanceRemaining < 45) && (this.currentStepIndex < (this.steps.length - 1)) ) {
+    if ( (this.currentStepDistanceRemaining < 35) && (this.currentStepIndex < (this.steps.length - 1)) ) {
       this.currentStepIndex++; 
       var coordsA = null;
       coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
@@ -200,7 +200,6 @@ function getDirections() {
   ajax.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var directions = JSON.parse(this.responseText);
-      console.log(directions);
       router.directions.push(directions);
       var temp = directions.waypoints[directions.waypoints.length -1].location;
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
@@ -267,12 +266,7 @@ function success2(pos) {
     
     if (!!webWorker) {
       if (!!router) {
-        var data2;
-        webWorker.onmessage = function(event) {data2 = event.data;
-        ih = router.instructionDiv.innerHTML;
-        router.instructionDiv.innerHTML = data2;};
         if (router.onMainTrip) {
-          console.log("GPSTrackCounter = " + GPSTrackCounter);
           if (GPSTrackCounter >= 6) {
             GPSTrackCounter = 0;
             webWorker.postMessage([{"longitude" : coordinates2.longitude , "latitude" : coordinates2.latitude}, 1, document.getElementById("trip_request_id").value]);
@@ -302,8 +296,8 @@ function checkForRideRequests() {
     else
       webWorker.postMessage([{"longitude" : coordinates.longitude , "latitude" : coordinates.latitude},0,0]);
     webWorker.onmessage = function(event) {
-      var data = event.data;
-      if (receivedRequest == 0) showDriverRideRequestModal(data[0], data[1], data[2]);
+      var data2 = event.data;
+      if (receivedRequest == 0) showDriverRideRequestModal(data2[0], data2[1], data2[2]);
     } // end webWorker.onmessage = function(event)
   
 

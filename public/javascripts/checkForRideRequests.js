@@ -24,15 +24,13 @@ onmessage = function(event2) {
 function sendCoordinates() {
 	if (!!event) {event.close();
 		event = null;}
-	postMessage(coords);
 	url = "/drivers/logTripCoordinates?trip_request_id2="+tripRequestId+"&coordinates="+coords.toString();
 	event = new EventSource(url);
 	event.onmessage = function(event2) {
-			var data = event2.data + "";
-			if (data == "ok") {
+			var data2 = event2.data + "";
+			if (data2 == "ok") {
 				for (var i = 0; i < coordsLength; i++) coords.shift();
 				coordsLength = 0;
-				postMessage(coords);
 			} // end if (data == "ok")
 	} // end event.onmessage = function(event2)
 
@@ -48,20 +46,20 @@ function startEventStream() {
 	event = new EventSource(url);
 	if (!!event) {
 		event.onmessage = function(event2) {
-			var data = event2.data;
+			var data2 = event2.data;
 			rideRequestSent = 0;
-			if ((data != "cancelled") && (data != "null")) {
+			if ((data2 != "cancelled") && (data2 != "null")) {
 				dataSend = [];
-				var dataTemp = data + "";
+				var dataTemp = data2 + "";
       			var dataSet = dataTemp.split("!");
 				dataSend.push(JSON.parse(dataSet[0]));
 				dataSend.push(dataSet[1]);
 				dataSend.push(dataSet[2]);
-				data = dataSend;
+				data2 = dataSend;
 				rideRequestSent = 1;
 			}
-			if ((rideRequestSent != 2) && (data != "null")) {
-				postMessage(data);
+			if ((rideRequestSent != 2) && (data2 != "null")) {
+				postMessage(data2);
 				if (rideRequestSent == 1) {
 					rideRequestSent = 2;
 				} // end if (rideRequestSent == 1)
