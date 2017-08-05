@@ -266,9 +266,9 @@ function success2(pos) {
     } // end if (!!router)
     
     if (!!webWorker) {
-      var data;
-      webWorker.onmessage = function(event) {data = event.data;};
       if (!!router) {
+        var data;
+        webWorker.onmessage = function(event) {data = event.data;};
         ih = router.instructionDiv.innerHTML;
         router.instructionDiv.innerHTML = ih + data;
         if (router.onMainTrip) {
