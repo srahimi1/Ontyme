@@ -176,10 +176,13 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   map.updateSize();
   //map.updateSize();
 
-  if (!!router && router.status) zoomA = 13;
+  if (!!router && router.status && !extentTemp && !directionsTemp) {
+    zoomA = 17;
+    map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
+  } // end if (!!router && router.status && !extentTemp && !directionsTemp)
 
   mainLayer.once("postcompose", function(event){
-    setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 100);
+    setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 200);
   });
 
 
@@ -199,7 +202,7 @@ function Nav() {
   coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
   router.updateDistance(coordsA);
   router.checkForNextStep();
-  router.showNav();
+  setTimeout(function () { router.showNav(); }, 300);
 }
 
 function getDirections() {
@@ -213,7 +216,7 @@ function getDirections() {
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
       showOnMap(extentTemp, null, directions.routes[0].geometry, [45,125,210,0.8]); 
       
-      map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
+      //map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
     
       Nav();
     }
@@ -262,6 +265,7 @@ function success2(pos) {
   else {
     coordinates2 = pos.coords;
     if (!!router) {
+      router.instructionDiv.innerHTML = coordinates2.heading;
       if (!router.arrived && router.status) {
         var coordsCenter = ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]);
         map.getView().setCenter( coordsCenter );
