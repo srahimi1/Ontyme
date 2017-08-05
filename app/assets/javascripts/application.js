@@ -143,7 +143,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
       }  
       var view = map.getView();
       view.fit(extent2, map.getSize());
-      map.render();
+      map.updateSize();
       //map.updateSize();
       var zoomA = view.getZoom();
       view.setZoom(zoomA - 3);
@@ -173,7 +173,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   }) );
   
   vectorSource.addFeature(feature);
-  map.render();
+  map.updateSize();
   //map.updateSize();
 
   if (!!router && router.status) zoomA = 17;
@@ -370,7 +370,7 @@ function doMap(extentTemp, directionsTemp) {
   extent2 = ol.proj.transformExtent([parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
   var view = map_on_request.getView();
   view.fit(extent2, map_on_request.getSize());
-  map_on_request.render();
+  map_on_request.updateSize();
   //map_on_request.updateSize();
   //view.setZoom(view.getZoom()-2);
   var p = map_on_request.getView().getProjection();
@@ -410,7 +410,7 @@ function doMap(extentTemp, directionsTemp) {
 
 
   vectorSource.addFeature(feature);
-  map_on_request.render();
+  map_on_request.updateSize();
  // map_on_request.updateSize();
 
 }
@@ -1186,7 +1186,7 @@ function startMap() {
           var cord = ol.proj.fromLonLat([coordinates.longitude, coordinates.latitude], p);
           map.getView().setCenter(cord);
           map.getView().setZoom(13);
-          setTimeout(function() {map.render()}, 50);
+          setTimeout(function() {map.updateSize()}, 50);
           driverMarker.setPosition(cord);
          // watchPos();
         } else {
@@ -1199,7 +1199,7 @@ function startMap() {
           var p = map.getView().getProjection();
           var coords = ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude], p);
           map.getView().setCenter(coords);
-          setTimeout(function() {map.render()}, 50);
+          setTimeout(function() {map.updateSize()}, 50);
           marker.setPosition(coords);
         },geolocateError, {enableHighAccuracy: true, maximumAge: 0});
       }
