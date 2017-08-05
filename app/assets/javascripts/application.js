@@ -107,7 +107,7 @@ function requestAccepted(extentTemp, directionsTemp) {
   mainDirections = JSON.parse(directionsTemp);
   router = null;
   router = new RouteNavigator(0,document.getElementById("instruction"),document.getElementById("distance"),mainDirections);
-  //map.updateSize();
+  console.log(mainDirections);
   showOnMap(extentTemp, null, router.directions[router.currentDirectionsIndex].routes[0].geometry, [45,45,45,0.8]);
 
 }
@@ -143,7 +143,8 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
       }  
       var view = map.getView();
       view.fit(extent2, map.getSize());
-      map.updateSize();
+      map.renderSync();
+      //map.updateSize();
       var zoomA = view.getZoom();
       view.setZoom(zoomA - 3);
       var p = map.getView().getProjection();
@@ -155,11 +156,6 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
       map.addOverlay(marker2);
       marker2.setPosition(cord2);
       
-      if (!!router && router.status) zoomA = 15;
-
-      mainLayer.once("postcompose", function(event){
-          setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 100);
-      });
   } // end if (!!extentTemp)
 
   var directions = (!!directionsTemp ? JSON.parse(directionsTemp) : "");
@@ -177,7 +173,15 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   }) );
   
   vectorSource.addFeature(feature);
-  map.updateSize();
+  map.renderSync();
+  //map.updateSize();
+
+  if (!!router && router.status) zoomA = 17;
+
+  mainLayer.once("postcompose", function(event){
+    setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 100);
+  });
+
 
 } // end function showOnMap(...)
 
@@ -366,7 +370,8 @@ function doMap(extentTemp, directionsTemp) {
   extent2 = ol.proj.transformExtent([parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
   var view = map_on_request.getView();
   view.fit(extent2, map_on_request.getSize());
-  map_on_request.updateSize();
+  map_on_request.renderSync();
+  //map_on_request.updateSize();
   //view.setZoom(view.getZoom()-2);
   var p = map_on_request.getView().getProjection();
   var cord1 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
@@ -405,8 +410,8 @@ function doMap(extentTemp, directionsTemp) {
 
 
   vectorSource.addFeature(feature);
-
-  map_on_request.updateSize();
+  map_on_request.renderSync();
+ // map_on_request.updateSize();
 
 }
 
@@ -991,6 +996,7 @@ function findLatLng(geocoder,infowindow, accuracyCode) {
       else
         accuracyA = 600000.0;
       window.navigator.geolocation.getCurrentPosition(function(position){
+            console.log(position);
         if (position.coords.accuracy < accuracyA) {
           coordinates = position.coords;}
         else {
@@ -1180,7 +1186,7 @@ function startMap() {
           var cord = ol.proj.fromLonLat([coordinates.longitude, coordinates.latitude], p);
           map.getView().setCenter(cord);
           map.getView().setZoom(13);
-          setTimeout(function() {map.updateSize()}, 50);
+          setTimeout(function() {map.renderSync()}, 50);
           driverMarker.setPosition(cord);
          // watchPos();
         } else {
@@ -1193,7 +1199,7 @@ function startMap() {
           var p = map.getView().getProjection();
           var coords = ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude], p);
           map.getView().setCenter(coords);
-          setTimeout(function() {map.updateSize()}, 50);
+          setTimeout(function() {map.renderSync()}, 50);
           marker.setPosition(coords);
         },geolocateError, {enableHighAccuracy: true, maximumAge: 0});
       }
