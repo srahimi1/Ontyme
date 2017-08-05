@@ -18,7 +18,7 @@
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
 timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, 
-router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId;
+router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker;
 
 var sphere = new ol.Sphere(6378137);
 var coordinates2 = nullCoords;
@@ -52,13 +52,13 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   };
   this.updateDistance = function(currentCoordinates) { this.currentStepDistanceRemaining = getGeodesicDistance(currentCoordinates, this.steps[this.currentStepIndex].maneuver.location)};
   this.checkForNextStep = function() { 
-    if ( (this.currentStepDistanceRemaining < 10) && (this.currentStepIndex < (this.steps.length - 1)) ) {
+    if ( (this.currentStepDistanceRemaining < 75) && (this.currentStepIndex < (this.steps.length - 1)) ) {
       this.currentStepIndex++; 
       var coordsA = null;
       coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
       this.updateDistance(coordsA);
     }
-    else if ((this.currentStepDistanceRemaining < 15) && (this.currentStepIndex == (this.steps.length - 1)) && (!this.arrived) ) {
+    else if ((this.currentStepDistanceRemaining < 25) && (this.currentStepIndex == (this.steps.length - 1)) && (!this.arrived) ) {
       this.arrived = 1;
       arrived(); }
   };
@@ -255,7 +255,9 @@ function success2(pos) {
     coordinates2 = pos.coords;
     if (!!router) {
       if (!router.arrived && router.status) {
-        map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
+        var coordsCenter = ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]);
+        map.getView().setCenter( coordsCenter );
+        driverMarker.setPosition(coordsCenter)
         router.updateDistance(coordinates2);
         router.checkForNextStep();
         router.showNav(); 
@@ -344,19 +346,19 @@ function showDriverRideRequestModal(data, extentTemp, directionsTemp) {
 
 function doMap(extentTemp, directionsTemp) {
 
-      var layer2 = new ol.layer.Vector({
-        source: vectorSource
-      });
+  var layer2 = new ol.layer.Vector({
+    source: vectorSource
+  });
 
-    map_on_request = new ol.Map({
-        layers: [mainLayer, layer2],
-        target: 'map-on-request',
-        view: new ol.View({
-            center: [60,40],
-            minZoom: 1,
-            zoom: 5
-        })
-      });
+  map_on_request = new ol.Map({
+    layers: [mainLayer, layer2],
+    target: 'map-on-request',
+    view: new ol.View({
+      center: [60,40],
+      minZoom: 1,
+      zoom: 5
+    })
+  });
 
   extent = extentTemp.split(",");
   extent2 = ol.proj.transformExtent([parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
@@ -1161,25 +1163,14 @@ function startMap() {
       });
 
 
-      map_on_request = new ol.Map({
-        layers: [mainLayer, layer2],
-        target: 'map-on-request',
-        view: new ol.View({
-            center: [60,40],
-            minZoom: 1,
-            zoom: 5
-        })
-      });
-
-
-      var marker = new ol.Overlay({
-        element: document.getElementById("marker"),
-        positioning: 'center-center',
-        autoPan: true
+      driverMarker = new ol.Overlay({
+        element: document.getElementById("driverMarker"),
+        positioning: 'center-center'
       });
 
      
-      map.addOverlay(marker);
+      map.addOverlay(driverMarker);
+
 
 
       function recenterMap() {
@@ -1189,7 +1180,7 @@ function startMap() {
           map.getView().setCenter(cord);
           map.getView().setZoom(13);
           setTimeout(function() {map.updateSize()}, 50);
-          marker.setPosition(cord);
+          driverMarker.setPosition(cord);
          // watchPos();
         } else {
           setTimeout(function() {recenterMap()}, 100);
