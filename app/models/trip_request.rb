@@ -86,8 +86,6 @@ class TripRequest < ApplicationRecord
 
 	def self.getLatLng(address)
 		response = "" 
-		puts address.inspect
-		puts "\n\n\n\n\n\n\n\n\n"
 		response = sendGetLatLngRequest(address)
 		while (response["latLng"] == nil)
 			response = sendGetLatLngRequest(address)

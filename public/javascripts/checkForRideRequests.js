@@ -25,6 +25,7 @@ function sendCoordinates() {
 	if (!!event) {event.close();
 		event = null;}
 	url = "/drivers/logTripCoordinates?trip_request_id2="+tripRequestId+"&coordinates="+coords.toString();
+	postMessage(coords);
 	event = new EventSource(url);
 	event.onmessage = function(event2) {
 			var data2 = event2.data + "";

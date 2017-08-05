@@ -69,6 +69,9 @@ function arrived() {
   router.directions.pop();
   $("#driverArrivedModal").modal('show');
   router.onMainTrip = 1;
+  webWorker.onmessage = function(event) {
+    localStorage.setItem("mainTripData", event.data);
+  };
   document.getElementById("startNavButton").innerHTML = "Navigate to Rider Destination";
 }
 
@@ -93,6 +96,8 @@ function acceptRequest(sel) {
 }
 
 function requestAccepted(extentTemp, directionsTemp) {
+  localStorage.setItem("active_trip_id2", document.getElementById("trip_request_id").value);
+  localStorage.setItem("mainTripData", "");
   directionsDiv = document.getElementById("directions");
   directionsDiv.style.height = "20%";
   mapDiv = document.getElementById("map");
@@ -154,7 +159,6 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
 
       mainLayer.once("postcompose", function(event){
           setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 100);
-         // startDirections(directions.routes[0].duration, directions.routes[0].legs);
       });
   } // end if (!!extentTemp)
 
@@ -298,7 +302,7 @@ function checkForRideRequests() {
     webWorker.onmessage = function(event) {
       var data2 = event.data;
       if (receivedRequest == 0) showDriverRideRequestModal(data2[0], data2[1], data2[2]);
-    } // end webWorker.onmessage = function(event)
+    }; // end webWorker.onmessage = function(event)
   
 
 
@@ -593,8 +597,7 @@ function changeDriverStatus() {
   clearTimeout(timeoutID);
   audio = new Audio("/sounds/DriverRideRequestMusic3.mp3");
   audio.muted = true;
-  audio.oncanplaythrough = function() {
-    audio.play();}
+  audio.oncanplaythrough = function() {audio.play();};
   var button = document.getElementById("becomeActiveBtn");
   button.disabled = true;
   var status = button.innerHTML.split("Go ")[1];
