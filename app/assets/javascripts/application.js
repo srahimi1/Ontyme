@@ -18,7 +18,7 @@
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
 timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, 
-router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker;
+router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat;
 
 var sphere = new ol.Sphere(6378137);
 var coordinates2 = nullCoords;
@@ -45,6 +45,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   this.driverCurrentCoordinatesProjected;
   this.overviewLineColor;
   this.currentDirectionsLineColor;
+  this.driverMarkerOverlay;
   this.update = function() {
       this.currentDirectionsIndex = this.directions.length - 1;
       this.currentStepIndex = 0;
@@ -125,16 +126,18 @@ function requestAccepted(extentTemp, directionsTemp) {
   localStorage.setItem("mainTripData", "");
   localStorage.setItem("activeTripStatus", 1);
   directionsDiv = document.getElementById("directions");
-  directionsDiv.style.height = "20%";
+  directionsDiv.style.height = "50%";
   mapDiv = document.getElementById("map");
-  mapDiv.style.height = "55%";
+  mapDiv.style.height = "30%";
   startNavButtonDiv = document.getElementById("startNavButtonDiv");
-  startNavButtonDiv.style.height = "20%";
+  startNavButtonDiv.style.height = "15%";
   mainDirections = JSON.parse(directionsTemp);
   router = null;
   router = new RouteNavigator(0,document.getElementById("instruction"),document.getElementById("distance"),mainDirections);
+  router.driverMarkerOverlay = driverMarker;
   console.log(mainDirections);
   router.overviewLineColor = [45,45,45,0.8];
+  
   showOnMap(extentTemp, null, router.directions[router.currentDirectionsIndex].routes[0].geometry, router.overviewLineColor);
 
 }
@@ -293,8 +296,7 @@ function success2(pos) {
   else {
     coordinates2 = pos.coords;
     if (!!router) {
-      if (!!coordinates2.heading) router.lastHeading = coordinates2.heading;
-      document.getElementById("headingS").innerHTML = "heading: " + coordinates2.heading;
+      if (!!coordinates2.heading) router.lastHeading = coordinates2.heading;  
       if (!router.arrived && router.status) {
         router.driverCurrentCoordinatesProjected = ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]);
         map.getView().setCenter( router.driverCurrentCoordinatesProjected );
@@ -303,6 +305,15 @@ function success2(pos) {
         router.checkForNextStep();
         router.checkForReRouting();
         router.showNav(); 
+
+
+         var pixel = map.getPixelFromCoordinate( router.driverMarkerOverlay.getPosition() );
+      var hasFeat = map.hasFeatureAtPixel( pixel );
+      map.forEachFeatureAtPixel(pixel, function(a,b) { feat = a; });
+      document.getElementById("headingS").innerHTML = "heading: " + router.lastHeading + "<br>has Feature : " + hasFeat + "<br>feat: "+feat;
+
+
+
       } // end if (!router.arrived && router.status)
     } // end if (!!router)
     
