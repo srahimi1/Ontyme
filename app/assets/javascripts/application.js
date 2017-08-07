@@ -42,6 +42,9 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   this.mDirections = {};
   this.arrived = 0;
   this.lastHeading;
+  this.driverCurrentCoordinatesProjected;
+  this.overviewLineColor;
+  this.currentDirectionsLineColor;
   this.update = function() {
       this.currentDirectionsIndex = this.directions.length - 1;
       this.currentStepIndex = 0;
@@ -63,6 +66,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
       this.arrived = 1;
       arrived(); }
   };
+  this.checkForReRouting = function() {};
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
 }
 
@@ -130,7 +134,8 @@ function requestAccepted(extentTemp, directionsTemp) {
   router = null;
   router = new RouteNavigator(0,document.getElementById("instruction"),document.getElementById("distance"),mainDirections);
   console.log(mainDirections);
-  showOnMap(extentTemp, null, router.directions[router.currentDirectionsIndex].routes[0].geometry, [45,45,45,0.8]);
+  router.overviewLineColor = [45,45,45,0.8];
+  showOnMap(extentTemp, null, router.directions[router.currentDirectionsIndex].routes[0].geometry, router.overviewLineColor);
 
 }
 
@@ -236,7 +241,8 @@ function getDirections() {
       router.directions.push(directions);
       var temp = directions.waypoints[directions.waypoints.length -1].location;
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
-      showOnMap(extentTemp, null, directions.routes[0].geometry, [45,125,210,0.8]); 
+      router.currentDirectionsLineColor =  [45,125,210,0.8];
+      showOnMap(extentTemp, null, directions.routes[0].geometry, router.currentDirectionsLineColor); 
       
       //map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
     
@@ -290,11 +296,12 @@ function success2(pos) {
       if (!!coordinates2.heading) router.lastHeading = coordinates2.heading;
       document.getElementById("headingS").innerHTML = "heading: " + coordinates2.heading;
       if (!router.arrived && router.status) {
-        var coordsCenter = ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]);
-        map.getView().setCenter( coordsCenter );
-        driverMarker.setPosition(coordsCenter)
+        router.driverCurrentCoordinatesProjected = ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]);
+        map.getView().setCenter( router.driverCurrentCoordinatesProjected );
+        driverMarker.setPosition( router.driverCurrentCoordinatesProjected );
         router.updateDistance(coordinates2);
         router.checkForNextStep();
+        router.checkForReRouting();
         router.showNav(); 
       } // end if (!router.arrived && router.status)
     } // end if (!!router)
