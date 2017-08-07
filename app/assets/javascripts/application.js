@@ -188,7 +188,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
       
   } // end if (!!extentTemp)
 
-  var directions = (!!directionsTemp ? JSON.parse(directionsTemp) : "");
+  var directions = (!!directionsTemp ? JSON.parse(directionsTemp) : " ");
   var geometry = (!!geometryTemp ? geometryTemp : directions.routes[0].geometry);
 
   var route = new ol.format.Polyline().readGeometry(geometry, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
@@ -239,7 +239,8 @@ function Nav() {
 
 function getDirections() {
   var ajax = new XMLHttpRequest();
-  var url = "/drivers/getdirections?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude+"&trip_request_id="+document.getElementById("trip_request_id").value + (!!router.lastHeading ? ("&bearing="+router.lastHeading) : "");
+  var bearing = !!router.lastHeading ?  ("&bearing=" + router.lastHeading) : " ";
+  var url = "/drivers/getdirections?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude+"&trip_request_id="+document.getElementById("trip_request_id").value + bearing;
   ajax.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var directions = JSON.parse(this.responseText);
@@ -248,7 +249,7 @@ function getDirections() {
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
       router.currentDirectionsLineColor =  [45,125,210,0.8];
       showOnMap(extentTemp, null, directions.routes[0].geometry, router.currentDirectionsLineColor); 
-      
+      alert(url);
       //map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
     
       Nav();
@@ -267,7 +268,9 @@ function startDirections(duration, legs) {
 }
 
 function showNavigation(instance, step, instructionsDiv, distanceDiv) {  
-  instructionsDiv.innerHTML = step.maneuver.type + (!!step.maneuver.modifier ? (" " + step.maneuver.modifier) : "") + (!!step.name ? (" on " + step.name) : "") + "<br><span id='headingS'></span>";
+  var modifier = !!step.maneuver.modifier ? (" " + step.maneuver.modifier) : " ";
+  var name = !!step.name ? (" on " + step.name) : " ";
+  instructionsDiv.innerHTML = step.maneuver.type + modifier + name + "<br><span id='headingS'></span>";
   distanceDiv.innerHTML = "In<br>" + instance.currentStepDistanceRemaining + "<br>meters";
   showOnMap(null, null, step.geometry, [45,210,125,0.8]);
 } // end function showNavigation(...)
