@@ -309,10 +309,11 @@ function success2(pos) {
         router.showNav(); 
 
 
-         var pixel = map.getPixelFromCoordinate( router.driverMarkerOverlay.getPosition() );
-      var hasFeat = map.hasFeatureAtPixel( pixel );
-      map.forEachFeatureAtPixel(pixel, function(a,b) { feat = "" + JSON.stringify(a.getProperties()) + "<br>" + JSON.stringify(a.getStyle()); });
-      document.getElementById("headingS").innerHTML = "heading: " + router.lastHeading + "<br>has Feature : " + hasFeat + "<br>feat: "+feat;
+        var pixel = map.getPixelFromCoordinate( router.driverMarkerOverlay.getPosition() );
+        var output;
+        feat = "";
+        map.forEachFeatureAtPixel(pixel, function(a,b) { feat = feat + a.getStyle().stroke_.color_.toString() + "<br>";   });
+        document.getElementById("headingS").innerHTML = "heading: " + router.lastHeading + "<br>Feature styles: " + feat;
 
 
 
