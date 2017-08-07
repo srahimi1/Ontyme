@@ -151,7 +151,7 @@ class TripRequest < ApplicationRecord
 		elsif (driver.trip_status.to_s == "accepted")
 				a = ActiveTrip.find_by(active_trip_id2: trip_request.trip_request_id2)
 				if (!a)
-					a = ActiveTrip.new(active_trip_id2: trip_request.trip_request_id2, driver_id2: driver_chosen.driver_id2, driver_connect_time: Time.now, status: "1", route_data: "")
+					a = ActiveTrip.new(active_trip_id2: trip_request.trip_request_id2, driver_id2: driver_chosen.driver_id2, driver_connect_time: Time.now, status: 1, route_data: "")
 					a.attributes=trip_request.as_json(only: [:user_id2, :trip_request_id2, :map_provider, :map_provider_url, :destination_street, :destination_city, :destination_state, :destination_postalcode, :destination_longitude, :destination_latitude, :map_provider_destination_id, :map_provider_destination_slug])
 					a.save!
 				end

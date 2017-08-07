@@ -41,6 +41,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   this.currentStepDistanceRemaining = 9999;
   this.mDirections = {};
   this.arrived = 0;
+  this.lastHeading;
   this.update = function() {
       this.currentDirectionsIndex = this.directions.length - 1;
       this.currentStepIndex = 0;
@@ -72,8 +73,28 @@ function arrived() {
   webWorker.onmessage = function(event) {
     localStorage.setItem("mainTripData", event.data);
   };
+  updateActiveTrip("status",2)
   document.getElementById("startNavButton").innerHTML = "Navigate to Rider Destination";
 }
+
+function updateActiveTrip(column, newValue) {
+  var ajax = new XMLHttpRequest();
+  var url = "/active_trips/"+document.getElementById("trip_request_id").value;
+  ajax.onreadystatechange = function() {
+    if(this.readyState == 4 && this.status == 200) {
+      var response = this.responseText + "";
+      if (response == "ok") {
+        localStorage.setItem("activeTripStatus", newValue);
+        console.log("active trip change saved");
+      }
+    }
+  }
+  ajax.open("POST", url, true);
+  ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  ajax.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
+  ajax.send("_method=Patch&column="+column+"&newValue="+newValue);
+} // end function updateActiveTrip(column, newValue)
+
 
 function acceptRequest(sel) {
   var ajaxRequest = new XMLHttpRequest();
@@ -96,8 +117,9 @@ function acceptRequest(sel) {
 }
 
 function requestAccepted(extentTemp, directionsTemp) {
-  localStorage.setItem("active_trip_id2", document.getElementById("trip_request_id").value);
+  localStorage.setItem("activeTripId", document.getElementById("trip_request_id").value);
   localStorage.setItem("mainTripData", "");
+  localStorage.setItem("activeTripStatus", 1);
   directionsDiv = document.getElementById("directions");
   directionsDiv.style.height = "20%";
   mapDiv = document.getElementById("map");
@@ -265,6 +287,7 @@ function success2(pos) {
   else {
     coordinates2 = pos.coords;
     if (!!router) {
+      if (!!coordinates2.heading) router.lastHeading = coordinates2.heading;
       document.getElementById("headingS").innerHTML = "heading: " + coordinates2.heading;
       if (!router.arrived && router.status) {
         var coordsCenter = ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]);

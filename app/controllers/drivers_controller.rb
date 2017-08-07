@@ -73,7 +73,7 @@ class DriversController < ApplicationController
 	end
 
 	def logTripCoordinates
-		activeTrip = ActiveTrip.find_by(driver_id2: session[:driver_id2], status: "1", trip_request_id2: params[:trip_request_id2].to_s)
+		activeTrip = ActiveTrip.find_by(driver_id2: session[:driver_id2], status: 1, trip_request_id2: params[:trip_request_id2].to_s)
 		routeData = activeTrip.route_data
 		routeDataTemp = routeData + params[:coordinates].to_s + ","
 		activeTrip.route_data = routeDataTemp
@@ -101,7 +101,7 @@ class DriversController < ApplicationController
 		directions = ""
 		if (!!driverRequest & (params[:acceptance_code] == "1") & (driverRequest.trip_status.to_s != "time_ran_out"))
 			trip_request = TripRequest.find_by(trip_request_id2: params[:trip_request_id2])
-			a = ActiveTrip.new(active_trip_id2: params[:trip_request_id2].to_s, driver_id2: session[:driver_id2].to_s, driver_connect_time: Time.now, status: "1", route_data: "")
+			a = ActiveTrip.new(active_trip_id2: params[:trip_request_id2].to_s, driver_id2: session[:driver_id2].to_s, driver_connect_time: Time.now, status: 1, route_data: "")
 			a.attributes=trip_request.as_json(only: [:user_id2, :trip_request_id2, :map_provider, :map_provider_url, :destination_street, :destination_city, :destination_state, :destination_postalcode, :destination_longitude, :destination_latitude, :map_provider_destination_id, :map_provider_destination_slug])
 			a.save!
 			driverRequest.reload

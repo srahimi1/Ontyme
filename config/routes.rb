@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 	get '/drivers/reset', to: 'drivers#reset'
 	get '/drivers/getdirections', to: 'drivers#getDirections'
 	get '/drivers/logTripCoordinates', to: 'drivers#logTripCoordinates'
+	
 	resources :users do 
 		resources :trip_requests
 		resources :active_trips
@@ -17,6 +18,8 @@ Rails.application.routes.draw do
 		resources :active_trips
 		resources :completed_trips
 	end
+
+	resources :active_trips
 
   	root 'welcome#index'
 
