@@ -23,7 +23,7 @@ class CreateActiveTrips < ActiveRecord::Migration[5.0]
         t.text :response_from_routing_service_seg_1
         t.text :response_from_routing_service_seg_2
         t.text :route_data
-        t.int :status
+        t.integer :status
     	t.timestamps
     end
   end
