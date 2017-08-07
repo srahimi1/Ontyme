@@ -309,7 +309,7 @@ function success2(pos) {
 
          var pixel = map.getPixelFromCoordinate( router.driverMarkerOverlay.getPosition() );
       var hasFeat = map.hasFeatureAtPixel( pixel );
-      map.forEachFeatureAtPixel(pixel, function(a,b) { feat = a; });
+      map.forEachFeatureAtPixel(pixel, function(a,b) { feat = "" + JSON.stringify(a.getProperties()) + "<br>" + JSON.stringify(a.getStyle()); });
       document.getElementById("headingS").innerHTML = "heading: " + router.lastHeading + "<br>has Feature : " + hasFeat + "<br>feat: "+feat;
 
 
