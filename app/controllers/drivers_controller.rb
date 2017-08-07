@@ -125,7 +125,7 @@ class DriversController < ApplicationController
 
 	def getDirections
 		trip_request = TripRequest.find_by(trip_request_id2: params[:trip_request_id])
-		directions = Driver.get_directions(nil, params[:longitude].to_s, params[:latitude].to_s, trip_request.pickup_longitude, trip_request.pickup_latitude)
+		directions = Driver.get_directions(nil, params[:longitude].to_s, params[:latitude].to_s, trip_request.pickup_longitude, trip_request.pickup_latitude, (!!params[:bearing] ? params[:bearing] : nil) )
 		render plain: directions
 	end
 
