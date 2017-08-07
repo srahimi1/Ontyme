@@ -77,7 +77,7 @@ function arrived() {
   webWorker.onmessage = function(event) {
     localStorage.setItem("mainTripData", event.data);
   };
-  updateActiveTrip("status",2)
+  updateActiveTrip("status",2);
   document.getElementById("startNavButton").innerHTML = "Navigate to Rider Destination";
 }
 
