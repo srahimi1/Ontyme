@@ -18,7 +18,7 @@
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
 timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, 
-router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat;
+router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat, testFeat;
 
 var sphere = new ol.Sphere(6378137);
 var coordinates2 = nullCoords;
@@ -204,6 +204,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   
   vectorSource.addFeature(feature);
   map.updateSize();
+  testFeat = feature;
   //map.updateSize();
 
   if (!!router && router.status && !extentTemp && !directionsTemp) {
@@ -221,6 +222,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
 
 function startNav() {
   $("#driverArrivedModal").modal('hide');
+  if (router.status) router.directions.pop();
   if (!router.onMainTrip) getDirections();
   else Nav();
 }
