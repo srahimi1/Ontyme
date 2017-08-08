@@ -239,8 +239,10 @@ function Nav() {
 
 function getDirections() {
   var ajax = new XMLHttpRequest();
-  var bearing = !!router.lastHeading ?  ("&bearing=" + router.lastHeading) : " ";
-  var url = "/drivers/getdirections?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude+"&trip_request_id="+document.getElementById("trip_request_id").value + bearing;
+  if (!!router.lastHeading)
+    var url = "/drivers/getdirections?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude+"&trip_request_id="+document.getElementById("trip_request_id").value + "&bearing=" + router.lastHeading;
+  else
+    var url = "/drivers/getdirections?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude+"&trip_request_id="+document.getElementById("trip_request_id").value;
   ajax.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var directions = JSON.parse(this.responseText);
