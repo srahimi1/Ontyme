@@ -9,7 +9,7 @@ class Driver < ApplicationRecord
 
 	def self.get_directions(active_trip_id, long1, lat1, long2, lat2, bearing)
 		if !!bearing 
-			url = "http://router.project-osrm.org/route/v1/driving/#{long1},#{lat1};#{long2},#{lat2}?overview=full&steps=true&continue_straight=false&bearings=#{bearing},15"
+			url = "http://router.project-osrm.org/route/v1/driving/#{long1},#{lat1};#{long2},#{lat2}?overview=full&steps=true&continue_straight=false&bearings=#{bearing},15;"
 		else
 			url = "http://router.project-osrm.org/route/v1/driving/#{long1},#{lat1};#{long2},#{lat2}?overview=full&steps=true&continue_straight=false"
 		end
