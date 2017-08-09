@@ -89,8 +89,12 @@ function snapToCoordinates( coordsTemp ) {
         console.log(res);
         if (res == " ")
           return null;
-        else
-          return JSON.parse(res);
+        else {
+          var a = JSON.parse(res);
+          console.log("snapped json parsed");
+          console.log(a);
+          return a;
+        }
       } // end this.readyState ...
     } // end onreadystatechange
     ajaxRequest.open("GET", url, true);
@@ -103,9 +107,13 @@ function ifOnFeature(instance) {
     
     features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
     if (!features) {
-      var coordinatesTemp = snapToCoordinates(coordinates2);
-      if (coordinatesTemp)
-        features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat([coordinatesTemp.longitude, coordinatesTemp.latitude]) );
+      var coordinatesTemp = snapToCoordinates(coordinates2).waypoints[0].location;
+      if (coordinatesTemp) {
+        console.log("in ifonfeature");
+        console.log(coordinatesTemp);
+        features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(coordinatesTemp) );    
+        console.log(features);
+      }
     } // end if (!features)
     if (features) {
       for (var i = 0; i < features.length; i++ ) {
@@ -182,6 +190,7 @@ function requestAccepted(extentTemp, directionsTemp) {
   router = new RouteNavigator(0,document.getElementById("instruction"),document.getElementById("distance"),mainDirections);
   router.driverMarkerOverlay = driverMarker;
   router.vectorSource = vectorSource;
+  router.driverCurrentCoordinatesProjected = ol.proj.fromLonLat([coordinates.longitude, coordinates.latitude]);
   console.log(mainDirections);
   router.overviewLineColor = [45,45,45,0.8];
   
