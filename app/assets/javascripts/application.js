@@ -102,7 +102,7 @@ function snapToCoordinates( coordsTemp ) {
     ajaxRequest.open("GET", url, true);
     ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
     ajaxRequest.send();
-    while (!resCompleted) {for(x=0; x<1000; x++);}; 
+    while (!resCompleted) {for(x=0; x<100000; x++);}; 
 }
 
 function ifOnFeature(instance) {
