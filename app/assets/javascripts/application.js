@@ -106,7 +106,7 @@ function ifOnFeature(instance) {
     var features = null;
     
     features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
-    if (!features) {
+    if (!features.length) {
       var coordinatesTemp = snapToCoordinates(coordinates2).waypoints[0].location;
       if (coordinatesTemp) {
         console.log("in ifonfeature");
