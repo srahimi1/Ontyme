@@ -116,12 +116,12 @@ function ifOnFeature(instance, snappedCoords) {
         console.log(features);
       }
     } // end if (!features)
-    if (features) {
+    if (features.length) {
       for (var i = 0; i < features.length; i++ ) {
         if (features[i].getStyle().stroke_.color_.toString() == instance.currentDirectionsLineColor.toString())
           return true;
       }
-    } // end if (features)
+    } // end if (features.length)
    
     return false;
 
