@@ -103,9 +103,11 @@ function snapToCoordinates( coordsTemp ) {
     ajaxRequest.open("GET", url, true);
     ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
     ajaxRequest.send();
-    do {
-      for(var x=0; x<100000; x++) {if (acount) break;}
-    } while (!acount) 
+    for(var x=0; x<100000; x++) {if (acount) break;}
+    for(var x=0; x<100000; x++) {if (acount) break;}
+    for(var x=0; x<100000; x++) {if (acount) break;}
+    for(var x=0; x<100000; x++) {if (acount) break;}
+    for(var x=0; x<100000; x++) {if (acount) break;}
 }
 
 function ifOnFeature(instance) {
