@@ -18,7 +18,7 @@
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
 timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, 
-router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat, testFeat;
+router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat, testFeat, acount;
 
 var sphere = new ol.Sphere(6378137);
 var coordinates2 = nullCoords;
@@ -80,7 +80,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
 
 
 function snapToCoordinates( coordsTemp ) {
-  var resCompleted = null;
+  acount = null;
   var ajaxRequest = new XMLHttpRequest();
   var url = "/drivers/getsnappedcoordinates?longitude="+coordsTemp.longitude+"&latitude="+coordsTemp.latitude;
   ajaxRequest.onreadystatechange = function() {
@@ -89,13 +89,13 @@ function snapToCoordinates( coordsTemp ) {
         console.log("snapped");
         console.log(res);
         if (res == " ") {
-          resCompleted = 1;
+          acount = 1;
           return null; }
         else {
           var a = JSON.parse(res);
           console.log("snapped json parsed");
           console.log(a);
-          resCompleted = 1;
+          acount = 1;
           return a;
         }
       } // end this.readyState ...
@@ -103,7 +103,7 @@ function snapToCoordinates( coordsTemp ) {
     ajaxRequest.open("GET", url, true);
     ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
     ajaxRequest.send();
-    while (!resCompleted) {for(x=0; x<100000; x++);}; 
+    while (!acount) {for(x=0; x<100000; x++);}; 
 }
 
 function ifOnFeature(instance) {
