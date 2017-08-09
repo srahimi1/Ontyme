@@ -151,6 +151,8 @@ function testnav() {
 function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   var extent2;
   
+  vectorSource.clear();
+
   var marker1 = new ol.Overlay({
     element: document.getElementById("marker"),
     positioning: 'center-center'    
