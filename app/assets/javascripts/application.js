@@ -80,6 +80,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
 
 
 function snapToCoordinates( coordsTemp ) {
+  var resCompleted = null;
   var ajaxRequest = new XMLHttpRequest();
   var url = "/drivers/getsnappedcoordinates?longitude="+coordsTemp.longitude+"&latitude="+coordsTemp.latitude;
   ajaxRequest.onreadystatechange = function() {
@@ -95,11 +96,13 @@ function snapToCoordinates( coordsTemp ) {
           console.log(a);
           return a;
         }
+        resCompleted = 1;
       } // end this.readyState ...
     } // end onreadystatechange
     ajaxRequest.open("GET", url, true);
     ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
-    ajaxRequest.send(); 
+    ajaxRequest.send();
+    while (!resCompleted) {for(x=0; x<1000; x++);}; 
 }
 
 function ifOnFeature(instance) {
