@@ -88,9 +88,9 @@ function snapToCoordinates( coordsTemp ) {
         var res = this.responseText + "";
         console.log("snapped");
         console.log(res);
-        if (res == " ")
+        if (res == " ") {
           resCompleted = 1;
-          return null;
+          return null; }
         else {
           var a = JSON.parse(res);
           console.log("snapped json parsed");
