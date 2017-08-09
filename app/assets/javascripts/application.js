@@ -69,7 +69,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
       arrived(); }
   };
   this.checkForReRouting = function() {
-    if ( !ifOnFeature(this) || ifTurnedAtIntersection(this) || ifWentOtherDirection(this) ) 
+    if ( !ifOnFeature(this, null) || ifTurnedAtIntersection(this) || ifWentOtherDirection(this) ) 
       return true;
     else
       return false;
@@ -79,8 +79,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
 } // end var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firstDirections)
 
 
-function snapToCoordinates( coordsTemp ) {
-  acount = null;
+function snapToCoordinates( instance, coordsTemp ) {
   var ajaxRequest = new XMLHttpRequest();
   var url = "/drivers/getsnappedcoordinates?longitude="+coordsTemp.longitude+"&latitude="+coordsTemp.latitude;
   ajaxRequest.onreadystatechange = function() {
@@ -88,34 +87,28 @@ function snapToCoordinates( coordsTemp ) {
         var res = this.responseText + "";
         console.log("snapped");
         console.log(res);
-        if (res == " ") {
-          acount = 1;
-          return null; }
+        if (res == " ") { ifOnFeature(instance, null); }
         else {
           var a = JSON.parse(res);
           console.log("snapped json parsed");
           console.log(a);
-          acount = 1;
-          return a;
+          ifOnFeature(instance, a);
         }
       } // end this.readyState ...
     } // end onreadystatechange
     ajaxRequest.open("GET", url, true);
     ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
     ajaxRequest.send();
-    for(var x=0; x<100000; x++) {if (acount) break;}
-    for(var x=0; x<100000; x++) {if (acount) break;}
-    for(var x=0; x<100000; x++) {if (acount) break;}
-    for(var x=0; x<100000; x++) {if (acount) break;}
-    for(var x=0; x<100000; x++) {if (acount) break;}
 }
 
-function ifOnFeature(instance) {
+function ifOnFeature(instance, snappedCoords) {
     var features = null;
     
     features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
-    if (!features.length) {
-      var coordinatesTemp = snapToCoordinates(coordinates2).waypoints[0].location;
+    if (!features.length && !snappedCoords)
+      snapToCoordinates(instance, coordinates2);
+    else if (!features.length) {
+      var coordinatesTemp = snappedCoords.waypoints[0].location;
       if (coordinatesTemp) {
         console.log("in ifonfeature");
         console.log(coordinatesTemp);
