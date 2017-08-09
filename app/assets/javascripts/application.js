@@ -89,14 +89,15 @@ function snapToCoordinates( coordsTemp ) {
         console.log("snapped");
         console.log(res);
         if (res == " ")
+          resCompleted = 1;
           return null;
         else {
           var a = JSON.parse(res);
           console.log("snapped json parsed");
           console.log(a);
+          resCompleted = 1;
           return a;
         }
-        resCompleted = 1;
       } // end this.readyState ...
     } // end onreadystatechange
     ajaxRequest.open("GET", url, true);
