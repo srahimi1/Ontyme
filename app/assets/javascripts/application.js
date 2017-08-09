@@ -150,8 +150,6 @@ function testnav() {
 
 function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   var extent2;
-  
-  vectorSource.clear();
 
   var marker1 = new ol.Overlay({
     element: document.getElementById("marker"),
@@ -252,6 +250,7 @@ function getDirections() {
       var temp = directions.waypoints[directions.waypoints.length -1].location;
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
       router.currentDirectionsLineColor =  [45,125,210,0.8];
+      vectorSource.clear();
       showOnMap(extentTemp, null, directions.routes[0].geometry, router.currentDirectionsLineColor); 
       alert(url);
       //map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
