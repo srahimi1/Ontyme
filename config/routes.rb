@@ -7,7 +7,9 @@ Rails.application.routes.draw do
 	get '/drivers/reset', to: 'drivers#reset'
 	get '/drivers/getdirections', to: 'drivers#getDirections'
 	get '/drivers/logTripCoordinates', to: 'drivers#logTripCoordinates'
-	
+	get '/drivers/getsnappedcoordinates', to: 'drivers#getSnappedCoordinates'
+
+
 	resources :users do 
 		resources :trip_requests
 		resources :active_trips

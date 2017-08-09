@@ -44,6 +44,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   this.lastHeading;
   this.driverCurrentCoordinatesProjected;
   this.overviewLineColor;
+  this.vectorSource;
   this.currentDirectionsLineColor;
   this.driverMarkerOverlay;
   this.update = function() {
@@ -67,9 +68,55 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
       this.arrived = 1;
       arrived(); }
   };
-  this.checkForReRouting = function() {};
+  this.checkForReRouting = function() {
+    if ( !ifOnFeature(this) || ifTurnedAtIntersection(this) || ifWentOtherDirection(this) ) 
+      return true;
+    else
+      return false;
+  };
+  
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
+} // end var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firstDirections)
+
+
+function snapToCoordinates( coordsTemp ) {
+  var ajaxRequest = new XMLHttpRequest();
+  var url = "/drivers/getsnappedcoordinates?longitude="+coordsTemp.longitude+"&latitude="+coordsTemp.latitude;
+  ajaxRequest.onreadystatechange = function() {
+      if(this.readyState == 4 && this.status == 200) {
+        var res = this.responseText + "";
+        console.log("snapped");
+        console.log(res);
+        if (res == " ")
+          return null;
+        else
+          return JSON.parse(res);
+      } // end this.readyState ...
+    } // end onreadystatechange
+    ajaxRequest.open("GET", url, true);
+    ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
+    ajaxRequest.send(); 
 }
+
+function ifOnFeature(instance) {
+    var features = null;
+    
+    features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
+    if (!features) {
+      var coordinatesTemp = snapToCoordinates(coordinates2);
+      if (coordinatesTemp)
+        features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat([coordinatesTemp.longitude, coordinatesTemp.latitude]) );
+    } // end if (!features)
+    if (features) {
+      for (var i = 0; i < features.length; i++ ) {
+        if (features[i].getStyle().stroke_.color_.toString() == instance.currentDirectionsLineColor.toString())
+          return true;
+      }
+    } // end if (features)
+   
+    return false;
+
+} // end function ifOnFeature()
 
 function arrived() {
   router.directions.pop();
@@ -90,7 +137,6 @@ function updateActiveTrip(column, newValue) {
       var response = this.responseText + "";
       if (response == "ok") {
         localStorage.setItem("activeTripStatus", newValue);
-        console.log("active trip change saved");
       }
     }
   }
@@ -135,6 +181,7 @@ function requestAccepted(extentTemp, directionsTemp) {
   router = null;
   router = new RouteNavigator(0,document.getElementById("instruction"),document.getElementById("distance"),mainDirections);
   router.driverMarkerOverlay = driverMarker;
+  router.vectorSource = vectorSource;
   console.log(mainDirections);
   router.overviewLineColor = [45,45,45,0.8];
   
@@ -202,7 +249,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
     stroke: new ol.style.Stroke({ width: 6, color: colorTemp })
   }) );
   
-  vectorSource.addFeature(feature);
+  router.vectorSource.addFeature(feature);
   map.updateSize();
   testFeat = feature;
   //map.updateSize();
@@ -249,8 +296,8 @@ function getDirections() {
       router.directions.push(directions);
       var temp = directions.waypoints[directions.waypoints.length -1].location;
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
-      router.currentDirectionsLineColor =  [45,125,210,0.8];
-      vectorSource.clear();
+      router.currentDirectionsLineColor =  [45,125,210,0.8]; //[45,210,125,0.8]
+      router.vectorSource.clear();
       showOnMap(extentTemp, null, directions.routes[0].geometry, router.currentDirectionsLineColor); 
       alert(url);
       //map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
@@ -275,7 +322,7 @@ function showNavigation(instance, step, instructionsDiv, distanceDiv) {
   var name = !!step.name ? (" on " + step.name) : " ";
   instructionsDiv.innerHTML = step.maneuver.type + modifier + name + "<br><span id='headingS'></span>";
   distanceDiv.innerHTML = "In<br>" + instance.currentStepDistanceRemaining + "<br>meters";
-  showOnMap(null, null, step.geometry, [45,210,125,0.8]);
+  showOnMap(null, null, step.geometry, router.currentDirectionsLineColor);
 } // end function showNavigation(...)
 
 function getGeodesicDistance(currentCoordinates, destination) {
@@ -311,7 +358,8 @@ function success2(pos) {
         driverMarker.setPosition( router.driverCurrentCoordinatesProjected );
         router.updateDistance(coordinates2);
         router.checkForNextStep();
-        router.checkForReRouting();
+        if (router.checkForReRouting())
+          getDirections();
         router.showNav(); 
 
 

@@ -132,6 +132,12 @@ class DriversController < ApplicationController
 		render plain: directions
 	end
 
-
+	def getSnappedCoordinates
+		url = "http://router.project-osrm.org/nearest/v1/driving/#{params[:longitude].to_s},#{params[:latitude].to_s}"
+		uri = URI.parse(url)
+		connection = Net::HTTP.new(uri.host, uri.port)
+		res = connection.get(uri.request_uri)
+		render plain: res.body
+	end
 
 end
