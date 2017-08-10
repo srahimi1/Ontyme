@@ -149,7 +149,8 @@ function ifOnFeature(instance) {
       callStack = 0;
       jax = null;
       snapToCoordinates( instance, coordinates2);
-      waitForResponse(instance);
+      var a = waitForResponse(instance);
+      console.log(a);
       console.log("coordinatesTemp");
       console.log(coordinatesTemp);
       features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(coordinatesTemp) );    
