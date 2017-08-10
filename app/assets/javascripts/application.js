@@ -112,29 +112,35 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
     return snapToCoordinates(ajaxRequest, instance, null);
   }
   
-  top:
-  if (!!ajax && (ajax.readyState != 4)) {
-    callStack++;
-    snapToCoordinates(ajax, instance, null);
-  }
-  else if (!!ajax && (ajax.readyState == 4) && !ajax.responseText) {
-    callStack++;
-    return snapToCoordinates(ajax, instance, null);
-  }
-  else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !instance.snappedCoordinates) {
-    callStack++;
-    return snapToCoordinates(ajax, instance, null);
-  }
+  do {
+    if (!!ajax && (ajax.readyState != 4)) {
+      callStack++;
+      snapToCoordinates(ajax, instance, null);
+    }
+    else if (!!ajax && (ajax.readyState == 4) && !ajax.responseText) {
+      callStack++;
+      return snapToCoordinates(ajax, instance, null);
+    }
+    else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !instance.snappedCoordinates) {
+      callStack++;
+      return snapToCoordinates(ajax, instance, null);
+    }
 
+    console.log("callStack");
+    console.log(callStack);
 
-if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates)
-    return instance.snappedCoordinates;
-else if (!callStack) {
-  continue top;
-}
-else {
-  callStack--;
-  return false; }
+    if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates)
+      break;
+
+    if (callStack) {  
+      callStack--;
+      return false; 
+    }
+
+ } while (!(!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates))
+    
+return instance.snappedCoordinates;
+
 } // end function snapToCoordinates
 
 function ifOnFeature(instance) {
