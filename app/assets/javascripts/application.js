@@ -85,10 +85,6 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
 
 
 function snapToCoordinates( instance, coordsTemp ) {
-  if (callStack == 6) {
-    return false;}
-
-  if (!jax) {
     jax = new XMLHttpRequest();
     var url = "/drivers/getsnappedcoordinates?longitude="+coordsTemp.longitude+"&latitude="+coordsTemp.latitude;
     jax.onreadystatechange = function() {
@@ -105,33 +101,37 @@ function snapToCoordinates( instance, coordsTemp ) {
     jax.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
     jax.send();
     console.log("pre");
-    return snapToCoordinates(instance, null);
-    console.log("post");
-  }
+    waitForResponse(instance);
+    return instance.snappedCoordinates;
+    console.log("post"); 
+}
+
+function waitForResponse(instance) {    
+    if (callStack == 6) {
+    return false;}
 
   while (!(!!jax&& (jax.readyState == 4) && !!jax.responseText && !!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0])) {
     if (!!jax && (jax.readyState != 4)) {
-      for(var i=0; i<10000; i++){var v="";}
       callStack++;
      console.log("A");
       console.log("jax");
       console.log(jax);
-      snapToCoordinates(instance, null);
+      waitForResponse(instance);
     }
     if (!!jax && (jax.readyState == 4) && !jax.responseText) {
       callStack++;
       console.log("B");
-      return snapToCoordinates(instance, null);
+      return  waitForResponse(instance);
     }
     if (!!jax && (jax.readyState == 4) && !!jax.responseText && !instance.snappedCoordinates) {
       callStack++;
       console.log("C");
-      return snapToCoordinates(instance, null);
+      return  waitForResponse(instance);
     }
     if (!!jax && (jax.readyState == 4) && !!jax.responseText && !!instance.snappedCoordinates && !instance.snappedCoordinates.waypoints[0]) {
       callStack++;
       console.log("D");
-      return snapToCoordinates(instance, null);
+      return  waitForResponse(instance);
     }
 
     console.log("callStack");
