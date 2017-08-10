@@ -132,7 +132,7 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
       break;
 
     callStack--;
-    if (callStack>0) {  
+    if (callStack>-1) {  
       return false; 
     }
 
