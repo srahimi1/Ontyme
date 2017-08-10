@@ -113,7 +113,7 @@ function waitForResponse(instance) {
       callStack++;
      console.log("A");
       console.log("jax");
-      console.log(jax);
+      console.log(jax.readyState);
       waitForResponse(instance);
     }
     if (!!jax && (jax.readyState == 4) && !jax.responseText) {
