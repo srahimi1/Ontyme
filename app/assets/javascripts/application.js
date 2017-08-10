@@ -47,6 +47,8 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   this.vectorSource;
   this.currentDirectionsLineColor;
   this.driverMarkerOverlay;
+  this.snappedCoordinates = null;
+  this.reroutePending = 0;
   this.update = function() {
       this.currentDirectionsIndex = this.directions.length - 1;
       this.currentStepIndex = 0;
@@ -69,53 +71,66 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
       arrived(); }
   };
   this.checkForReRouting = function() {
-    if ( !ifOnFeature(this, null) || ifTurnedAtIntersection(this) || ifWentOtherDirection(this) ) 
+    this.reroutePending = 1;
+    if ( !ifOnFeature(this) || ifTurnedAtIntersection(this) || ifWentOtherDirection(this) ) {
+      this.reroutePending = 0;
       return true;
-    else
+    }
+    else {
+      this.reroutePending = 0;
       return false;
+    }
   };
   
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
 } // end var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firstDirections)
 
 
-function snapToCoordinates( instance, coordsTemp ) {
-  var ajaxRequest = new XMLHttpRequest();
-  var url = "/drivers/getsnappedcoordinates?longitude="+coordsTemp.longitude+"&latitude="+coordsTemp.latitude;
-  ajaxRequest.onreadystatechange = function() {
+function snapToCoordinates( ajax, instance, coordsTemp ) {
+  if (!ajax) {
+    var ajaxRequest = new XMLHttpRequest();
+    var url = "/drivers/getsnappedcoordinates?longitude="+coordsTemp.longitude+"&latitude="+coordsTemp.latitude;
+    ajaxRequest.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
         var res = this.responseText + "";
         console.log("snapped");
         console.log(res);
-        if (res == " ") { ifOnFeature(instance, null); }
+        if (res == " ") {}
         else {
-          var a = JSON.parse(res);
+          instance.snappedCoordinates = JSON.parse(res);
           console.log("snapped json parsed");
           console.log(a);
-          ifOnFeature(instance, a);
         }
       } // end this.readyState ...
     } // end onreadystatechange
     ajaxRequest.open("GET", url, true);
     ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
     ajaxRequest.send();
+    return snapToCoordinates(ajaxRequest, instance, null);
+  }
+  
+  if (!!ajax && (ajax.readyState != 4))
+    return snapToCoordinates(ajax, instance, null);
+  else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates)
+    return instance.snappedCoordinates;
+  else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !instance.snappedCoordinates)
+    return snapToCoordinates(ajax, instance, null);
+  else return false;
 }
 
-function ifOnFeature(instance, snappedCoords) {
+function ifOnFeature(instance) {
     var features = null;
     
     features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
-    if (!features.length && !snappedCoords)
-      snapToCoordinates(instance, coordinates2);
-    else if (!features.length) {
-      var coordinatesTemp = snappedCoords.waypoints[0].location;
-      if (coordinatesTemp) {
-        console.log("in ifonfeature");
-        console.log(coordinatesTemp);
-        features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(coordinatesTemp) );    
-        console.log(features);
-      }
-    } // end if (!features)
+    if (!features.length) {
+      console.log("in ifOnFeature");
+      var coordinatesTemp = snapToCoordinates(null, instance, coordinates2).waypoints[0].location;
+      instance.snappedCoordinates = null;
+      console.log(coordinatesTemp);
+      features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(coordinatesTemp) );    
+      console.log(features);
+    } // end if (!features.length)
+    
     if (features.length) {
       for (var i = 0; i < features.length; i++ ) {
         if (features[i].getStyle().stroke_.color_.toString() == instance.currentDirectionsLineColor.toString())
@@ -368,7 +383,7 @@ function success2(pos) {
         driverMarker.setPosition( router.driverCurrentCoordinatesProjected );
         router.updateDistance(coordinates2);
         router.checkForNextStep();
-        if (router.checkForReRouting())
+        if (!router.reroutePending && router.checkForReRouting())
           getDirections();
         router.showNav(); 
 
