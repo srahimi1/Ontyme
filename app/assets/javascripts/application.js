@@ -111,6 +111,7 @@ function snapToCoordinates( instance, coordsTemp ) {
 
   while (!(!!jax&& (jax.readyState == 4) && !!jax.responseText && !!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0])) {
     if (!!jax && (jax.readyState != 4)) {
+      for(var i=0; i<10000; i++){var v="";}
       callStack++;
      console.log("A");
       console.log("jax");
