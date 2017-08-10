@@ -104,24 +104,30 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
     ajaxRequest.open("GET", url, true);
     ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
     ajaxRequest.send();
+    console.log("pre");
     return snapToCoordinates(ajaxRequest, instance, null);
+    console.log("post");
   }
   
   while (!(!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0])) {
     if (!!ajax && (ajax.readyState != 4)) {
       callStack++;
+     console.log("A");
       snapToCoordinates(ajax, instance, null);
     }
     else if (!!ajax && (ajax.readyState == 4) && !ajax.responseText) {
       callStack++;
+      console.log("B");
       return snapToCoordinates(ajax, instance, null);
     }
     else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !instance.snappedCoordinates) {
       callStack++;
+      console.log("C");
       return snapToCoordinates(ajax, instance, null);
     }
     else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates && !instance.snappedCoordinates.waypoints[0]) {
       callStack++;
+      console.log("D");
       return snapToCoordinates(ajax, instance, null);
     }
 
@@ -131,8 +137,8 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
     if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0])
       break;
 
-    callStack--;
-    if (callStack>-1) {  
+    if (callStack) {  
+      callStack--;
       return false; 
     }
 
