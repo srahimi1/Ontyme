@@ -85,7 +85,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
 
 
 function snapToCoordinates( ajax, instance, coordsTemp ) {
-  if (callStack == 3) {
+  if (callStack == 6) {
     return false;}
 
   if (!ajax) {
