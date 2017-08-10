@@ -101,8 +101,6 @@ function snapToCoordinates( instance, coordsTemp ) {
     jax.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
     jax.send();
     console.log("pre");
-    waitForResponse(instance);
-    return instance.snappedCoordinates;
     console.log("post"); 
 }
 
@@ -149,7 +147,6 @@ function waitForResponse(instance) {
 
 console.log("instance.snappedCoordinates;");    
 console.log(instance.snappedCoordinates);
-return instance.snappedCoordinates;
 
 } // end function snapToCoordinates
 
@@ -161,7 +158,8 @@ function ifOnFeature(instance) {
       console.log("in ifOnFeature");
       callStack = 0;
       jax = null;
-      var coordinatesTemp = snapToCoordinates( instance, coordinates2).waypoints[0].location;
+      snapToCoordinates( instance, coordinates2);
+      waitForResponse(instance);
       console.log("coordinatesTemp");
       console.log(coordinatesTemp);
       features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(coordinatesTemp) );    
