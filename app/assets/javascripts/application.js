@@ -133,7 +133,9 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
     }
 
  } while (!(!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates))
-    
+
+console.log("instance.snappedCoordinates;");    
+console.log(instance.snappedCoordinates);
 return instance.snappedCoordinates;
 
 } // end function snapToCoordinates
