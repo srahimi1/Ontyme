@@ -124,7 +124,7 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
     console.log("callStack");
     console.log(callStack);
 
-    if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates)
+    if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates.waypoints[0])
       break;
 
     if (callStack) {  
@@ -132,7 +132,7 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
       return false; 
     }
 
- } while (!(!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates))
+ } while (!(!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates.waypoints[0]))
 
 console.log("instance.snappedCoordinates;");    
 console.log(instance.snappedCoordinates);
