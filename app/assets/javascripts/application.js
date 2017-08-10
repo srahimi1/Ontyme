@@ -18,7 +18,7 @@
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
 timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, 
-router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat, testFeat, callStack;
+router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat, testFeat, callStack, jax=null;
 
 var sphere = new ol.Sphere(6378137);
 var coordinates2 = nullCoords;
@@ -84,14 +84,14 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
 } // end var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firstDirections)
 
 
-function snapToCoordinates( ajax, instance, coordsTemp ) {
+function snapToCoordinates( instance, coordsTemp ) {
   if (callStack == 6) {
     return false;}
 
-  if (!ajax) {
-    var ajaxRequest = new XMLHttpRequest();
+  if (!jax) {
+    jax = new XMLHttpRequest();
     var url = "/drivers/getsnappedcoordinates?longitude="+coordsTemp.longitude+"&latitude="+coordsTemp.latitude;
-    ajaxRequest.onreadystatechange = function() {
+    jax.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
         var res = this.responseText + "";
         if (res == " ") {}
@@ -101,43 +101,42 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
         }
       } // end this.readyState ...
     } // end onreadystatechange
-    ajaxRequest.open("GET", url, true);
-    ajaxRequest.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
-    ajaxRequest.send();
+    jax.open("GET", url, true);
+    jax.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
+    jax.send();
     console.log("pre");
-    return snapToCoordinates(ajaxRequest, instance, null);
+    return snapToCoordinates(instance, null);
     console.log("post");
   }
-  
-  while (!(!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0])) {
-    if (!!ajax && (ajax.readyState != 4)) {
+
+  while (!(!!jax&& (jax.readyState == 4) && !!jax.responseText && !!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0])) {
+    if (!!jax && (jax.readyState != 4)) {
       callStack++;
      console.log("A");
-      console.log("ajax");
-      console.log(ajax);
-      (function(ajax) {
-      snapToCoordinates(ajax, instance, null); })(ajax);
+      console.log("jax");
+      console.log(jax);
+      snapToCoordinates(instance, null);
     }
-    if (!!ajax && (ajax.readyState == 4) && !ajax.responseText) {
+    if (!!jax && (jax.readyState == 4) && !jax.responseText) {
       callStack++;
       console.log("B");
-      return snapToCoordinates(ajax, instance, null);
+      return snapToCoordinates(instance, null);
     }
-    if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !instance.snappedCoordinates) {
+    if (!!jax && (jax.readyState == 4) && !!jax.responseText && !instance.snappedCoordinates) {
       callStack++;
       console.log("C");
-      return snapToCoordinates(ajax, instance, null);
+      return snapToCoordinates(instance, null);
     }
-    if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates && !instance.snappedCoordinates.waypoints[0]) {
+    if (!!jax && (jax.readyState == 4) && !!jax.responseText && !!instance.snappedCoordinates && !instance.snappedCoordinates.waypoints[0]) {
       callStack++;
       console.log("D");
-      return snapToCoordinates(ajax, instance, null);
+      return snapToCoordinates(instance, null);
     }
 
     console.log("callStack");
     console.log(callStack);
 
-    if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0])
+    if (!!jax && (jax.readyState == 4) && !!jax.responseText && !!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0])
       break;
 
     if (callStack) {  
@@ -160,7 +159,8 @@ function ifOnFeature(instance) {
     if (!features.length) {
       console.log("in ifOnFeature");
       callStack = 0;
-      var coordinatesTemp = snapToCoordinates(null, instance, coordinates2).waypoints[0].location;
+      jax = null;
+      var coordinatesTemp = snapToCoordinates( instance, coordinates2).waypoints[0].location;
       console.log("coordinatesTemp");
       console.log(coordinatesTemp);
       features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(coordinatesTemp) );    
