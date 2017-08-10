@@ -86,7 +86,6 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
 
 function snapToCoordinates( ajax, instance, coordsTemp ) {
   if (callStack == 3) {
-    callStack--;
     return false;}
 
   if (!ajax) {
@@ -117,7 +116,11 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
       callStack++;
       return snapToCoordinates(ajax, instance, null);
     }
-    else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !instance.snappedCoordinates.waypoints[0]) {
+    else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !instance.snappedCoordinates) {
+      callStack++;
+      return snapToCoordinates(ajax, instance, null);
+    }
+    else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates && !instance.snappedCoordinates.waypoints[0]) {
       callStack++;
       return snapToCoordinates(ajax, instance, null);
     }
@@ -125,7 +128,7 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
     console.log("callStack");
     console.log(callStack);
 
-    if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates.waypoints[0])
+    if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0])
       break;
 
     if (callStack) {  
@@ -133,7 +136,7 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
       return false; 
     }
 
- } while (!(!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates.waypoints[0]))
+ } while (!(!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0]))
 
 console.log("instance.snappedCoordinates;");    
 console.log(instance.snappedCoordinates);
