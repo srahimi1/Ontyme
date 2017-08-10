@@ -87,6 +87,9 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
 
 
 function snapToCoordinates( ajax, instance, coordsTemp ) {
+  if (callStack == 3)
+    return false;
+
   if (!ajax) {
     var ajaxRequest = new XMLHttpRequest();
     var url = "/drivers/getsnappedcoordinates?longitude="+coordsTemp.longitude+"&latitude="+coordsTemp.latitude;
@@ -109,14 +112,30 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
     return snapToCoordinates(ajaxRequest, instance, null);
   }
   
-  if (!!ajax && (ajax.readyState != 4))
+  top:
+  if (!!ajax && (ajax.readyState != 4)) {
+    callStack++;
+    snapToCoordinates(ajax, instance, null);
+  }
+  else if (!!ajax && (ajax.readyState == 4) && !ajax.responseText) {
+    callStack++;
     return snapToCoordinates(ajax, instance, null);
-  else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates)
+  }
+  else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !instance.snappedCoordinates) {
+    callStack++;
+    return snapToCoordinates(ajax, instance, null);
+  }
+
+
+if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates)
     return instance.snappedCoordinates;
-  else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !instance.snappedCoordinates)
-    return snapToCoordinates(ajax, instance, null);
-  else return false;
+else if (!callStack) {
+  continue top;
 }
+else {
+  callStack--;
+  return false; }
+} // end function snapToCoordinates
 
 function ifOnFeature(instance) {
     var features = null;
