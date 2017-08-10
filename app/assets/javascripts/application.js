@@ -108,25 +108,13 @@ function waitForResponse(instance) {
     if (callStack == 6) {
     return false;}
 
-  while (!(!!jax&& (jax.readyState == 4) && !!jax.responseText && !!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0])) {
-    if (!!jax && (jax.readyState != 4)) {
-      callStack++;
-     console.log("A");
-      console.log("jax");
-      console.log(jax.readyState);
-      waitForResponse(instance);
-    }
-    if (!!jax && (jax.readyState == 4) && !jax.responseText) {
-      callStack++;
-      console.log("B");
-      return  waitForResponse(instance);
-    }
-    if (!!jax && (jax.readyState == 4) && !!jax.responseText && !instance.snappedCoordinates) {
+  while (!(!!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0])) {
+    if (!instance.snappedCoordinates) {
       callStack++;
       console.log("C");
-      return  waitForResponse(instance);
+      return waitForResponse(instance);
     }
-    if (!!jax && (jax.readyState == 4) && !!jax.responseText && !!instance.snappedCoordinates && !instance.snappedCoordinates.waypoints[0]) {
+    if (!!instance.snappedCoordinates && !instance.snappedCoordinates.waypoints[0]) {
       callStack++;
       console.log("D");
       return  waitForResponse(instance);
@@ -135,8 +123,11 @@ function waitForResponse(instance) {
     console.log("callStack");
     console.log(callStack);
 
-    if (!!jax && (jax.readyState == 4) && !!jax.responseText && !!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0])
+    if (!!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0]) {
+      console.log("instance.snappedCoordinates;");    
+      console.log(instance.snappedCoordinates);
       break;
+    }
 
     if (callStack) {  
       callStack--;
@@ -145,8 +136,7 @@ function waitForResponse(instance) {
 
  } 
 
-console.log("instance.snappedCoordinates;");    
-console.log(instance.snappedCoordinates);
+ return instance.snappedCoordinates;
 
 } // end function snapToCoordinates
 
