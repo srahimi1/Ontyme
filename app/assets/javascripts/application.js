@@ -94,13 +94,10 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
     ajaxRequest.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
         var res = this.responseText + "";
-        console.log("snapped");
-        console.log(res);
         if (res == " ") {}
         else {
           instance.snappedCoordinates = JSON.parse(res);
           console.log("snapped json parsed");
-          console.log(a);
         }
       } // end this.readyState ...
     } // end onreadystatechange
@@ -149,7 +146,7 @@ function ifOnFeature(instance) {
       console.log("in ifOnFeature");
       callStack = 0;
       var coordinatesTemp = snapToCoordinates(null, instance, coordinates2).waypoints[0].location;
-      instance.snappedCoordinates = null;
+      console.log("coordinatesTemp");
       console.log(coordinatesTemp);
       features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(coordinatesTemp) );    
       console.log(features);
