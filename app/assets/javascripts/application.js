@@ -73,11 +73,9 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   this.checkForReRouting = function() {
     this.reroutePending = 1;
     if ( !ifOnFeature(this) || ifTurnedAtIntersection(this) || ifWentOtherDirection(this) ) {
-      this.reroutePending = 0;
       return true;
     }
     else {
-      this.reroutePending = 0;
       return false;
     }
   };
@@ -247,7 +245,7 @@ function testnav() {
 }
 
 function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
-  var extent2;
+  var extent2, zoomA;
 
   var marker1 = new ol.Overlay({
     element: document.getElementById("marker"),
@@ -273,7 +271,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
       view.fit(extent2, map.getSize());
       map.updateSize();
       //map.updateSize();
-      var zoomA = view.getZoom();
+      zoomA = view.getZoom();
       view.setZoom(zoomA - 3);
       var p = map.getView().getProjection();
       var cord1 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
@@ -311,6 +309,8 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   } // end if (!!router && router.status && !extentTemp && !directionsTemp)
 
   mainLayer.once("postcompose", function(event){
+    if (router.reroutePending)
+      router.reroutePending = 0;
     setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 400);
   });
 
@@ -411,6 +411,8 @@ function success2(pos) {
         router.checkForNextStep();
         if (!router.reroutePending && router.checkForReRouting())
           getDirections();
+        else if (router.reroutePending && !router.checkForReRouting())
+          router.reroutePending = 0;
         router.showNav(); 
 
 
