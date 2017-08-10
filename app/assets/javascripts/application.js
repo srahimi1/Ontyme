@@ -115,7 +115,8 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
      console.log("A");
       console.log("ajax");
       console.log(ajax);
-      snapToCoordinates(ajax, instance, null);
+      (function(ajax) {
+      snapToCoordinates(ajax, instance, null); })(ajax);
     }
     if (!!ajax && (ajax.readyState == 4) && !ajax.responseText) {
       callStack++;
