@@ -18,7 +18,7 @@
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
 timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, 
-router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat, testFeat, acount;
+router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat, testFeat, callStack;
 
 var sphere = new ol.Sphere(6378137);
 var coordinates2 = nullCoords;
@@ -143,6 +143,7 @@ function ifOnFeature(instance) {
     features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
     if (!features.length) {
       console.log("in ifOnFeature");
+      callStack = 0;
       var coordinatesTemp = snapToCoordinates(null, instance, coordinates2).waypoints[0].location;
       instance.snappedCoordinates = null;
       console.log(coordinatesTemp);
