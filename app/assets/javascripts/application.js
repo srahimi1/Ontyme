@@ -131,8 +131,8 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
     if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0])
       break;
 
-    if (callStack) {  
-      callStack--;
+    callStack--;
+    if (callStack>0) {  
       return false; 
     }
 
