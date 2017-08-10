@@ -116,7 +116,7 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
       callStack++;
       return snapToCoordinates(ajax, instance, null);
     }
-    else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !instance.snappedCoordinates) {
+    else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !instance.snappedCoordinates.waypoints[0]) {
       callStack++;
       return snapToCoordinates(ajax, instance, null);
     }
