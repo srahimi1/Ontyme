@@ -115,17 +115,17 @@ function snapToCoordinates( ajax, instance, coordsTemp ) {
      console.log("A");
       snapToCoordinates(ajax, instance, null);
     }
-    else if (!!ajax && (ajax.readyState == 4) && !ajax.responseText) {
+    if (!!ajax && (ajax.readyState == 4) && !ajax.responseText) {
       callStack++;
       console.log("B");
       return snapToCoordinates(ajax, instance, null);
     }
-    else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !instance.snappedCoordinates) {
+    if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !instance.snappedCoordinates) {
       callStack++;
       console.log("C");
       return snapToCoordinates(ajax, instance, null);
     }
-    else if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates && !instance.snappedCoordinates.waypoints[0]) {
+    if (!!ajax && (ajax.readyState == 4) && !!ajax.responseText && !!instance.snappedCoordinates && !instance.snappedCoordinates.waypoints[0]) {
       callStack++;
       console.log("D");
       return snapToCoordinates(ajax, instance, null);
