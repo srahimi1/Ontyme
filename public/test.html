@@ -92,9 +92,9 @@
   <script>
     console.log(orderedSequences);
     var mainSel = d3.select(".main-container").selectAll("p");
-    var eachPos = mainSel.data(orderedSequences).enter().append("div").attr("class","each-pos").style("width", Math.floor( (100/ orderedSequences.length)-2 ) + "%");
+    var eachPos = mainSel.data(orderedSequences).enter().append("div").attr("class","each-pos").style("width", Math.floor( (100/ (orderedSequences.length+2))-2 ) + "%");
     var eachNucleotideWithinPos = eachPos.selectAll("p").data( function(d,i) { return d3.entries(d); }  ).enter().append("div").attr("class","each-nucleotide-in-pos").style("height", function(d) { return ( (d.value/readSequences.length*100) + "%" ); } );
-    var svgEl = eachNucleotideWithinPos.append("svg");
+    var svgEl = eachNucleotideWithinPos.selectAll("svg").enter().append("svg");
     var textEl = svgEl.append("text");
     textEl.attr("fill", function(d) {return colors[d.key];} ).text(function(d) { return d.key; });
     textEl.attr("transform","scale("+ svgEl.node().getBoundingClientRect().width/textEl.node().getBBox().width +","+ svgEl.node().getBoundingClientRect().height/textEl.node().getBBox().height +")").attr("y", textEl.node().getBBox().height);
