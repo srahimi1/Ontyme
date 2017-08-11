@@ -82,8 +82,8 @@
   <script>
     console.log(orderedSequences);
     var mainSel = d3.select(".main-container").selectAll("p");
-    var eachPos = mainSel.data(orderedSequences).enter().append("div").attr("class","each-pos").style("width", Math.floor( (100/orderedSequences.length)-2 ) + "%");
-    var eachNucleotideWithinPos = eachPos.selectAll("p").data(function(d, i) {console.log(d); console.log(i); });
+    var eachPos = mainSel.data(orderedSequences).enter().append("div").attr("class","each-pos").style("width", Math.floor( (100/ orderedSequences.length)-2 ) + "%");
+  
 
 
   </script>
