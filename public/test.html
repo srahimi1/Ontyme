@@ -5,6 +5,7 @@
   html, body, svg {
     width: 100%;
     height: 100%;
+    text-align: center;
   }
 
   .main-container {
@@ -17,17 +18,29 @@
   .each-pos {
     display: inline-block;
     height: 95%;
-    border: 1px solid red;
     overflow: hidden;
     margin-top: 1%;
   }
 
   .each-nucleotide-in-pos {
     width: 95%;
-    border: 1px solid green;
     overflow: hidden;
     text-align: center;
   }
+  .labels {
+    height: 15%;
+    overflow: hidden;
+    padding: 1%;
+    text-align: center;
+  }
+  .each-label {
+    display: inline-block;
+    height: 95%;
+    overflow: hidden;
+    margin-top: 1%;
+    text-align: center;
+  }
+
   </style>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   
@@ -72,7 +85,8 @@
   
   <body>
   
-  <div class="main-container"><div>
+  <div class="main-container"></div>
+  <div class="labels"></div>
 
   </body>
   
@@ -86,10 +100,11 @@
     var svgEl = eachNucleotideWithinPos.append("svg");
     var textEl = svgEl.append("text");
     textEl.attr("fill", function(d) {return colors[d.key];} ).text(function(d) { return d.key; });
-    textEl.attr("y", function(d) { var y1 = Math.abs(d3.select(this).node().getBBox().y); console.log(y1); return y1;});
+    textEl.attr("y", function(d) { var y1 = Math.abs(d3.select(this).node().getBBox().y); return y1;});
     textEl.attr("transform",function(d) { return ("scale("+d3.select(this.parentNode).node().getBoundingClientRect().width/d3.select(this).node().getBBox().width +","+ d3.select(this.parentNode).node().getBoundingClientRect().height/d3.select(this).node().getBBox().height +")");});
 
-    // 
 
+    var labelSel = d3.select(".labels").selectAll("p");
+    var eachLabel = labelSel.data(orderedSequences).enter().append("div").attr("class","each-label").style("width", Math.floor( (100/ (orderedSequences.length+2))-2 ) + "%").text(function (d,i) { return i+1; });
   </script>
 </html>
