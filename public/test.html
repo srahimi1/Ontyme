@@ -123,10 +123,10 @@
 
     var labelSelMain = d3.select(".labels");
 
-    labelSelMain.append("div").attr("class","label-ends").text("5'");
+    labelSelMain.append("div").attr("class","label-ends").style("width", Math.floor( (100/ (orderedSequences.length+2))-2 ) + "%").text("5'");
     labelSel = labelSelMain.selectAll("p");
 
     var eachLabel = labelSel.data(orderedSequences).enter().append("div").attr("class","each-label").style("width", Math.floor( (100/ (orderedSequences.length+2))-2 ) + "%").text(function (d,i) { return i+1; });
-    labelSelMain.append("div").attr("class","label-ends").text("3'");
+    labelSelMain.append("div").attr("class","label-ends").style("width", Math.floor( (100/ (orderedSequences.length+2))-2 ) + "%").text("3'");
   </script>
 </html>
