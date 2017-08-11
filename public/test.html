@@ -85,11 +85,10 @@
     var eachNucleotideWithinPos = eachPos.selectAll("p").data( function(d,i) { return d3.entries(d); }  ).enter().append("div").attr("class","each-nucleotide-in-pos").style("height", function(d) { return ( (d.value/readSequences.length*100) + "%" ); } );
     var svgEl = eachNucleotideWithinPos.append("svg");
     var textEl = svgEl.append("text");
-    textEl.attr("fill", function(d) {return colors[d.key];} ).text(function(d) { return d.key; });
-    textEl.select(function(d) { ys.push(d3.select(this).node().getBBox().height); } );
+    textEl.attr("fill", function(d) {return colors[d.key];} ).attr("y", function(d) { return Math.abs(d3.select(this).node().getBBox().y);}).text(function(d) { return d.key; });
     textEl.attr("transform",function(d) { return ("scale("+d3.select(this.parentNode).node().getBoundingClientRect().width/d3.select(this).node().getBBox().width +","+ d3.select(this.parentNode).node().getBoundingClientRect().height/d3.select(this).node().getBBox().height +")");});
 
-    // .attr("y", function(d) { return d3.select(this).node().getBBox().height})
+    // 
 
   </script>
 </html>
