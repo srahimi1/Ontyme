@@ -50,18 +50,19 @@
   </script>
   </head>
   
+  
   <body>
+  
   <div class="main-container"><div>
 
   </body>
+  
+
+
   <script>
-     console.log(orderedSequences);
-    var body = d3.select(".main-container");
-    console.log(body);
-    var g = d3.select(".main-container").selectAll("div");
-    console.log(g);
+    console.log(orderedSequences);
     d3.select(".main-container").selectAll("div").data(orderedSequences, function(d){console.log(d); return d;}).enter().append("div");
 
-  
+
   </script>
 </html>
