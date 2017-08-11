@@ -1,19 +1,33 @@
 <!doctype html>
 <html lang="en">
   <head>
+  <style>
+  html, body {
+    width: 100%;
+    height: 100%;
+  }
+
+  .main-container {
+    width: 100%;
+    height: 50%;
+  }
+  </style>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
   
   <script type="javascript">
-  function hold() {
+  var readSequences = ["AGATCGACCCT","GGAACGACGCT","GGATCGACCCT","CGATAGACGCT","CGATAGACGCT","GGATCGACCCT"];
+
     var sequencesObj = {
       orderedSequences: [];
     };
+    var sequences = [];
+    var nucletiodesGroupedByIndex = [];
 
     for (var x = 0; x < readSequences.length; x++) {
       sequences.push(readSequences[x].split(""));
     }
 
     var nucleotidesPerSequence = sequences[0].length;
-    var nucletiodesGroupedByIndex = [];
 
     var tempArray;
     for (var x = 0; x < nucleotidesPerSequence; x++) {
@@ -33,15 +47,14 @@
       }
       sequencesObj.orderedSequences.push(tempObj);
     }
-  }
+
+
+    d3.select(".main-container").selectAll("div").data(sequencesObj).enter().append("div");
   </script>
   </head>
   
   <body>
-  <div><div></div><div></div><div></div></div>
-  <div><div></div><div></div><div></div><div></div></div>
-  <div><div></div><div></div><div></div><div></div><div></div></div>
-  <div><div></div><div></div></div>
+  <div class="main-container"><div>
 
   </body>
 </html>
