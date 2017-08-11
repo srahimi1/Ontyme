@@ -17,9 +17,7 @@
   <script type="text/javascript">
   var readSequences = ["AGATCGACCCT","GGAACGACGCT","GGATCGACCCT","CGATAGACGCT","CGATAGACGCT","GGATCGACCCT"];
 
-    var sequencesObj = {
-      orderedSequences: []
-    };
+    var orderedSequences = [];
     var sequences = [];
     var nucletiodesGroupedByIndex = [];
 
@@ -45,11 +43,11 @@
         if ( !tempObj[ nucletiodesGroupedByIndex[x][j] ] ) tempObj[ nucletiodesGroupedByIndex[x][j] ] = 1;
         else tempObj[ nucletiodesGroupedByIndex[x][j] ]++;
       }
-      sequencesObj.orderedSequences.push(tempObj);
+      orderedSequences.push(tempObj);
     }
 
-    console.log(sequencesObj);
-    d3.select(".main-container").selectAll("div").data(sequencesObj).enter().append("div");
+    console.log(orderedSequences);
+    d3.select(".main-container").selectAll("div").data(orderedSequences).enter().append("div");
   </script>
   </head>
   
