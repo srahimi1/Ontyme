@@ -46,6 +46,11 @@
       orderedSequences.push(tempObj);
     }
 
+
+
+    function getKeysAndValues(obj) {
+      for (var key in obj)
+    }
    
   </script>
   </head>
@@ -61,7 +66,11 @@
 
   <script>
     console.log(orderedSequences);
-    d3.select(".main-container").selectAll("div").data(orderedSequences, function(d){console.log(d); return d;}).enter().append("div");
+    var main = d3.select(".main-container");
+    var mainSel =  main.selectAll("div");
+    console.log(main);
+    var eachPos = mainSel.data(orderedSequences).enter().append("div").style("width", "200px").style("border", "1px solid red");
+
 
 
   </script>
