@@ -94,7 +94,7 @@
     var eachNucleotideWithinPos = eachPos.selectAll("p").data( function(d,i) { return d3.entries(d); }  ).enter().append("div").attr("class","each-nucleotide-in-pos").style("height", function(d) { return ( (d.value/readSequences.length*100) + "%" ); } );
     var svg = eachNucleotideWithinPos.append("svg").attr("preserveAspectRatio","none");
     var text = svg.append("text").text(function(d) { return d.key; });
-    svg.attr("viewBox","0 0 "+ text.node().getBBox().width + " "+ text.node().getBBox().height +")";
+    svg.attr("viewBox","0 0 "+ text.node().getBBox().width + " "+ text.node().getBBox().height +")");
 
 
   </script>
