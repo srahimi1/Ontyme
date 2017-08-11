@@ -64,18 +64,6 @@
       orderedSequences.push(tempObj);
     }
 
-    function getWidthScaleForText(text) {
-      console.log("width");
-      console.log(text);
-      console.log(text.parentNode.parentNode);
-    }
-
-    function getHeightScaleForText(text) {
-      console.log("width");
-      console.log(text);
-      console.log(text.parentNode.parentNode);
-    }
-
     var ys = [];
 
   </script>
@@ -99,9 +87,9 @@
     var textEl = svgEl.append("text");
     textEl.attr("fill", function(d) {return colors[d.key];} ).text(function(d) { return d.key; });
     textEl.select(function(d) { ys.push(d3.select(this).node().getBBox().height); } );
-    textEl.attr("transform",function(d) { return ("scale("+d3.select(this.parentNode).node().getBoundingClientRect().width/d3.select(this).node().getBBox().width +","+ d3.select(this.parentNode).node().getBoundingClientRect().height/d3.select(this).node().getBBox().height +")");}).attr("y", function(d) { return d3.select(this).node().getBBox().height});
-    console.log(textEl.node().getBBox());
+    textEl.attr("transform",function(d) { return ("scale("+d3.select(this.parentNode).node().getBoundingClientRect().width/d3.select(this).node().getBBox().width +","+ d3.select(this.parentNode).node().getBoundingClientRect().height/d3.select(this).node().getBBox().height +")");});
 
+    // .attr("y", function(d) { return d3.select(this).node().getBBox().height})
 
   </script>
 </html>
