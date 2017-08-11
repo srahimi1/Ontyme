@@ -47,7 +47,7 @@
     }
 
     console.log(orderedSequences);
-    d3.select(".main-container").selectAll("div").data(orderedSequences).enter().append("div");
+    d3.select(".main-container").selectAll("div").data(orderedSequences, function(d){console.log(d), return d;}).enter().append("div");
   </script>
   </head>
   
