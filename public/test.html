@@ -28,7 +28,7 @@
     text-align: center;
   }
   .labels {
-    height: 15%;
+    height: 5%;
     overflow: hidden;
     padding: 1%;
     text-align: center;
@@ -40,11 +40,22 @@
     margin-top: 1%;
     text-align: center;
     font-weight: bold;
+    font-size: 2em;
 
     -ms-transform: translateX(50%) rotate(-90deg); 
     -webkit-transform: translateX(50%) rotate(-90deg);
     -moz-transform: translateX(50%) rotate(-90deg);
     transform: translateX(50%) rotate(-90deg);
+  }
+  .label-ends {
+    display: inline-block;
+    height: 95%;
+    overflow: hidden;
+    margin-top: 1%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2em;
+
   }
 
   </style>
@@ -110,7 +121,12 @@
     textEl.attr("transform",function(d) { return ("scale("+d3.select(this.parentNode).node().getBoundingClientRect().width/d3.select(this).node().getBBox().width +","+ d3.select(this.parentNode).node().getBoundingClientRect().height/d3.select(this).node().getBBox().height +")");});
 
 
-    var labelSel = d3.select(".labels").selectAll("p");
+    var labelSelMain = d3.select(".labels");
+
+    labelSelMain.append("div").attr("class","label-ends").text("5'");
+    labelSel = labelSelMain.selectAll("p");
+
     var eachLabel = labelSel.data(orderedSequences).enter().append("div").attr("class","each-label").style("width", Math.floor( (100/ (orderedSequences.length+2))-2 ) + "%").text(function (d,i) { return i+1; });
+    labelSelMain.append("div").attr("class","label-ends").text("3'");
   </script>
 </html>
