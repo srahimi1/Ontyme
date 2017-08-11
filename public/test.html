@@ -97,7 +97,7 @@
     var svgEl = eachNucleotideWithinPos.append("svg");
     var textEl = svgEl.append("text");
     textEl.attr("fill", function(d) {return colors[d.key];} ).text(function(d) { return d.key; });
-    textEl.attr("transform",function(d) { return ("scale("+svgEl.node().getBoundingClientRect().width/textEl.node().getBBox().width +","+ svgEl.node().getBoundingClientRect().height/textEl.node().getBBox().height +")");}).attr("y", textEl.node().getBBox().height);
+    textEl.attr("transform",function(d) { return ("scale("+d3.select(this.parentNode).getBoundingClientRect().width/d3.select(this).getBBox().width +","+ d3.select(this.parentNode).getBoundingClientRect().height/d3.select(this).getBBox().height +")");}).attr("y", textEl.node().getBBox().height);
     console.log(textEl.node().getBBox());
 
 
