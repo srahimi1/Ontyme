@@ -66,12 +66,10 @@
 
 
   <script>
-    console.log(orderedSequences);
     var main = d3.select(".main-container");
     var mainSel =  main.selectAll("div");
-    console.log(main);
     var eachPos = mainSel.data(orderedSequences).enter().append("div").style("display", "inline-block").style("width", Math.floor( (100/orderedSequences.length)-2 ) + "%").style("border", "1px solid red").style("height","95%").style("margin-top", "2px");
-
+    var eachNucleotideWithinPos = eachPos.data(function(d) {console.log(d);});
 
 
   </script>
