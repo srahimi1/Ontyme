@@ -86,7 +86,7 @@
     var svgEl = eachNucleotideWithinPos.append("svg");
     var textEl = svgEl.append("text");
     textEl.attr("fill", function(d) {return colors[d.key];} ).text(function(d) { return d.key; });
-    text.attr("y", function(d) { var y1 = Math.abs(d3.select(this).node().getBBox().y); console.log(y1); return y1;});
+    textEl.attr("y", function(d) { var y1 = Math.abs(d3.select(this).node().getBBox().y); console.log(y1); return y1;});
     textEl.attr("transform",function(d) { return ("scale("+d3.select(this.parentNode).node().getBoundingClientRect().width/d3.select(this).node().getBBox().width +","+ d3.select(this.parentNode).node().getBoundingClientRect().height/d3.select(this).node().getBBox().height +")");});
 
     // 
