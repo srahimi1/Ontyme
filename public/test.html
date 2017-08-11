@@ -85,7 +85,7 @@
     console.log(orderedSequences);
     var mainSel = d3.select(".main-container").selectAll("p");
     var eachPos = mainSel.data(orderedSequences).enter().append("div").attr("class","each-pos").style("width", Math.floor( (100/ orderedSequences.length)-2 ) + "%");
-    var eachNucleotideWithinPos = eachPos.selectAll("p").data( function(d,i) { return d3.entries(d); }  ).enter().append("div").attr("class","each-nucleotide-in-pos").style("height", function(d,i) { console.log(d); return  +d.value/readSequences.length; } + "%" ).style("font-size", function(d,i) { return  +d.value/readSequences.length; } + "%" ).text(function(d) { return d.key; });
+    var eachNucleotideWithinPos = eachPos.selectAll("p").data( function(d,i) { return d3.entries(d); }  ).enter().append("div").attr("class","each-nucleotide-in-pos").style("height", "33" + "%" ).style("font-size", function(d,i) { return  +d.value/readSequences.length; } + "%" ).text(function(d) { return d.key; });
 
 
   </script>
