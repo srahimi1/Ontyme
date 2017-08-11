@@ -62,14 +62,19 @@
       orderedSequences.push(tempObj);
     }
 
-
-
-    function getLenOfObject(obj) {
-      var len = 0;
-      for (var key in obj) len++;
-      return len;
+    function getWidthScaleForText(text) {
+      console.log("width");
+      console.log(text);
+      console.log(text.parentNode.parentNode);
     }
-   
+
+    function getHeightScaleForText(text) {
+      console.log("width");
+      console.log(text);
+      console.log(text.parentNode.parentNode);
+    }
+
+
   </script>
   </head>
   
@@ -87,7 +92,7 @@
     var mainSel = d3.select(".main-container").selectAll("p");
     var eachPos = mainSel.data(orderedSequences).enter().append("div").attr("class","each-pos").style("width", Math.floor( (100/ orderedSequences.length)-2 ) + "%");
     var eachNucleotideWithinPos = eachPos.selectAll("p").data( function(d,i) { return d3.entries(d); }  ).enter().append("div").attr("class","each-nucleotide-in-pos").style("height", function(d) { return ( (d.value/readSequences.length*100) + "%" ); } );
-    var text = eachNucleotideWithinPos.append("svg").attr("preserveAspectRatio","none").append("text").text(function(d) { return d.key; });
+    var text = eachNucleotideWithinPos.append("svg").attr("preserveAspectRatio","none").append("text").attr("transform","scale("+ getWidthScaleForText(this) +","+ getHeightScaleForText(this) +")").text(function(d) { return d.key; });
 
 
   </script>
