@@ -49,7 +49,7 @@
 
 
     function getKeysAndValues(obj) {
-      for (var key in obj)
+      for (var key in obj) {}
     }
    
   </script>
@@ -69,7 +69,7 @@
     var main = d3.select(".main-container");
     var mainSel =  main.selectAll("div");
     console.log(main);
-    var eachPos = mainSel.data(orderedSequences).enter().append("div").style("width", "200px").style("border", "1px solid red");
+    var eachPos = mainSel.data(orderedSequences).enter().append("div").style("display", "inline-block").style("width", "200px").style("border", "1px solid red");
 
 
 
