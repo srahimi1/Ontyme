@@ -87,7 +87,7 @@
     var mainSel = d3.select(".main-container").selectAll("p");
     var eachPos = mainSel.data(orderedSequences).enter().append("div").attr("class","each-pos").style("width", Math.floor( (100/ orderedSequences.length)-2 ) + "%");
     var eachNucleotideWithinPos = eachPos.selectAll("p").data( function(d,i) { return d3.entries(d); }  ).enter().append("div").attr("class","each-nucleotide-in-pos").style("height", function(d) { return ( (d.value/readSequences.length*100) + "%" ); } );
-    var text = eachNucleotideWithinPos.append("svg").attr("preserveAspectRatio","none").select("text").enter().append("text").style("height","100%").text(function(d) { return d.key; });
+    var text = eachNucleotideWithinPos.select("svg").enter().append("svg").attr("preserveAspectRatio","none").select("text").enter().append("text").style("height","100%").text(function(d) { return d.key; });
 
 
   </script>
