@@ -94,67 +94,26 @@ function snapToCoordinates( instance, coordsTemp ) {
         else {
           instance.snappedCoordinates = JSON.parse(res);
           console.log("snapped json parsed");
+          return "complete";
         }
       } // end this.readyState ...
     } // end onreadystatechange
-    jax.open("GET", url, true);
+    jax.open("GET", url, false);
     jax.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
-    jax.send();
-    console.log("pre");
-    console.log("post"); 
+    jax.send(); 
 }
 
-function waitForResponse(instance) {    
-    if (callStack == 6) {
-    return false;}
-
-  while (!(!!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0])) {
-    if (!instance.snappedCoordinates) {
-      callStack++;
-      console.log("C");
-      return waitForResponse(instance);
-    }
-    if (!!instance.snappedCoordinates && !instance.snappedCoordinates.waypoints[0]) {
-      callStack++;
-      console.log("D");
-      return  waitForResponse(instance);
-    }
-
-    console.log("callStack");
-    console.log(callStack);
-
-    if (!!instance.snappedCoordinates && !!instance.snappedCoordinates.waypoints[0]) {
-      console.log("instance.snappedCoordinates;");    
-      console.log(instance.snappedCoordinates);
-      break;
-    }
-
-    if (callStack) {  
-      callStack--;
-      return false; 
-    }
-
- } 
-
- return instance.snappedCoordinates;
-
-} // end function snapToCoordinates
 
 function ifOnFeature(instance) {
     var features = null;
     
     features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
     if (!features.length) {
-      console.log("in ifOnFeature");
       callStack = 0;
       jax = null;
-      snapToCoordinates( instance, coordinates2);
-      var a = waitForResponse(instance);
+      var a = snapToCoordinates( instance, coordinates2);
       console.log(a);
-      console.log("coordinatesTemp");
-      console.log(coordinatesTemp);
-      features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(coordinatesTemp) );    
-      console.log(features);
+      features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(instance.snappedCoordinates) );    
     } // end if (!features.length)
     
     if (features.length) {
