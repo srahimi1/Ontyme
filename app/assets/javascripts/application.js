@@ -125,7 +125,7 @@ function snapToCoordinates( instance, coordsTemp ) {
         }
       } // end this.readyState ...
     } // end onreadystatechange
-    jax.open("GET", url, false);
+    jax.open("GET", url, true);
     jax.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
     jax.send(); 
 }
@@ -158,7 +158,7 @@ function ifOnFeature(instance) {
     else if (!!instance.rerouteNumberOfComponentsChecked) {
       var el = document.getElementById("hiddenAjaxInputEl");
       if (!!el && el.value=="B") {
-        //features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(instance.snappedCoordinates) );
+        //ffeatures = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(instance.snappedCoordinates) );
         console.log(instance.snappedCoordinates);
         return true;
       }
