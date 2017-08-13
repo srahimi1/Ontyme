@@ -160,7 +160,8 @@ function ifOnFeature(instance) {
         return true;
       }
       else if (!!el) {console.log("in ifOnFeature"); console.log("el.value not set yet");
-      setTimeout(function() {var el = document.getElementById("hiddenAjaxInputEl");  if (!!el && el.value=="B") {
+      setTimeout(function() {var el = document.getElementById("hiddenAjaxInputEl");  console.log("in ifOnFeature setTimeout"); 
+        if (!!el && el.value=="B") {
         console.log("finished ifOnFeature");
         console.log(instance.snappedCoordinates);} else el.value="B"; },100);}
     }
