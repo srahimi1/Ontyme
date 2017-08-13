@@ -18,7 +18,7 @@
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
 timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, 
-router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat, testFeat, callStack, jax=null;
+router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat, testFeat, jax=null, ajaxResponse;
 
 var sphere = new ol.Sphere(6378137);
 var coordinates2 = nullCoords;
@@ -49,6 +49,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   this.driverMarkerOverlay;
   this.snappedCoordinates = null;
   this.reroutePending = 0;
+  this.rerouteNumberOfComponentsChecked = 0;
   this.update = function() {
       this.currentDirectionsIndex = this.directions.length - 1;
       this.currentStepIndex = 0;
@@ -72,7 +73,16 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   };
   this.checkForReRouting = function() {
     this.reroutePending = 1;
-    if ( !ifOnFeature(this) || ifTurnedAtIntersection(this) || ifWentOtherDirection(this) ) {
+    this.rerouteNumberOfComponentsChecked  = 0;
+    var resTemp = ifOnFeature(this);
+    if ( ifTurnedAtIntersection(this) || ifWentOtherDirection(this) || !ifOnFeature(this) ) {
+      var snapped1 = 0;
+      do {
+        var el = document.getElementById("hiddenAjaxInputEl");  
+        if (!!el && el.value=="B")
+          snapped1 = 1;
+      } while (!snapped1)
+
       return true;
     }
     else {
@@ -83,6 +93,17 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
 } // end var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firstDirections)
 
+function ifTurnedAtIntersection( instance ) {
+  instance.rerouteNumberOfComponentsChecked = 1;
+  console.log("in ifTurnedAtIntersection");
+  console.log(instance.rerouteNumberOfComponentsChecked);
+}
+
+function ifWentOtherDirection( instance ) {
+  instance.rerouteNumberOfComponentsChecked = 2;
+  console.log("in ifWentOtherDirection");
+  console.log(instance.rerouteNumberOfComponentsChecked);
+}
 
 function snapToCoordinates( instance, coordsTemp ) {
     jax = new XMLHttpRequest();
@@ -92,9 +113,15 @@ function snapToCoordinates( instance, coordsTemp ) {
         var res = this.responseText + "";
         if (res == " ") {}
         else {
+          ajaxResponse = res;
           instance.snappedCoordinates = JSON.parse(res);
           console.log("snapped json parsed");
-          return "complete";
+          var el = document.getElementById("hiddenAjaxInputEl");
+          if (!el) {
+            setTimeout(function() { var el = document.getElementById("hiddenAjaxInputEl"); if (!!el) {el.value="B";}  }, 100);
+          }
+          else if (!!el)
+            el.value="B";
         }
       } // end this.readyState ...
     } // end onreadystatechange
@@ -107,26 +134,41 @@ function snapToCoordinates( instance, coordsTemp ) {
 function ifOnFeature(instance) {
     var features = null;
     
-    features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
-    if (!features.length) {
-      callStack = 0;
-      jax = null;
-      var a = snapToCoordinates( instance, coordinates2);
-      console.log("this is a");
-      console.log(a);
-      features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(instance.snappedCoordinates) );    
-    } // end if (!features.length)
-    
-    if (features.length) {
+    if (!instance.rerouteNumberOfComponentsChecked) 
+      features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
+
+    if (!instance.rerouteNumberOfComponentsChecked && features.length) {
       for (var i = 0; i < features.length; i++ ) {
         if (features[i].getStyle().stroke_.color_.toString() == instance.currentDirectionsLineColor.toString())
           return true;
       }
     } // end if (features.length)
+    else if (!instance.rerouteNumberOfComponentsChecked && !features.length) {
+      jax = null;
+      snapToCoordinates( instance, coordinates2 );
+      var divTemp = document.createElement("div");
+      divTemp.className = "hidden-div";
+      var inputTemp = document.createElement("input");
+      inputTemp.type = "hidden";
+      inputTemp.value = "A";
+      inputTemp.id = "hiddenAjaxInputEl";
+      divTemp.appendChild(inputTemp);
+      document.getElementById("forHidden").appendChild(divTemp);    
+    } // end i f (!features.length)
+    else if (!!instance.rerouteNumberOfComponentsChecked) {
+      var el = document.getElementById("hiddenAjaxInputEl");
+      if (!!el && el.value=="B") {console.log(instance.snappedCoordinates);
+        return true;
+      }
+      else setTimeout(function() {var el = document.getElementById("hiddenAjaxInputEl");  if (!!el && el.value=="B") console.log(instance.snappedCoordinates); else el.value="B"; },100)
+    }
    
     return false;
 
 } // end function ifOnFeature()
+
+
+      features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(instance.snappedCoordinates) );
 
 function arrived() {
   router.directions.pop();
