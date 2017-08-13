@@ -50,6 +50,8 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   this.snappedCoordinates = null;
   this.reroutePending = 0;
   this.rerouteNumberOfComponentsChecked = 0;
+  this.rerouteCheckingCompleted = 0;
+  this.rerouteNeeded = 1;
   this.update = function() {
       this.currentDirectionsIndex = this.directions.length - 1;
       this.currentStepIndex = 0;
@@ -74,15 +76,9 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   this.checkForReRouting = function() {
     this.reroutePending = 1;
     this.rerouteNumberOfComponentsChecked  = 0;
-    var resTemp = ifOnFeature(this);
-    if ( ifTurnedAtIntersection(this) || ifWentOtherDirection(this) || !ifOnFeature(this) ) {
-      var el = document.getElementById("hiddenAjaxInputEl");  
-      console.log("finished checkForReRouting");
-      return true;
-    }
-    else {
-      return false;
-    }
+    ifOnFeature(this);
+    if ( ifTurnedAtIntersection(this) || ifWentOtherDirection(this) || ifOnFeature(this) ) 
+    console.log("finished checkForReRouting");
   };
   
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
@@ -92,6 +88,7 @@ function ifTurnedAtIntersection( instance ) {
   instance.rerouteNumberOfComponentsChecked = 1;
   console.log("in ifTurnedAtIntersection");
   console.log(instance.rerouteNumberOfComponentsChecked);
+  return true;
 }
 
 function ifWentOtherDirection( instance ) {
@@ -111,12 +108,6 @@ function snapToCoordinates( instance, coordsTemp ) {
           ajaxResponse = res;
           instance.snappedCoordinates = JSON.parse(res);
           console.log("snapped json parsed");
-          var el = document.getElementById("hiddenAjaxInputEl");
-          if (!el) {
-            setTimeout(function() { var el = document.getElementById("hiddenAjaxInputEl"); if (!!el) {el.value="B";}  }, 100);
-          }
-          else if (!!el)
-            el.value="B";
         }
       } // end this.readyState ...
     } // end onreadystatechange
@@ -140,33 +131,12 @@ function ifOnFeature(instance) {
     } // end if (features.length)
     else if (!instance.rerouteNumberOfComponentsChecked && !features.length) {
       jax = null;
-      snapToCoordinates( instance, coordinates2 );
-      var divTemp = document.createElement("div");
-      divTemp.className = "hidden-div";
-      var inputTemp = document.createElement("input");
-      inputTemp.type = "hidden";
-      inputTemp.value = "A";
-      inputTemp.id = "hiddenAjaxInputEl";
-      divTemp.appendChild(inputTemp);
-      document.getElementById("forHidden").appendChild(divTemp);    
+      snapToCoordinates( instance, coordinates2 );   
     } // end i f (!features.length)
     else if (!!instance.rerouteNumberOfComponentsChecked) {
-      var el = document.getElementById("hiddenAjaxInputEl");
-      if (!!el && el.value=="B") {
-        //ffeatures = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(instance.snappedCoordinates) );
-        console.log("in ifOnFeature");
-        console.log("el.value is set");
-        console.log(instance.snappedCoordinates);
-        return true;
-      }
-      else if (!!el) {console.log("in ifOnFeature"); console.log("el.value not set yet");
-      setTimeout(function() {var el = document.getElementById("hiddenAjaxInputEl");  console.log("in ifOnFeature setTimeout"); 
-        if (!!el && el.value=="B") {
-        console.log("finished ifOnFeature");
-        console.log(instance.snappedCoordinates);} else el.value="B"; },500);}
+      setTimeout(function() {console.log("in ifOnFeature"); instance.rerouteNumberOfComponentsChecked=3; console.log(instance.snappedCoordinates);},500);
     }
    
-    return false;
 
 } // end function ifOnFeature()
 
@@ -414,10 +384,14 @@ function success2(pos) {
         driverMarker.setPosition( router.driverCurrentCoordinatesProjected );
         router.updateDistance(coordinates2);
         router.checkForNextStep();
-        if (!router.reroutePending && router.checkForReRouting())
-          getDirections();
-        else if (router.reroutePending && !router.checkForReRouting())
+        if (!router.reroutePending)
+           router.checkForReRouting();
+        else if (router.rerouteCheckingCompleted && !router.rerouteNeeded) {
           router.reroutePending = 0;
+          router.rerouteCheckingCompleted = 0;
+          router.rerouteNeeded = 1;
+          router.rerouteNumberOfComponentsChecked = 0;
+        }
         router.showNav(); 
 
 
