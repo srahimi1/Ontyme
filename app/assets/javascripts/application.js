@@ -88,7 +88,6 @@ function ifTurnedAtIntersection( instance ) {
   instance.rerouteNumberOfComponentsChecked = 1;
   console.log("in ifTurnedAtIntersection");
   console.log(instance.rerouteNumberOfComponentsChecked);
-  return true;
 }
 
 function ifWentOtherDirection( instance ) {
