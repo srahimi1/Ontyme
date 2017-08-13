@@ -82,7 +82,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
         if (!!el && el.value=="B")
           snapped1 = 1;
       } while (!snapped1)
-
+      console.log("finished checkForReRouting");
       return true;
     }
     else {
@@ -157,7 +157,9 @@ function ifOnFeature(instance) {
     } // end i f (!features.length)
     else if (!!instance.rerouteNumberOfComponentsChecked) {
       var el = document.getElementById("hiddenAjaxInputEl");
-      if (!!el && el.value=="B") {console.log(instance.snappedCoordinates);
+      if (!!el && el.value=="B") {
+        //features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(instance.snappedCoordinates) );
+        console.log(instance.snappedCoordinates);
         return true;
       }
       else setTimeout(function() {var el = document.getElementById("hiddenAjaxInputEl");  if (!!el && el.value=="B") console.log(instance.snappedCoordinates); else el.value="B"; },100)
@@ -167,8 +169,6 @@ function ifOnFeature(instance) {
 
 } // end function ifOnFeature()
 
-
-      features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(instance.snappedCoordinates) );
 
 function arrived() {
   router.directions.pop();
