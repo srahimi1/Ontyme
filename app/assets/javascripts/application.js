@@ -163,7 +163,7 @@ function ifOnFeature(instance) {
       setTimeout(function() {var el = document.getElementById("hiddenAjaxInputEl");  console.log("in ifOnFeature setTimeout"); 
         if (!!el && el.value=="B") {
         console.log("finished ifOnFeature");
-        console.log(instance.snappedCoordinates);} else el.value="B"; },100);}
+        console.log(instance.snappedCoordinates);} else el.value="B"; },500);}
     }
    
     return false;
