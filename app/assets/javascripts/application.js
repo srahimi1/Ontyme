@@ -154,9 +154,12 @@ function ifOnFeature(instance) {
       var el = document.getElementById("hiddenAjaxInputEl");
       if (!!el && el.value=="B") {
         //ffeatures = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(instance.snappedCoordinates) );
+        console.log("in ifOnFeature");
+        console.log("el.value is set");
         console.log(instance.snappedCoordinates);
         return true;
       }
+      else if (!!el) {console.log("in ifOnFeature"); console.log("el.value not set yet");}
       else setTimeout(function() {var el = document.getElementById("hiddenAjaxInputEl");  if (!!el && el.value=="B") {
         console.log("finished ifOnFeature");
         console.log(instance.snappedCoordinates);} else el.value="B"; },100)
