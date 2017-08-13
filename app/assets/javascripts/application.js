@@ -76,12 +76,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
     this.rerouteNumberOfComponentsChecked  = 0;
     var resTemp = ifOnFeature(this);
     if ( ifTurnedAtIntersection(this) || ifWentOtherDirection(this) || !ifOnFeature(this) ) {
-      var snapped1 = 0;
-      do {
-        var el = document.getElementById("hiddenAjaxInputEl");  
-        if (!!el && el.value=="B")
-          snapped1 = 1;
-      } while (!snapped1)
+      var el = document.getElementById("hiddenAjaxInputEl");  
       console.log("finished checkForReRouting");
       return true;
     }
@@ -162,7 +157,9 @@ function ifOnFeature(instance) {
         console.log(instance.snappedCoordinates);
         return true;
       }
-      else setTimeout(function() {var el = document.getElementById("hiddenAjaxInputEl");  if (!!el && el.value=="B") console.log(instance.snappedCoordinates); else el.value="B"; },100)
+      else setTimeout(function() {var el = document.getElementById("hiddenAjaxInputEl");  if (!!el && el.value=="B") {
+        console.log("finished ifOnFeature");
+        console.log(instance.snappedCoordinates);} else el.value="B"; },100)
     }
    
     return false;
