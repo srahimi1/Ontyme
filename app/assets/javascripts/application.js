@@ -454,9 +454,9 @@ function checkForRideRequests() {
 function showDriverRideRequestModal(data, extentTemp, directionsTemp) {
   receivedRequest = 1;
   $('#driverRideRequestModal').on('shown.bs.modal', function() {
-        doMap(extentTemp, directionsTemp);
-        //map_on_request.updateSize();
-      });
+    doMap(extentTemp, directionsTemp);
+    //map_on_request.updateSize();
+  });
 
   $('#driverRideRequestModal').modal('show');
   if ((data != "null") && (data != "cancelled")) {
