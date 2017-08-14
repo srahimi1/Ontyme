@@ -50,8 +50,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   this.snappedCoordinates = null;
   this.reroutePending = 0;
   this.rerouteNumberOfComponentsChecked = 0;
-  this.rerouteCheckingCompleted = 0;
-  this.rerouteNeeded = 1;
+  this.onFeaturesChecked = 0;
   this.update = function() {
       this.currentDirectionsIndex = this.directions.length - 1;
       this.currentStepIndex = 0;
@@ -73,14 +72,23 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
       this.arrived = 1;
       arrived(); }
   };
+  this.resetReRouting = function() {
+    jax.abort();
+    jax = null;
+    this.snappedCoordinates = null;
+    this.rerouteNumberOfComponentsChecked = 0;
+    this.onFeaturesChecked = 0;
+    this.reroutePending = 0;
+  };
   this.checkForReRouting = function() {
     this.reroutePending = 1;
-    this.rerouteNumberOfComponentsChecked  = 0;
-    ifOnFeature(this);
-    if ( ifTurnedAtIntersection(this) || ifWentOtherDirection(this) || ifOnFeature(this) ) 
-    console.log("finished checkForReRouting");
+    if ( ifTurnedAtIntersection(this) || ifWentOtherDirection(this) ) 
+      getDirections();
+    else if ( !ifOnFeature(this) && this.onFeaturesChecked ) 
+      getDirections();
+    else if (this.onFeaturesChecked && (this.rerouteNumberOfComponentsChecked == 3) )
+      this.resetReRouting();
   };
-  
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
 } // end var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firstDirections)
 
@@ -104,39 +112,39 @@ function snapToCoordinates( instance, coordsTemp ) {
         var res = this.responseText + "";
         if (res == " ") {}
         else {
-          ajaxResponse = res;
-          instance.snappedCoordinates = JSON.parse(res);
+          var res2 = JSON.parse(res);
+          console.log(res2);
+          instance.snappedCoordinates = 0;
           console.log("snapped json parsed");
         }
       } // end this.readyState ...
     } // end onreadystatechange
     jax.open("GET", url, true);
     jax.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
-    jax.send(); 
+    jax.send();
+    setTimeout(function() { if (!instance.snappedCoordinates) instance.resetReRouting();},650);
 }
 
 
 function ifOnFeature(instance) {
     var features = null;
     
-    if (!instance.rerouteNumberOfComponentsChecked) 
-      features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
+    features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
 
-    if (!instance.rerouteNumberOfComponentsChecked && features.length) {
+    if (features.length) {
       for (var i = 0; i < features.length; i++ ) {
         if (features[i].getStyle().stroke_.color_.toString() == instance.currentDirectionsLineColor.toString())
-          return true;
+          { instance.onFeaturesChecked = 1; instance.rerouteNumberOfComponentsChecked = 3; return true;}
       }
+      instance.onFeaturesChecked = 1;
+      instance.rerouteNumberOfComponentsChecked = 3;
+      return false;
     } // end if (features.length)
-    else if (!instance.rerouteNumberOfComponentsChecked && !features.length) {
+    else if (!features.length && (!instance.onFeaturesChecked)) {
       jax = null;
       snapToCoordinates( instance, coordinates2 );   
-    } // end i f (!features.length)
-    else if (!!instance.rerouteNumberOfComponentsChecked) {
-      setTimeout(function() {console.log("in ifOnFeature"); instance.rerouteNumberOfComponentsChecked=3; console.log(instance.snappedCoordinates);},500);
-    }
-   
-
+      return true;
+    } // end i f (!features.length)   
 } // end function ifOnFeature()
 
 
@@ -283,9 +291,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   } // end if (!!router && router.status && !extentTemp && !directionsTemp)
 
   mainLayer.once("postcompose", function(event){
-    if (router.reroutePending)
-      router.reroutePending = 0;
-    setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 400);
+    setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 200);
   });
 
 
@@ -385,12 +391,6 @@ function success2(pos) {
         router.checkForNextStep();
         if (!router.reroutePending)
            router.checkForReRouting();
-        else if (router.rerouteCheckingCompleted && !router.rerouteNeeded) {
-          router.reroutePending = 0;
-          router.rerouteCheckingCompleted = 0;
-          router.rerouteNeeded = 1;
-          router.rerouteNumberOfComponentsChecked = 0;
-        }
         router.showNav(); 
 
 
