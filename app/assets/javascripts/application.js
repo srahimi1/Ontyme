@@ -83,10 +83,10 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
   this.checkForReRouting = function() {
     this.reroutePending = 1;
     if ( ifTurnedAtIntersection(this) || ifWentOtherDirection(this) ) 
-      getDirections();
+      {  this.directions.pop(); getDirections(); }
     else if ( !ifOnFeature(this) && this.onFeaturesChecked ) 
-      getDirections();
-    else if (this.onFeaturesChecked && (this.rerouteNumberOfComponentsChecked == 3) )
+      {  this.directions.pop(); getDirections(); }
+    else if ( this.onFeaturesChecked && (this.rerouteNumberOfComponentsChecked == 3) )
       this.resetReRouting();
   };
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
@@ -96,12 +96,14 @@ function ifTurnedAtIntersection( instance ) {
   instance.rerouteNumberOfComponentsChecked = 1;
   console.log("in ifTurnedAtIntersection");
   console.log(instance.rerouteNumberOfComponentsChecked);
+  return false;
 }
 
 function ifWentOtherDirection( instance ) {
   instance.rerouteNumberOfComponentsChecked = 2;
   console.log("in ifWentOtherDirection");
   console.log(instance.rerouteNumberOfComponentsChecked);
+  return false;
 }
 
 function snapToCoordinates( instance, coordsTemp ) {
@@ -330,7 +332,6 @@ function getDirections() {
       router.currentDirectionsLineColor =  [45,125,210,0.8]; //[45,210,125,0.8]
       router.vectorSource.clear();
       showOnMap(extentTemp, null, directions.routes[0].geometry, router.currentDirectionsLineColor); 
-      alert(url);
       //map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
     
       Nav();
@@ -438,6 +439,7 @@ function checkForRideRequests() {
       webWorker.postMessage([{"longitude" : coordinates.longitude , "latitude" : coordinates.latitude},0,0]);
     webWorker.onmessage = function(event) {
       var data2 = event.data;
+      console.log(data2[2]);
       if (receivedRequest == 0) showDriverRideRequestModal(data2[0], data2[1], data2[2]);
     }; // end webWorker.onmessage = function(event)
   
