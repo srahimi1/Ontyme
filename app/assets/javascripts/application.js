@@ -439,7 +439,7 @@ function checkForRideRequests() {
       webWorker.postMessage([{"longitude" : coordinates.longitude , "latitude" : coordinates.latitude},0,0]);
     webWorker.onmessage = function(event) {
       var data2 = event.data;
-      console.log(data2[2]);
+      console.log(data2);
       if (receivedRequest == 0) showDriverRideRequestModal(data2[0], data2[1], data2[2]);
     }; // end webWorker.onmessage = function(event)
   
