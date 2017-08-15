@@ -115,10 +115,22 @@ function snapToCoordinates( instance, coordsTemp ) {
         if (res == " ") {}
         else {
           var res2 = JSON.parse(res);
-          console.log(res2);
-          instance.snappedCoordinates = 0;
-          console.log("snapped json parsed");
-        }
+          console.log("in snappedCoordinates");
+          console.log(res2.waypoints[0].location);
+          var onFeature = 0
+          features = instance.vectorSource.getFeaturesAtCoordinate( ol.proj.fromLonLat(res2.waypoints[0].location) );
+          if (features.length) {
+            for (var i = 0; i < features.length; i++ ) {
+              if (features[i].getStyle().stroke_.color_.toString() == instance.currentDirectionsLineColor.toString())
+                { onFeature = 1; break; }
+            }
+          instance.onFeaturesChecked = 1;
+          instance.rerouteNumberOfComponentsChecked = 3;
+          onFeature = 0; } // end if (features.length)
+
+          if (!onFeature) { instance.onFeaturesChecked = 1; instance.rerouteNumberOfComponentsChecked = 3; instance.directions.pop(); getDirections(); }
+          else instance.resetReRouting();
+        } // end main else
       } // end this.readyState ...
     } // end onreadystatechange
     jax.open("GET", url, true);
@@ -215,7 +227,6 @@ function requestAccepted(extentTemp, directionsTemp) {
   router.driverMarkerOverlay = driverMarker;
   router.vectorSource = vectorSource;
   router.driverCurrentCoordinatesProjected = ol.proj.fromLonLat([coordinates.longitude, coordinates.latitude]);
-  console.log(mainDirections);
   router.overviewLineColor = [45,45,45,0.8];
   
   showOnMap(extentTemp, null, router.directions[router.currentDirectionsIndex].routes[0].geometry, router.overviewLineColor);
@@ -355,6 +366,9 @@ function showNavigation(instance, step, instructionsDiv, distanceDiv) {
   instructionsDiv.innerHTML = step.maneuver.type + modifier + name + "<br><span id='headingS'></span>";
   distanceDiv.innerHTML = "In<br>" + instance.currentStepDistanceRemaining + "<br>meters";
   showOnMap(null, null, step.geometry, router.currentDirectionsLineColor);
+  if (instance.onFeaturesChecked && instance.rerouteNumberOfComponentsChecked == 3) {
+    console.log("finished showing rerouted directions");
+    instance.resetReRouting();}
 } // end function showNavigation(...)
 
 function getGeodesicDistance(currentCoordinates, destination) {
@@ -439,7 +453,6 @@ function checkForRideRequests() {
       webWorker.postMessage([{"longitude" : coordinates.longitude , "latitude" : coordinates.latitude},0,0]);
     webWorker.onmessage = function(event) {
       var data2 = event.data;
-      console.log(data2);
       if (receivedRequest == 0) showDriverRideRequestModal(data2[0], data2[1], data2[2]);
     }; // end webWorker.onmessage = function(event)
   
@@ -1131,7 +1144,6 @@ function findLatLng(geocoder,infowindow, accuracyCode) {
       else
         accuracyA = 600000.0;
       window.navigator.geolocation.getCurrentPosition(function(position){
-            console.log(position);
         if (position.coords.accuracy < accuracyA) {
           coordinates = position.coords;}
         else {
