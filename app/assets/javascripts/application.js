@@ -304,7 +304,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
     map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
   } // end if (!!router && router.status && !extentTemp && !directionsTemp)
 
- map.getView.setZoom(zoomA);
+ map.getView().setZoom(zoomA);
 
  // mainLayer.once("postcompose", function(event){
  //   setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 200);
