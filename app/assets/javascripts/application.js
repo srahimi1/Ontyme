@@ -123,11 +123,8 @@ function snapToCoordinates( instance, coordsTemp ) {
           if (features.length) {
             for (var i = 0; i < features.length; i++ ) {
               if (features[i].getStyle().stroke_.color_.toString() == instance.currentDirectionsLineColor.toString())
-                { onFeature = 1; break; }
-            }
-          instance.onFeaturesChecked = 1;
-          instance.rerouteNumberOfComponentsChecked = 3;
-          onFeature = 0; } // end if (features.length)
+                { instance.onFeaturesChecked = 1; instance.rerouteNumberOfComponentsChecked = 3; onFeature = 1; break; }
+            } } // end if (features.length)
 
           if (!onFeature) { instance.onFeaturesChecked = 1; instance.rerouteNumberOfComponentsChecked = 3; instance.directions.pop(); getDirections(); }
           else instance.resetReRouting();
@@ -144,7 +141,7 @@ function snapToCoordinates( instance, coordsTemp ) {
 function ifOnFeature(instance) {
     var features = null;
     
-    features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
+     features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
 
     if (features.length) {
       for (var i = 0; i < features.length; i++ ) {
@@ -166,12 +163,7 @@ function ifOnFeature(instance) {
 function arrived() {
   router.directions.pop();
   $("#driverArrivedModal").modal('show');
-  router.onMainTrip = 1;
-  webWorker.onmessage = function(event) {
-    localStorage.setItem("mainTripData", event.data);
-  };
   updateActiveTrip("status",2);
-  document.getElementById("startNavButton").innerHTML = "Navigate to Rider Destination";
 }
 
 function updateActiveTrip(column, newValue) {
@@ -182,6 +174,16 @@ function updateActiveTrip(column, newValue) {
       var response = this.responseText + "";
       if (response == "ok") {
         localStorage.setItem("activeTripStatus", newValue);
+        
+        if (newValue == 2) { 
+          router.onMainTrip = 1;
+          webWorker.onmessage = function(event) {
+            localStorage.setItem("mainTripData", event.data);
+          };
+        document.getElementById("startNavButton").innerHTML = "Navigate to Rider Destination";
+        }
+
+
       }
     }
   }
@@ -241,11 +243,12 @@ function testnav() {
 }
 
 function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
-  var extent2, zoomA;
+  var extent2, zoomA = 17;
 
-  var marker1 = new ol.Overlay({
-    element: document.getElementById("marker"),
-    positioning: 'center-center'    
+  if (!!extentTemp) {
+    var marker1 = new ol.Overlay({
+      element: document.getElementById("marker"),
+      positioning: 'center-center'    
   });
 
   var marker2 = new ol.Overlay({
@@ -253,8 +256,6 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
     positioning: 'center-center'
   });
 
-
-  if (!!extentTemp) {
 
       if (typeof extentTemp == "string") {
         extent = extentTemp.split(",");
@@ -268,7 +269,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
       map.updateSize();
       //map.updateSize();
       zoomA = view.getZoom();
-      view.setZoom(zoomA - 3);
+     // view.setZoom(zoomA - 3);
       var p = map.getView().getProjection();
       var cord1 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
       var cord2 = ol.proj.fromLonLat([parseFloat(extent[4]), parseFloat(extent[5])], p);
@@ -300,15 +301,15 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   //map.updateSize();
 
   if (!!router && router.status && !extentTemp && !directionsTemp) {
-    zoomA = 17;
+   // zoomA = 17;
     map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
   } // end if (!!router && router.status && !extentTemp && !directionsTemp)
 
- map.getView().setZoom(zoomA);
 
- // mainLayer.once("postcompose", function(event){
- //   setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 200);
- // });
+  mainLayer.once("postcompose", function(event){
+    Nav();
+   // setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 200);
+  });
 
 
 } // end function showOnMap(...)
@@ -318,7 +319,7 @@ function startNav() {
   $("#driverArrivedModal").modal('hide');
   if (router.status) router.directions.pop();
   if (!router.onMainTrip) getDirections();
-  else Nav();
+  else if (router.onMainTrip) Nav();
 }
 
 function Nav() {
@@ -328,7 +329,9 @@ function Nav() {
   coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
   router.updateDistance(coordsA);
   router.checkForNextStep();
-  setTimeout(function () { router.showNav(); }, 3800);
+ // setTimeout(function () { router.showNav(); }, 3800);
+  map.getView().setZoom(17);
+  router.showNav();
 }
 
 function getDirections() {
@@ -347,8 +350,6 @@ function getDirections() {
       router.vectorSource.clear();
       showOnMap(extentTemp, null, directions.routes[0].geometry, router.currentDirectionsLineColor); 
       //map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
-    
-      Nav();
     }
   }
   ajax.open("GET", url, true);
@@ -368,7 +369,7 @@ function showNavigation(instance, step, instructionsDiv, distanceDiv) {
   var name = !!step.name ? (" on " + step.name) : " ";
   instructionsDiv.innerHTML = step.maneuver.type + modifier + name + "<br><span id='headingS'></span>";
   distanceDiv.innerHTML = "In<br>" + instance.currentStepDistanceRemaining + "<br>meters";
-  showOnMap(null, null, step.geometry, router.currentDirectionsLineColor);
+  //showOnMap(null, null, step.geometry, router.currentDirectionsLineColor);
   if (instance.onFeaturesChecked && instance.rerouteNumberOfComponentsChecked == 3) {
     console.log("finished showing rerouted directions");
     instance.resetReRouting();}
