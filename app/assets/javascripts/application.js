@@ -79,6 +79,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
     this.rerouteNumberOfComponentsChecked = 0;
     this.onFeaturesChecked = 0;
     this.reroutePending = 0;
+    console.log("finished resetting rerouting");
   };
   this.checkForReRouting = function() {
     this.reroutePending = 1;
