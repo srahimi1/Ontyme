@@ -17,7 +17,7 @@
 // Global variable declarations
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
-timeoutID, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, 
+timeoutID, timeoutID2, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, 
 router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat, testFeat, jax=null, ajaxResponse;
 
 var sphere = new ol.Sphere(6378137);
@@ -268,7 +268,6 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
     }  
     var view = map.getView();
     view.fit(extent2, map.getSize());
-    map.updateSize();
     //map.updateSize();
     zoomA = view.getZoom();
    // view.setZoom(zoomA - 3);
@@ -307,7 +306,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
     //map.updateSize();
   
   if (router.status == 2) {
-    mainLayer.once("postcompose", function(event){
+    map.once("postcompose", function(event){
       Nav(); // setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 200);
     });
   } // end if (router.status == 2)
@@ -330,10 +329,10 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
     }) );
     
     router.vectorSource.addFeature(feature);
-    map.updateSize(); 
 
     } // end for (var i = 0; i < router.steps.length; i++)
 
+    map.updateSize(); 
     map.getView().setZoom(17);
     map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
     driverMarker.setPosition( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
@@ -1376,11 +1375,12 @@ function startMap() {
           var cord = ol.proj.fromLonLat([coordinates.longitude, coordinates.latitude], p);
           map.getView().setCenter(cord);
           map.getView().setZoom(13);
-          setTimeout(function() {map.updateSize()}, 50);
+          map.updateSize();
           driverMarker.setPosition(cord);
          // watchPos();
         } else {
-          setTimeout(function() {recenterMap()}, 100);
+          clearTimeout(timeoutID2);
+          timeoutID2 = setTimeout(function() {recenterMap()}, 350);
         }
       }
 
@@ -1389,7 +1389,8 @@ function startMap() {
           var p = map.getView().getProjection();
           var coords = ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude], p);
           map.getView().setCenter(coords);
-          setTimeout(function() {map.updateSize()}, 50);
+          clearTimeout(timeoutID2);
+          timeoutID2 = setTimeout(function() {map.updateSize()}, 50);
           marker.setPosition(coords);
         },geolocateError, {enableHighAccuracy: true, maximumAge: 0});
       }
