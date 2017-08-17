@@ -297,7 +297,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
 
 
     feature.setStyle( new ol.style.Style({
-      stroke: new ol.style.Stroke({ width: 6, color: colorTemp })
+      stroke: new ol.style.Stroke({ width: 16, color: colorTemp })
     }) );
     
     map.getLayers().item(1).setSource(null);
@@ -333,7 +333,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
 
 
     feature.setStyle( new ol.style.Style({
-      stroke: new ol.style.Stroke({ width: 6, color: router.currentDirectionsLineColor })
+      stroke: new ol.style.Stroke({ width: 16, color: router.currentDirectionsLineColor })
     }) );
     
     router.vectorSource.addFeature(feature);
@@ -341,7 +341,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
 
     map.getLayers().item(1).setSource( router.vectorSource );
     map.updateSize(); 
-    map.getView().setZoom(17);
+    map.getView().setZoom(20);
     map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
     driverMarker.setPosition( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
     router.status = 4;
