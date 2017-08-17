@@ -310,7 +310,6 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   
   if (router.status == 2) {
     map.once("postcompose", function(event){
-      alert("in map postcompose");
       Nav(); // setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 200);
     });
   } // end if (router.status == 2)
@@ -338,7 +337,6 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
     }) );
     
     router.vectorSource.addFeature(feature);
-      alert("in new steps add to vector for loop ");
     } // end for (var i = 0; i < router.steps.length; i++)
 
     map.getLayers().item(1).setSource( router.vectorSource );
