@@ -28,10 +28,10 @@ var options = {
   maximumAge: 0
 };
 
-var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firstDirections) {
+var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, DirectionsTemp) {
   this.status = 0;
   this.onMainTrip = 0;
-  this.directions = [firstDirections];
+  this.directions = [DirectionsTemp];
   this.currentDirectionsIndex = this.directions.length - 1;
   this.currentStepIndex = firstStep;
   this.instructionDiv = instructionDivTemp;
@@ -72,7 +72,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
       this.arrived = 1;
       arrived(); }
   };
-  this.resetReRouting = function() {
+  this.resetRerouting = function() {
     jax.abort();
     jax = null;
     this.snappedCoordinates = null;
@@ -81,17 +81,17 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firs
     this.reroutePending = 0;
     console.log("finished resetting rerouting");
   };
-  this.checkForReRouting = function() {
+  this.checkForRerouting = function() {
     this.reroutePending = 1;
     if ( ifTurnedAtIntersection(this) || ifWentOtherDirection(this) ) 
       {  this.directions.pop(); getDirections(); }
     else if ( !ifOnFeature(this) && this.onFeaturesChecked ) 
       {  this.directions.pop(); getDirections(); }
     else if ( this.onFeaturesChecked && (this.rerouteNumberOfComponentsChecked == 3) )
-      this.resetReRouting();
+      this.resetRerouting();
   };
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
-} // end var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, firstDirections)
+} // end var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, DirectionsTemp)
 
 function ifTurnedAtIntersection( instance ) {
   instance.rerouteNumberOfComponentsChecked = 1;
@@ -127,14 +127,15 @@ function snapToCoordinates( instance, coordsTemp ) {
             } } // end if (features.length)
 
           if (!onFeature) { instance.onFeaturesChecked = 1; instance.rerouteNumberOfComponentsChecked = 3; instance.directions.pop(); getDirections(); }
-          else instance.resetReRouting();
+          else instance.resetRerouting();
         } // end main else
       } // end this.readyState ...
     } // end onreadystatechange
     jax.open("GET", url, true);
+    
     jax.setRequestHeader("X-CSRF-Token",document.getElementsByTagName("meta")[1].getAttribute("content"));
     jax.send();
-    setTimeout(function() { if (!instance.snappedCoordinates) instance.resetReRouting();},650);
+    setTimeout(function() { if (!instance.snappedCoordinates) instance.resetRerouting();},650);
 }
 
 
@@ -231,7 +232,8 @@ function requestAccepted(extentTemp, directionsTemp) {
   router.vectorSource = vectorSource;
   router.driverCurrentCoordinatesProjected = ol.proj.fromLonLat([coordinates.longitude, coordinates.latitude]);
   router.overviewLineColor = [45,45,45,0.8];
-  
+  router.status = 1;
+
   showOnMap(extentTemp, null, router.directions[router.currentDirectionsIndex].routes[0].geometry, router.overviewLineColor);
 
 }
@@ -249,67 +251,103 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
     var marker1 = new ol.Overlay({
       element: document.getElementById("marker"),
       positioning: 'center-center'    
-  });
+    });
 
-  var marker2 = new ol.Overlay({
-    element: document.getElementById("marker2"),
-    positioning: 'center-center'
-  });
+    var marker2 = new ol.Overlay({
+     element: document.getElementById("marker2"),
+     positioning: 'center-center'
+    });
 
 
-      if (typeof extentTemp == "string") {
-        extent = extentTemp.split(",");
-        extent2 = ol.proj.transformExtent([parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
-      }
-      else {
-        extent2 = ol.proj.transformExtent([extentTemp[2], extentTemp[3], extentTemp[4], extentTemp[5]], 'EPSG:4326', 'EPSG:3857');
-      }  
-      var view = map.getView();
-      view.fit(extent2, map.getSize());
-      map.updateSize();
-      //map.updateSize();
-      zoomA = view.getZoom();
-     // view.setZoom(zoomA - 3);
-      var p = map.getView().getProjection();
-      var cord1 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
-      var cord2 = ol.proj.fromLonLat([parseFloat(extent[4]), parseFloat(extent[5])], p);
+    if (typeof extentTemp == "string") {
+      extent = extentTemp.split(",");
+      extent2 = ol.proj.transformExtent([parseFloat(extent[2]), parseFloat(extent[3]), parseFloat(extent[4]), parseFloat(extent[5])], 'EPSG:4326', 'EPSG:3857');
+    }
+    else {
+      extent2 = ol.proj.transformExtent([extentTemp[2], extentTemp[3], extentTemp[4], extentTemp[5]], 'EPSG:4326', 'EPSG:3857');
+    }  
+    var view = map.getView();
+    view.fit(extent2, map.getSize());
+    map.updateSize();
+    //map.updateSize();
+    zoomA = view.getZoom();
+   // view.setZoom(zoomA - 3);
+    var p = map.getView().getProjection();
+    var cord1 = ol.proj.fromLonLat([parseFloat(extent[2]), parseFloat(extent[3])], p);
+    var cord2 = ol.proj.fromLonLat([parseFloat(extent[4]), parseFloat(extent[5])], p);
 
-      map.addOverlay(marker1);
-      marker1.setPosition(cord1);
-      map.addOverlay(marker2);
-      marker2.setPosition(cord2);
+    map.addOverlay(marker1);
+    marker1.setPosition(cord1);
+    map.addOverlay(marker2);
+    marker2.setPosition(cord2);
       
   } // end if (!!extentTemp)
 
-  var directions = (!!directionsTemp ? JSON.parse(directionsTemp) : " ");
-  var geometry = (!!geometryTemp ? geometryTemp : directions.routes[0].geometry);
+ 
 
-  var route = new ol.format.Polyline().readGeometry(geometry, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-  var feature = new ol.Feature({
-    type: 'route',
-    geometry: route
-  });
+  if ((router.status == 1) || (router.status == 2)) {
+
+    var directions = (!!directionsTemp ? JSON.parse(directionsTemp) : " ");
+    var geometry = (!!geometryTemp ? geometryTemp : directions.routes[0].geometry);
+
+    var route = new ol.format.Polyline().readGeometry(geometry, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+    var feature = new ol.Feature({
+      type: 'route',
+      geometry: route
+    });
 
 
-  feature.setStyle( new ol.style.Style({
-    stroke: new ol.style.Stroke({ width: 6, color: colorTemp })
-  }) );
+    feature.setStyle( new ol.style.Style({
+      stroke: new ol.style.Stroke({ width: 6, color: colorTemp })
+    }) );
+    
+    router.vectorSource.addFeature(feature);
+    map.updateSize();
+    testFeat = feature;
+    //map.updateSize();
   
-  router.vectorSource.addFeature(feature);
-  map.updateSize();
-  testFeat = feature;
-  //map.updateSize();
+  if (router.status == 2) {
+    mainLayer.once("postcompose", function(event){
+      Nav(); // setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 200);
+    });
+  } // end if (router.status == 2)
 
-  if (!!router && router.status && !extentTemp && !directionsTemp) {
-   // zoomA = 17;
+  } // end if (router.status == 1) || (router.status == 2) {
+
+  else if (router.status == 3) {
+
+    for (var i = 0; i < router.steps.length; i++) {
+
+    var route = new ol.format.Polyline().readGeometry(router.steps[i].geometry, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+    var feature = new ol.Feature({
+      type: 'route',
+      geometry: route
+    });
+
+
+    feature.setStyle( new ol.style.Style({
+      stroke: new ol.style.Stroke({ width: 6, color: router.currentDirectionsLineColor })
+    }) );
+    
+    router.vectorSource.addFeature(feature);
+    map.updateSize(); 
+
+    } // end for (var i = 0; i < router.steps.length; i++)
+
+    map.getView().setZoom(17);
     map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
-  } // end if (!!router && router.status && !extentTemp && !directionsTemp)
+    driverMarker.setPosition( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
+    router.status = 4;
+  } // end else if (router.status == 3) {
 
 
-  mainLayer.once("postcompose", function(event){
-    Nav();
-   // setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 200);
-  });
+
+
+ // if (!!router && (router.status == 1) && !extentTemp && !directionsTemp) {
+   // zoomA = 17;
+  //  map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
+  //} // end if (!!router && router.status && !extentTemp && !directionsTemp)
+
 
 
 } // end function showOnMap(...)
@@ -317,20 +355,20 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
 
 function startNav() {
   $("#driverArrivedModal").modal('hide');
-  if (router.status) router.directions.pop();
+  if (router.status > 1) router.directions.pop();
   if (!router.onMainTrip) getDirections();
   else if (router.onMainTrip) Nav();
 }
 
 function Nav() {
   router.update();
-  router.status = 1;
+  router.status = 3;
   var coordsA = null;
   coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
   router.updateDistance(coordsA);
   router.checkForNextStep();
+  showOnMap(null,null,null,null);
  // setTimeout(function () { router.showNav(); }, 3800);
-  map.getView().setZoom(17);
   router.showNav();
 }
 
@@ -344,6 +382,7 @@ function getDirections() {
     if (this.readyState == 4 && this.status == 200) {
       var directions = JSON.parse(this.responseText);
       router.directions.push(directions);
+      router.status = 2;
       var temp = directions.waypoints[directions.waypoints.length -1].location;
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
       router.currentDirectionsLineColor =  [45,125,210,0.8]; //[45,210,125,0.8]
@@ -372,7 +411,7 @@ function showNavigation(instance, step, instructionsDiv, distanceDiv) {
   //showOnMap(null, null, step.geometry, router.currentDirectionsLineColor);
   if (instance.onFeaturesChecked && instance.rerouteNumberOfComponentsChecked == 3) {
     console.log("finished showing rerouted directions");
-    instance.resetReRouting();}
+    instance.resetRerouting();}
 } // end function showNavigation(...)
 
 function getGeodesicDistance(currentCoordinates, destination) {
@@ -402,14 +441,14 @@ function success2(pos) {
     coordinates2 = pos.coords;
     if (!!router) {
       if (!!coordinates2.heading) router.lastHeading = coordinates2.heading;  
-      if (!router.arrived && router.status) {
+      if (!router.arrived && (router.status == 4)) {
         router.driverCurrentCoordinatesProjected = ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]);
         map.getView().setCenter( router.driverCurrentCoordinatesProjected );
         driverMarker.setPosition( router.driverCurrentCoordinatesProjected );
         router.updateDistance(coordinates2);
         router.checkForNextStep();
         if (!router.reroutePending)
-           router.checkForReRouting();
+           router.checkForRerouting();
         router.showNav(); 
 
 
@@ -421,7 +460,7 @@ function success2(pos) {
 
 
 
-      } // end if (!router.arrived && router.status)
+      } // end if (!router.arrived && router.status == 4)
     } // end if (!!router)
     
     if (!!webWorker) {
