@@ -300,7 +300,10 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
       stroke: new ol.style.Stroke({ width: 6, color: colorTemp })
     }) );
     
+    map.getLayers().item(1).setSource(null);
+    router.vectorSource.clear();
     router.vectorSource.addFeature(feature);
+    map.getLayers().item(1).setSource( router.vectorSource );
     map.updateSize();
     testFeat = feature;
     //map.updateSize();
@@ -316,6 +319,11 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
 
   else if (router.status == 3) {
 
+    map.getLayers().item(1).setSource(null);
+    router.vectorSource.clear();
+
+
+
     for (var i = 0; i < router.steps.length; i++) {
 
     var route = new ol.format.Polyline().readGeometry(router.steps[i].geometry, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
@@ -330,9 +338,10 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
     }) );
     
     router.vectorSource.addFeature(feature);
-      alert("in steps add to vector for loop ");
+      alert("in new steps add to vector for loop ");
     } // end for (var i = 0; i < router.steps.length; i++)
 
+    map.getLayers().item(1).setSource( router.vectorSource );
     map.updateSize(); 
     map.getView().setZoom(17);
     map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
@@ -1398,8 +1407,9 @@ function startMap() {
 
       recenterMap();
 
-
-
+      var h = map.getLayers();
+      console.log("map layers at beginning");
+      console.log(h);
 
 
 }
