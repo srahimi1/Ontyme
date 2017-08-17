@@ -73,7 +73,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
       arrived(); }
   };
   this.resetRerouting = function() {
-    jax.abort();
+    if (!!jax) jax.abort();
     jax = null;
     this.snappedCoordinates = null;
     this.rerouteNumberOfComponentsChecked = 0;
