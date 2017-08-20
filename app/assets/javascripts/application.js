@@ -300,6 +300,13 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
       stroke: new ol.style.Stroke({ width: 16, color: colorTemp })
     }) );
     
+
+    feature.setStyle( new ol.style.Style({
+      stroke: new ol.style.Stroke({ width: 16, color: colorTemp })
+    }) );
+
+
+
     map.getLayers().item(1).setSource(null);
     router.vectorSource.clear();
     router.vectorSource.addFeature(feature);
