@@ -251,7 +251,7 @@ function requestAccepted(extentTemp, directionsTemp) {
   router.driverCurrentCoordinatesProjected = ol.proj.fromLonLat([coordinates.longitude, coordinates.latitude]);
   router.overviewLineColor = [45,45,45,0.8];
   router.status = 1;
-
+  router.vectorSource.clear();
   showOnMap(extentTemp, null, router.directions[router.currentDirectionsIndex].routes[0].geometry, router.overviewLineColor);
 
 }
@@ -332,7 +332,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
     }) );
 
     map.getLayers().item(1).setSource(null);
-    router.vectorSource.clear();
+   // router.vectorSource.clear();
     router.vectorSource.addFeature(feature);
     map.getLayers().item(1).setSource( router.vectorSource );
     map.updateSize();
@@ -350,7 +350,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   else if (router.status == 3) {
 
     map.getLayers().item(1).setSource(null);
-    router.vectorSource.clear();
+    //router.vectorSource.clear();
 
 
 
@@ -389,7 +389,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   //} // end if (!!router && router.status && !extentTemp && !directionsTemp)
   var view = map.getView();
   map.getView().setZoom(17);
-  map.once("postcompose", function(){ setFeatureSize(map,useColor); });
+  map.on("postcompose", function(){ setFeatureSize(map,useColor); });
   map.updateSize();
 } // end function showOnMap(...)
 
@@ -408,6 +408,7 @@ function Nav() {
   coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
   router.updateDistance(coordsA);
   router.checkForNextStep();
+  router.vectorSource.clear();
   showOnMap(null,null,null,null);
  // setTimeout(function () { router.showNav(); }, 3800);
   router.showNav();
@@ -643,7 +644,7 @@ function doMap(extentTemp, directionsTemp) {
 
 
   vectorSource.addFeature(feature);
-  map_on_request.once("postcompose", function(){ setFeatureSize(map_on_request,[40, 40, 40, 0.8]); });
+  map_on_request.on("postcompose", function(){ setFeatureSize(map_on_request,[40, 40, 40, 0.8]); });
 
   map_on_request.updateSize();
  // map_on_request.updateSize();
