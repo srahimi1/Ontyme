@@ -262,8 +262,18 @@ function testnav() {
     router.showNav();
 }
 
+
+function setFeatureSize( tempMap, lineColor ) {
+  var wid = Math.ceil( (4.14 * tempMap.getView().getZoom() )  - 50 );
+  tempMap.getLayers().item(1).getSource().getFeatures()[0].setStyle( new ol.style.Style({
+      stroke: new ol.style.Stroke({ width: wid, color: lineColor })
+    })  );
+
+} // end function setFeatureSize( tempMap )
+
 function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   var extent2, zoomA = 17;
+  var useColor = colorTemp;
 
   if (!!extentTemp) {
     var marker1 = new ol.Overlay({
@@ -317,13 +327,6 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
     feature.setStyle( new ol.style.Style({
       stroke: new ol.style.Stroke({ width: 16, color: colorTemp })
     }) );
-    
-
-    feature.setStyle( new ol.style.Style({
-      stroke: new ol.style.Stroke({ width: 16, color: colorTemp })
-    }) );
-
-
 
     map.getLayers().item(1).setSource(null);
     router.vectorSource.clear();
@@ -361,12 +364,14 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
       stroke: new ol.style.Stroke({ width: 16, color: router.currentDirectionsLineColor })
     }) );
     
+    useColor = router.currentDirectionsLineColor;
+
     router.vectorSource.addFeature(feature);
     } // end for (var i = 0; i < router.steps.length; i++)
 
     map.getLayers().item(1).setSource( router.vectorSource );
     map.updateSize(); 
-    map.getView().setZoom(20);
+    map.getView().setZoom(17);
     map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
     driverMarker.setPosition( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
     router.status = 4;
@@ -380,13 +385,8 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   //  map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
   //} // end if (!!router && router.status && !extentTemp && !directionsTemp)
   var view = map.getView();
-  view.once("postcompose", function(){ console.log("in view postcompose");});
-  map.once("postcompose", function(){ console.log("in map postcompose"); });
-  view.once("postrender", function(){ console.log("in view postrender");});
-  map.once("postrender", function(){ console.log("in map postrender"); });
-  
-
-  console.log("this is zoom " + map.getView().getZoom());
+  map.getView().setZoom(17);
+  map.on("postrender", function(){ setFeatureSize(map,useColor); });
 
 } // end function showOnMap(...)
 
@@ -640,14 +640,10 @@ function doMap(extentTemp, directionsTemp) {
 
 
   vectorSource.addFeature(feature);
-  view.once("postcompose", function(){ console.log("in view postcompose");});
-  map_on_request.once("postcompose", function(){ console.log("in map postcompose"); });
-  view.once("postrender", function(){ console.log("in view postrender");});
-  map_on_request.once("postrender", function(){ console.log("in map postrender"); });
+  map_on_request.on("postrender", function(){ setFeatureSize(map_on_request,[40, 40, 40, 0.8]); });
 
   map_on_request.updateSize();
  // map_on_request.updateSize();
- console.log("this is zoom two " + map.getView().getZoom());
 
 } // end function doMap(extentTemp, directionsTemp)
 
