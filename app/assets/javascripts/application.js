@@ -251,7 +251,7 @@ function requestAccepted(extentTemp, directionsTemp) {
   router.driverCurrentCoordinatesProjected = ol.proj.fromLonLat([coordinates.longitude, coordinates.latitude]);
   router.overviewLineColor = [45,45,45,0.8];
   router.status = 1;
-  router.vectorSource.clear();
+  //router.vectorSource.clear();
   showOnMap(extentTemp, null, router.directions[router.currentDirectionsIndex].routes[0].geometry, router.overviewLineColor);
 
 }
@@ -332,7 +332,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
     }) );
 
     map.getLayers().item(1).setSource(null);
-   // router.vectorSource.clear();
+    router.vectorSource.clear();
     router.vectorSource.addFeature(feature);
     map.getLayers().item(1).setSource( router.vectorSource );
     map.updateSize();
@@ -350,7 +350,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   else if (router.status == 3) {
 
     map.getLayers().item(1).setSource(null);
-    //router.vectorSource.clear();
+    router.vectorSource.clear();
 
 
 
@@ -408,7 +408,7 @@ function Nav() {
   coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
   router.updateDistance(coordsA);
   router.checkForNextStep();
-  router.vectorSource.clear();
+  //router.vectorSource.clear();
   showOnMap(null,null,null,null);
  // setTimeout(function () { router.showNav(); }, 3800);
   router.showNav();
@@ -429,7 +429,7 @@ function getDirections() {
       var temp = directions.waypoints[directions.waypoints.length-1].location;
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
       router.currentDirectionsLineColor =  [45,125,210,0.8]; //[45,210,125,0.8]
-      router.vectorSource.clear();
+      //router.vectorSource.clear();
       showOnMap(extentTemp, null, directions.routes[0].geometry, router.currentDirectionsLineColor); 
       //map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
     }
