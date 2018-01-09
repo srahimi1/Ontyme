@@ -380,10 +380,10 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   //  map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
   //} // end if (!!router && router.status && !extentTemp && !directionsTemp)
   var view = map.getView();
-  view.on("postcompose", function(){ console.log("in view postcompose");});
-  map.on("postcompose", function(){ console.log("in map postcompose"); });
-  view.on("postrender", function(){ console.log("in view postrender");});
-  map.on("postrender", function(){ console.log("in map postrender"); });
+  view.once("postcompose", function(){ console.log("in view postcompose");});
+  map.once("postcompose", function(){ console.log("in map postcompose"); });
+  view.once("postrender", function(){ console.log("in view postrender");});
+  map.once("postrender", function(){ console.log("in map postrender"); });
   
 
   console.log("this is zoom " + map.getView().getZoom());
@@ -640,10 +640,10 @@ function doMap(extentTemp, directionsTemp) {
 
 
   vectorSource.addFeature(feature);
-  view.on("postcompose", function(){ console.log("in view postcompose");});
-  map_on_request.on("postcompose", function(){ console.log("in map postcompose"); });
-  view.on("postrender", function(){ console.log("in view postrender");});
-  map_on_request.on("postrender", function(){ console.log("in map postrender"); });
+  view.once("postcompose", function(){ console.log("in view postcompose");});
+  map_on_request.once("postcompose", function(){ console.log("in map postcompose"); });
+  view.once("postrender", function(){ console.log("in view postrender");});
+  map_on_request.once("postrender", function(){ console.log("in map postrender"); });
 
   map_on_request.updateSize();
  // map_on_request.updateSize();
