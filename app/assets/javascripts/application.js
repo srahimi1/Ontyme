@@ -54,6 +54,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.reroutePending = 0;
   this.rerouteNumberOfComponentsChecked = 0;
   this.onFeaturesChecked = 0;
+  this.onFeatureFirstTime = 0;
   this.update = function() {
       this.currentDirectionsIndex = this.directions.length - 1;
       this.currentStepIndex = 0;
@@ -63,6 +64,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
       this.currentStepDistanceRemaining = 9999;
       this.prevDistance = 9999;
       this.distanceDiff = 9999;
+      this.onFeatureFirstTime = 0;
       this.arrived = 0;
       this.status = 0;
   };
@@ -162,7 +164,14 @@ function ifOnFeature(instance) {
     
     features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
 
-    if (features.length) {
+    if (features.length && !instance.onFeatureFirstTime) {
+      for (var i = 0; i < features.length; i++ ) {
+        if (features[i].getStyle().stroke_.color_.toString() == instance.currentDirectionsLineColor.toString())
+          { instance.onFeatureFirstTime = 1; instance.onFeaturesChecked = 1; instance.rerouteNumberOfComponentsChecked = 3; return true;}
+      } // end for (var i = 0; i < features.length; i++ )
+   } // end if (features.length && !instance.onFeatureFirstTime)
+
+    else if (features.length && instance.onFeatureFirstTime) {
       for (var i = 0; i < features.length; i++ ) {
         if (features[i].getStyle().stroke_.color_.toString() == instance.currentDirectionsLineColor.toString())
           { instance.onFeaturesChecked = 1; instance.rerouteNumberOfComponentsChecked = 3; return true;}
@@ -173,7 +182,7 @@ function ifOnFeature(instance) {
     } // end if (features.length)
     else if (!features.length && (!instance.onFeaturesChecked)) {
       jax = null;
-      //snapToCoordinates( instance, coordinates2 );   
+      snapToCoordinates( instance, coordinates2 );   
       return true;
     } // end if (!features.length && (!instance.onFeaturesChecked))   
 } // end function ifOnFeature()
@@ -276,6 +285,8 @@ function setFeatureSize( tempMap, lineColor ) {
     console.log(" in setFeatureSize and wid is " + wid);
   } // end if ( wid > 0 ) 
 } // end function setFeatureSize( tempMap, lineColor )
+
+
 
 function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   console.log("showonmap being called");
@@ -392,7 +403,6 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   //  map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
   //} // end if (!!router && router.status && !extentTemp && !directionsTemp)
   var view = map.getView();
-  map.getView().setZoom(17);
   view.on("change:resolution", function(){ setFeatureSize(map,useColor); });
   map.updateSize();
 } // end function showOnMap(...)
@@ -428,6 +438,7 @@ function getDirections() {
       var directions = JSON.parse(this.responseText);
       console.log(directions);
       router.directions.push(directions);
+      router.onFeatureFirstTime = 0;
       router.status = 2;
       var temp = directions.waypoints[directions.waypoints.length-1].location;
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
