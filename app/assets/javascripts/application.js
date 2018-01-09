@@ -173,7 +173,7 @@ function ifOnFeature(instance) {
     } // end if (features.length)
     else if (!features.length && (!instance.onFeaturesChecked)) {
       jax = null;
-      snapToCoordinates( instance, coordinates2 );   
+      //snapToCoordinates( instance, coordinates2 );   
       return true;
     } // end if (!features.length && (!instance.onFeaturesChecked))   
 } // end function ifOnFeature()
