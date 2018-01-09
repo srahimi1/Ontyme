@@ -170,7 +170,6 @@ function ifOnFeature(instance) {
           { instance.onFeatureFirstTime = 1; instance.onFeaturesChecked = 1; instance.rerouteNumberOfComponentsChecked = 3; return true;}
       } // end for (var i = 0; i < features.length; i++ )
    } // end if (features.length && !instance.onFeatureFirstTime)
-
     else if (features.length && instance.onFeatureFirstTime) {
       for (var i = 0; i < features.length; i++ ) {
         if (features[i].getStyle().stroke_.color_.toString() == instance.currentDirectionsLineColor.toString())
@@ -180,7 +179,7 @@ function ifOnFeature(instance) {
       instance.rerouteNumberOfComponentsChecked = 3;
       return false;
     } // end if (features.length)
-    else if (!features.length && (!instance.onFeaturesChecked)) {
+    else if (!features.length && (!instance.onFeaturesChecked) && instance.onFeatureFirstTime) {
       jax = null;
       snapToCoordinates( instance, coordinates2 );   
       return true;
