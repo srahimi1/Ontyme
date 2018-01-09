@@ -34,11 +34,14 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.directions = [DirectionsTemp];
   this.currentDirectionsIndex = this.directions.length - 1;
   this.currentStepIndex = firstStep;
+  this.prevStepIndex = firstStep;
   this.instructionDiv = instructionDivTemp;
   this.distanceDiv = distanceDivTemp;
   this.overview = this.directions[this.currentDirectionsIndex].routes[0].legs[0]; 
   this.steps = this.overview.steps;
   this.currentStepDistanceRemaining = 9999;
+  this.prevDistance = 9999;
+  this.distanceDiff = 9999;
   this.mDirections = {};
   this.arrived = 0;
   this.lastHeading;
@@ -54,16 +57,22 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.update = function() {
       this.currentDirectionsIndex = this.directions.length - 1;
       this.currentStepIndex = 0;
+      this.prevStepIndex = 0;
       this.overview = this.directions[this.currentDirectionsIndex].routes[0].legs[0]; 
       this.steps = this.overview.steps;
       this.currentStepDistanceRemaining = 9999;
+      this.prevDistance = 9999;
+      this.distanceDiff = 9999;
       this.arrived = 0;
       this.status = 0;
   };
-  this.updateDistance = function(currentCoordinates) { this.currentStepDistanceRemaining = getGeodesicDistance(currentCoordinates, this.steps[this.currentStepIndex].maneuver.location)};
+  this.updatePrevDistance = function() { if ( (this.prevDistance == 9999) || (this.currentStepDistanceRemaining < this.prevDistance) ) this.prevDistance = this.currentStepDistanceRemaining; else this.distanceDiff = this.currentStepDistanceRemaining - this.prevDistance;};
+  this.updateDistance = function(currentCoordinates) { this.currentStepDistanceRemaining = getGeodesicDistance(currentCoordinates, this.steps[this.currentStepIndex].maneuver.location); updatePrevDistance();};
   this.checkForNextStep = function() { 
     if ( (this.currentStepDistanceRemaining < 35) && (this.currentStepIndex < (this.steps.length - 1)) ) {
       this.currentStepIndex++; 
+      this.prevDistance = 9999;
+      this.distanceDiff = 9999;
       var coordsA = null;
       coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
       this.updateDistance(coordsA);
@@ -94,6 +103,14 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
 } // end var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, DirectionsTemp)
 
 function ifTurnedAtIntersection( instance ) {
+  var inters = instance.steps[instance.currentStepIndex].intersections; 
+  for (var i = 0; i < inters.length; i++) {
+    var tempDist = getGeodesicDistance(currentCoordinates,inters[i].location);
+    for (var j = 0; j < inters[i].bearings.length; j++) {
+      if ( (tempDist > 35) && (instance.lastHeading >= (inters[i].bearings[j] - 5)) && (instance.lastHeading <= (inters[i].bearings[j] + 5)) )
+        {instance.rerouteNumberOfComponentsChecked = 1; return true;}
+    } // end for (var j = 0; j < inters[i].bearings.length; j++)
+  } // end for (var i = 0; i < inters.length; i++)
   instance.rerouteNumberOfComponentsChecked = 1;
   console.log("in ifTurnedAtIntersection");
   console.log(instance.rerouteNumberOfComponentsChecked);
@@ -101,6 +118,7 @@ function ifTurnedAtIntersection( instance ) {
 }
 
 function ifWentOtherDirection( instance ) {
+  if ( (instance.distanceDiff != 9999) && (instance.distanceDiff > 35) ) {instance.rerouteNumberOfComponentsChecked = 2;return true;}
   instance.rerouteNumberOfComponentsChecked = 2;
   console.log("in ifWentOtherDirection");
   console.log(instance.rerouteNumberOfComponentsChecked);
@@ -142,13 +160,13 @@ function snapToCoordinates( instance, coordsTemp ) {
 function ifOnFeature(instance) {
     var features = null;
     
-     features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
+    features = instance.vectorSource.getFeaturesAtCoordinate( instance.driverCurrentCoordinatesProjected );
 
     if (features.length) {
       for (var i = 0; i < features.length; i++ ) {
         if (features[i].getStyle().stroke_.color_.toString() == instance.currentDirectionsLineColor.toString())
           { instance.onFeaturesChecked = 1; instance.rerouteNumberOfComponentsChecked = 3; return true;}
-      }
+      } // end for (var i = 0; i < features.length; i++ )
       instance.onFeaturesChecked = 1;
       instance.rerouteNumberOfComponentsChecked = 3;
       return false;
@@ -157,7 +175,7 @@ function ifOnFeature(instance) {
       jax = null;
       snapToCoordinates( instance, coordinates2 );   
       return true;
-    } // end i f (!features.length)   
+    } // end if (!features.length && (!instance.onFeaturesChecked))   
 } // end function ifOnFeature()
 
 
