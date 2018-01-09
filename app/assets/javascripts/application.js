@@ -264,11 +264,13 @@ function testnav() {
 
 
 function setFeatureSize( tempMap, lineColor ) {
-  var wid = Math.ceil( (4.14 * tempMap.getView().getZoom() )  - 50 );
-  tempMap.getLayers().item(1).getSource().getFeatures()[0].setStyle( new ol.style.Style({
-      stroke: new ol.style.Stroke({ width: wid, color: lineColor })
-    })  );
-  console.log(" in setFeatureSize and wid is " + wid);
+  if ( tempMap.getView().getZoom() ) {
+    var wid = Math.ceil( (4.14 * tempMap.getView().getZoom() )  - 50 );
+    tempMap.getLayers().item(1).getSource().getFeatures()[0].setStyle( new ol.style.Style({
+        stroke: new ol.style.Stroke({ width: wid, color: lineColor })
+      })  );
+    console.log(" in setFeatureSize and wid is " + wid);
+  } // end if ( tempMap.getView().getZoom() ) 
 } // end function setFeatureSize( tempMap, lineColor )
 
 function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
