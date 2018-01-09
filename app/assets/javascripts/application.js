@@ -380,8 +380,12 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   //  map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
   //} // end if (!!router && router.status && !extentTemp && !directionsTemp)
   var view = map.getView();
-  view.on("zoom", function(){ console.log("map zoomed to " + view.getZoom());  });
-  map.on("zoom", function(){ console.log("map zoomed to " + view.getZoom());  });
+  view.on("postcompose", function(){ console.log("in view postcompose");});
+  map.on("postcompose", function(){ console.log("in map postcompose"); });
+  view.on("postrender", function(){ console.log("in view postrender");});
+  map.on("postrender", function(){ console.log("in map postrender"); });
+  
+
   console.log("this is zoom " + map.getView().getZoom());
 
 } // end function showOnMap(...)
@@ -636,9 +640,12 @@ function doMap(extentTemp, directionsTemp) {
 
 
   vectorSource.addFeature(feature);
+  view.on("postcompose", function(){ console.log("in view postcompose");});
+  map_on_request.on("postcompose", function(){ console.log("in map postcompose"); });
+  view.on("postrender", function(){ console.log("in view postrender");});
+  map_on_request.on("postrender", function(){ console.log("in map postrender"); });
+
   map_on_request.updateSize();
-  view.on("zoom", function(){ console.log("map zoomed to " + view.getZoom());  });
-  map_on_request.on("zoom", function(){ console.log("map zoomed to " + view.getZoom());  });
  // map_on_request.updateSize();
  console.log("this is zoom two " + map.getView().getZoom());
 
