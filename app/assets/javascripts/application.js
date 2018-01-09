@@ -380,7 +380,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   //  map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
   //} // end if (!!router && router.status && !extentTemp && !directionsTemp)
   var view = map.getView();
-  view.on("zoom", function(){ console.log("map zoomed to " + view.getZoom());  });
+  view.on("Zoom", function(){ console.log("map zoomed to " + view.getZoom());  });
   console.log("this is zoom " + map.getView().getZoom());
 
 } // end function showOnMap(...)
@@ -636,7 +636,7 @@ function doMap(extentTemp, directionsTemp) {
 
   vectorSource.addFeature(feature);
   map_on_request.updateSize();
-  view.on("zoom", function(){ console.log("map zoomed to " + view.getZoom());  });
+  view.on("Zoom", function(){ console.log("map zoomed to " + view.getZoom());  });
  // map_on_request.updateSize();
  console.log("this is zoom two " + map.getView().getZoom());
 
