@@ -379,8 +379,9 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
    // zoomA = 17;
   //  map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
   //} // end if (!!router && router.status && !extentTemp && !directionsTemp)
-
-
+  var view = map.getView();
+  view.on("zoom", function(){ console.log("map zoomed to " + view.getZoom());  });
+  console.log("this is zoom " + map.getView().getZoom());
 
 } // end function showOnMap(...)
 
@@ -627,7 +628,7 @@ function doMap(extentTemp, directionsTemp) {
 
 
   feature.setStyle( new ol.style.Style({
-    stroke: new ol.style.Stroke({ width: 6, color: [40, 40, 40, 0.8] })
+    stroke: new ol.style.Stroke({ width: 16, color: [40, 40, 40, 0.8] })
   }) );
   
 
@@ -635,9 +636,11 @@ function doMap(extentTemp, directionsTemp) {
 
   vectorSource.addFeature(feature);
   map_on_request.updateSize();
+  view.on("zoom", function(){ console.log("map zoomed to " + view.getZoom());  });
  // map_on_request.updateSize();
+ console.log("this is zoom two " + map.getView().getZoom());
 
-}
+} // end function doMap(extentTemp, directionsTemp)
 
 
 function unmuteAudio() {
@@ -1434,6 +1437,4 @@ function startMap() {
       var h = map.getLayers();
       console.log("map layers at beginning");
       console.log(h);
-
-
-}
+} // end function startMap()
