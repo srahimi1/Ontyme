@@ -105,7 +105,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
 function ifTurnedAtIntersection( instance ) {
   var inters = instance.steps[instance.currentStepIndex].intersections; 
   for (var i = 0; i < inters.length; i++) {
-    var tempDist = getGeodesicDistance(currentCoordinates,inters[i].location);
+    var tempDist = getGeodesicDistance(coordinates2,inters[i].location);
     for (var j = 0; j < inters[i].bearings.length; j++) {
       if ( (tempDist > 35) && (instance.lastHeading >= (inters[i].bearings[j] - 5)) && (instance.lastHeading <= (inters[i].bearings[j] + 5)) )
         {instance.rerouteNumberOfComponentsChecked = 1; return true;}
