@@ -268,8 +268,8 @@ function setFeatureSize( tempMap, lineColor ) {
   tempMap.getLayers().item(1).getSource().getFeatures()[0].setStyle( new ol.style.Style({
       stroke: new ol.style.Stroke({ width: wid, color: lineColor })
     })  );
-
-} // end function setFeatureSize( tempMap )
+  console.log(" in setFeatureSize and wid is " + wid);
+} // end function setFeatureSize( tempMap, lineColor )
 
 function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   var extent2, zoomA = 17;
