@@ -263,11 +263,16 @@ function testnav() {
 
 
 function setFeatureSize( tempMap, lineColor ) {
-    var wid = Math.ceil( (4.14 * tempMap.getView().getZoom() )  - 50 );
+  var wid = Math.ceil( (4.14 * tempMap.getView().getZoom() )  - 50 );
   if (wid > 0) {
-    tempMap.getLayers().item(1).getSource().getFeatures()[0].setStyle( new ol.style.Style({
-        stroke: new ol.style.Stroke({ width: wid, color: lineColor })
-      })  );
+    var featuresLength = tempMap.getLayers().item(1).getSource().getFeatures().length;
+    
+    for (var i = 0; i < featuresLength; i++) {
+      tempMap.getLayers().item(1).getSource().getFeatures()[i].setStyle( new ol.style.Style({
+          stroke: new ol.style.Stroke({ width: wid, color: lineColor })
+        })  );
+    } // end for (var i = 0; i < featuresLength; i++) 
+
     console.log(" in setFeatureSize and wid is " + wid);
   } // end if ( wid > 0 ) 
 } // end function setFeatureSize( tempMap, lineColor )
