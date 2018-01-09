@@ -389,7 +389,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   var view = map.getView();
   map.getView().setZoom(17);
   map.on("postcompose", function(){ setFeatureSize(map,useColor); });
-
+  map.updateSize();
 } // end function showOnMap(...)
 
 
