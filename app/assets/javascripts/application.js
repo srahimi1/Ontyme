@@ -274,6 +274,7 @@ function setFeatureSize( tempMap, lineColor ) {
 } // end function setFeatureSize( tempMap, lineColor )
 
 function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
+  console.log("showonmap being called");
   var extent2, zoomA = 17;
   var useColor = colorTemp;
 
@@ -583,7 +584,7 @@ function showDriverRideRequestModal(data, extentTemp, directionsTemp) {
 
 
 function doMap(extentTemp, directionsTemp) {
-
+  console.log("domap being called");
   var layer2 = new ol.layer.Vector({
     source: vectorSource
   });
