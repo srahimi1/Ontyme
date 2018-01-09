@@ -427,6 +427,11 @@ function Nav() {
 }
 
 function getDirections() {
+  var instruction = document.getElementById("instruction");
+  instruction.innerHTML = "<h1>NEW DIRECTIONS</h1>";
+
+
+
   var ajax = new XMLHttpRequest();
   if (!!router.lastHeading)
     var url = "/drivers/getdirections?longitude="+coordinates2.longitude+"&latitude="+coordinates2.latitude+"&trip_request_id="+document.getElementById("trip_request_id").value + "&bearing=" + router.lastHeading;
@@ -443,6 +448,7 @@ function getDirections() {
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
       router.currentDirectionsLineColor =  [45,125,210,0.8]; //[45,210,125,0.8]
       router.vectorSource.clear();
+      instruction.innerHTML = "<h1>NEW FURTHER DIRECTIONS </h1>";
       showOnMap(extentTemp, null, directions.routes[0].geometry, router.currentDirectionsLineColor); 
       //map.getView().setCenter( ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]) );
     }
