@@ -389,7 +389,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   //} // end if (!!router && router.status && !extentTemp && !directionsTemp)
   var view = map.getView();
   map.getView().setZoom(17);
-  map.on("postcompose", function(){ setFeatureSize(map,useColor); });
+  map.once("postcompose", function(){ setFeatureSize(map,useColor); });
   map.updateSize();
 } // end function showOnMap(...)
 
@@ -644,7 +644,7 @@ function doMap(extentTemp, directionsTemp) {
 
 
   vectorSource.addFeature(feature);
-  map_on_request.on("postcompose", function(){ setFeatureSize(map_on_request,[40, 40, 40, 0.8]); });
+  map_on_request.once("postcompose", function(){ setFeatureSize(map_on_request,[40, 40, 40, 0.8]); });
 
   map_on_request.updateSize();
  // map_on_request.updateSize();
