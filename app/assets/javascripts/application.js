@@ -104,6 +104,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
     //   {  this.directions.pop(); getDirections(); }
     // else if ( this.onFeaturesChecked && (this.rerouteNumberOfComponentsChecked == 3) )
     //   this.resetRerouting();
+    else this.resetRerouting();
   };
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
 } // end var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, DirectionsTemp)
