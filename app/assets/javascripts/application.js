@@ -70,7 +70,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
       this.arrived = 0;
       this.status = 0;
   };
-  this.updatePrevDistance = function() { if ( (this.prevDistance == 9999) || (this.currentStepDistanceRemaining < this.prevDistance) ) this.prevDistance = this.currentStepDistanceRemaining; else this.distanceDiff = this.currentStepDistanceRemaining - this.prevDistance;};
+  this.updatePrevDistance = function() { if ( (this.prevDistance == 9999) || (this.prevDistance > this.currentStepDistanceRemaining) ) this.prevDistance = this.currentStepDistanceRemaining; else this.distanceDiff = this.currentStepDistanceRemaining - this.prevDistance;};
   this.updateDistance = function(currentCoordinates) { this.currentStepDistanceRemaining = getGeodesicDistance(currentCoordinates, this.steps[this.currentStepIndex].maneuver.location); this.updatePrevDistance();};
   this.checkForNextStep = function() { 
     if ( (this.currentStepDistanceRemaining < 35) && (this.currentStepIndex < (this.steps.length - 1)) ) {
@@ -97,12 +97,12 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   };
   this.checkForRerouting = function() {
     this.reroutePending = 1;
-    if ( ifTurnedAtIntersection(this) || ifWentOtherDirection(this) ) 
+    if ( ifTurnedAtIntersection(this) );// || ifWentOtherDirection(this) ) 
       {  this.directions.pop(); getDirections(); }
-    else if ( !ifOnFeature(this) && this.onFeaturesChecked ) 
-      {  this.directions.pop(); getDirections(); }
-    else if ( this.onFeaturesChecked && (this.rerouteNumberOfComponentsChecked == 3) )
-      this.resetRerouting();
+    // else if ( !ifOnFeature(this) && this.onFeaturesChecked ) 
+    //   {  this.directions.pop(); getDirections(); }
+    // else if ( this.onFeaturesChecked && (this.rerouteNumberOfComponentsChecked == 3) )
+    //   this.resetRerouting();
   };
   this.showNav = function() { showNavigation(this, this.steps[this.currentStepIndex], this.instructionDiv, this.distanceDiv);  };
 } // end var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, DirectionsTemp)
