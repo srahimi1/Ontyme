@@ -109,8 +109,12 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
 
 function ifTurnedAtIntersection( instance ) {
   var inters = instance.steps[instance.currentStepIndex].intersections; 
+  console.log(inters);
+  var instruction = document.getElementById("instruction");
+
   for (var i = 0; i < inters.length; i++) {
       var tempDist = getGeodesicDistance(coordinates2,inters[i].location);
+      instruction.innerHTML = instruction.innerHTML + "<br>" + tempDist;
       if (tempDist < 15) {instance.currentIntersectionIndex = i; alert("at intersection");}
   }
   if (instance.currentIntersectionIndex > -1) {
