@@ -74,9 +74,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.updatePrevDistance = function() { if ( (this.prevDistance == 9999) || (this.prevDistance > this.currentStepDistanceRemaining) ) this.prevDistance = this.currentStepDistanceRemaining; else this.distanceDiff = this.currentStepDistanceRemaining - this.prevDistance;};
   this.updateDistance = function(currentCoordinates) { this.currentStepDistanceRemaining = getGeodesicDistance(currentCoordinates, this.steps[this.currentStepIndex].maneuver.location); this.updatePrevDistance();};
   this.checkForNextStep = function() { 
-    alert("distance rema " + this.currentStepDistanceRemaining);
     if ( (this.currentStepDistanceRemaining < 35) && (this.currentStepIndex < (this.steps.length - 1)) ) {
-      alert("increasing index");
       this.currentStepIndex++; 
       this.currentIntersectionIndex = -1;
       this.prevDistance = 9999;
@@ -113,17 +111,12 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
 function ifTurnedAtIntersection( instance ) {
   var inters;
   var atIntersection = 0;
-  alert("in check if turned at intersection");
-  console.log(instance.currentStepIndex);
-  console.log(instance.steps[instance.currentStepIndex]);
-  console.log(inters);
   var instruction = document.getElementById("instruction");
 
   for (var i = 0; i <  instance.steps.length; i++) {
     inters = instance.steps[i].intersections;
     for (var j = 0; j < inters.length; j++) {
         var tempDist = getGeodesicDistance(coordinates2,inters[j].location);
-        console.log("tempDist " + tempDist);
         instruction.innerHTML = instruction.innerHTML + "<br>" + tempDist;
         if (tempDist < 10) {instance.currentIntersectionIndex = j; alert("at intersection"); atIntersection = 1; break;}
     } 
@@ -141,8 +134,6 @@ function ifTurnedAtIntersection( instance ) {
       } // end if (tempDist > 25)
     } // end for (var j = 0; j < inters[i].bearings.length; j++)
     instance.rerouteNumberOfComponentsChecked = 1;
-    console.log("in ifTurnedAtIntersection");
-    console.log(instance.rerouteNumberOfComponentsChecked);
     return false;
   } // end if (atIntersection)
 }
