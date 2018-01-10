@@ -111,7 +111,7 @@ function ifTurnedAtIntersection( instance ) {
   var inters = instance.steps[instance.currentStepIndex].intersections; 
   for (var i = 0; i < inters.length; i++) {
       var tempDist = getGeodesicDistance(coordinates2,inters[i].location);
-      if (tempDist < 15) instance.currentIntersectionIndex = i;
+      if (tempDist < 15) {instance.currentIntersectionIndex = i; alert("at intersection");}
   }
   if (instance.currentIntersectionIndex > -1) {
     var tempDist = getGeodesicDistance(coordinates2,inters[instance.currentIntersectionIndex].location);
