@@ -112,13 +112,15 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
 function ifTurnedAtIntersection( instance ) {
   var inters;
   var atIntersection = 0;
+
   var instruction = document.getElementById("instruction");
 
   for (var i = 0; i <  instance.steps.length; i++) {
     inters = instance.steps[i].intersections;
+    console.log("inters - " + inters);
     for (var j = 0; j < inters.length; j++) {
         var tempDist = getGeodesicDistance(coordinates2,inters[j].location);
-        instruction.innerHTML = instruction.innerHTML + "<br>" + tempDist;
+        instruction.innerHTML = "" + tempDist + "";
         if (tempDist < 10) {instance.currentIntersectionIndex = j; alert("at intersection"); atIntersection = 1; break;}
     } 
     if (atIntersection) {instance.currentIntersection = inters[instance.currentIntersectionIndex]; break;}
@@ -489,7 +491,7 @@ function startDirections(duration, legs) {
 function showNavigation(instance, step, instructionsDiv, distanceDiv) {  
   var modifier = !!step.maneuver.modifier ? (" " + step.maneuver.modifier) : " ";
   var name = !!step.name ? (" on " + step.name) : " ";
-  instructionsDiv.innerHTML = step.maneuver.type + modifier + name + "<br><span id='headingS'></span>";
+  //instructionsDiv.innerHTML = step.maneuver.type + modifier + name + "<br><span id='headingS'></span>";
   distanceDiv.innerHTML = "In<br>" + instance.currentStepDistanceRemaining + "<br>meters";
   //showOnMap(null, null, step.geometry, router.currentDirectionsLineColor);
   if (instance.onFeaturesChecked && instance.rerouteNumberOfComponentsChecked == 3) {
