@@ -108,6 +108,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
 } // end var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, DirectionsTemp)
 
 function ifTurnedAtIntersection( instance ) {
+  alert("in check if turned at intersection");
   var inters = instance.steps[instance.currentStepIndex].intersections; 
   console.log(inters);
   var instruction = document.getElementById("instruction");
@@ -370,6 +371,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
     //map.updateSize();
   
   if (router.status == 2) {
+    router.resetRerouting();
     map.once("postcompose", function(event){
       Nav(); // setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 200);
     });
