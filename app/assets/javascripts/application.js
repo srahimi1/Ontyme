@@ -110,6 +110,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
 function ifTurnedAtIntersection( instance ) {
   alert("in check if turned at intersection");
   var inters = instance.steps[instance.currentStepIndex].intersections; 
+  console.log(instance.currentStepIndex);
   console.log(instance.steps[instance.currentStepIndex]);
   console.log(inters);
   var instruction = document.getElementById("instruction");
