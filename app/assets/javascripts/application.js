@@ -500,7 +500,7 @@ function showNavigation(instance, step, instructionsDiv, distanceDiv) {
 } // end function showNavigation(...)
 
 function getGeodesicDistance(currentCoordinates, destination) {
-  var sourceProj = map.getView().getProjection();
+ // var sourceProj = map.getView().getProjection();
   var c1 = [currentCoordinates.longitude, currentCoordinates.latitude]; //ol.proj.transform([coordinates2.longitude, coordinates2.latitude], sourceProj, 'EPSG:4326');
   var c2 = destination; //ol.proj.transform(destination, sourceProj, 'EPSG:4326');
   
