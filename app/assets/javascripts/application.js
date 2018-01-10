@@ -36,6 +36,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.currentStepIndex = firstStep;
   this.prevStepIndex = firstStep;
   this.currentIntersectionIndex = -1;
+  this.currentIntersection;
   this.instructionDiv = instructionDivTemp;
   this.distanceDiv = distanceDivTemp;
   this.overview = this.directions[this.currentDirectionsIndex].routes[0].legs[0]; 
@@ -110,23 +111,28 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
 } // end var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, DirectionsTemp)
 
 function ifTurnedAtIntersection( instance ) {
+  var inters;
+  var atIntersection = 0;
   alert("in check if turned at intersection");
-  var inters = instance.steps[instance.currentStepIndex].intersections; 
   console.log(instance.currentStepIndex);
   console.log(instance.steps[instance.currentStepIndex]);
   console.log(inters);
   var instruction = document.getElementById("instruction");
 
-  for (var i = 0; i < inters.length; i++) {
-      var tempDist = getGeodesicDistance(coordinates2,inters[i].location);
-      console.log("tempDist " + tempDist);
-      instruction.innerHTML = instruction.innerHTML + "<br>" + tempDist;
-      if (tempDist < 15) {instance.currentIntersectionIndex = i; alert("at intersection");}
+  for (var i = 0; i <  instance.steps.length; i++) {
+    inters = instance.steps[i].intersections;
+    for (var j = 0; j < inters.length; j++) {
+        var tempDist = getGeodesicDistance(coordinates2,inters[j].location);
+        console.log("tempDist " + tempDist);
+        instruction.innerHTML = instruction.innerHTML + "<br>" + tempDist;
+        if (tempDist < 10) {instance.currentIntersectionIndex = j; alert("at intersection"); atIntersection = 1; break;}
+    } 
+    if (atIntersection) {instance.currentIntersection = inters[instance.currentIntersectionIndex]; break;}
   }
-  if (instance.currentIntersectionIndex > -1) {
-    var tempDist = getGeodesicDistance(coordinates2,inters[instance.currentIntersectionIndex].location);
-    for (var j = 0; j < inters[instance.currentIntersectionIndex].bearings.length; j++) {
-      if (tempDist > 25) {
+  if (atIntersection) {
+    var tempDist = getGeodesicDistance(coordinates2,instance.currentIntersection.location);
+    for (var j = 0; j < instance.currentIntersection.bearings.length; j++) {
+      if (tempDist > 10) {
         var a,b,c;
         if ( (instance.lastHeading >= 0) && (instance.lastHeading <= 10) ) a = 360 + instance.lastHeading;
         if ( (inters[instance.currentIntersectionIndex].bearings[j] >= 0 ) && (inters[instance.currentIntersectionIndex].bearings[j] >= 10) ) 
@@ -138,7 +144,7 @@ function ifTurnedAtIntersection( instance ) {
     console.log("in ifTurnedAtIntersection");
     console.log(instance.rerouteNumberOfComponentsChecked);
     return false;
-  } // end if (instance.currentIntersectionIndex > -1)
+  } // end if (atIntersection)
 }
 
 function ifWentOtherDirection( instance ) {
