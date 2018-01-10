@@ -74,6 +74,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.updateDistance = function(currentCoordinates) { this.currentStepDistanceRemaining = getGeodesicDistance(currentCoordinates, this.steps[this.currentStepIndex].maneuver.location); this.updatePrevDistance();};
   this.checkForNextStep = function() { 
     if ( (this.currentStepDistanceRemaining < 35) && (this.currentStepIndex < (this.steps.length - 1)) ) {
+      console.log("increasing index");
       this.currentStepIndex++; 
       this.currentIntersectionIndex = -1;
       this.prevDistance = 9999;
