@@ -97,8 +97,8 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   };
   this.checkForRerouting = function() {
     this.reroutePending = 1;
-    if ( ifTurnedAtIntersection(this) );// || ifWentOtherDirection(this) ) 
-      {  this.directions.pop(); getDirections(); }
+    if ( ifTurnedAtIntersection(this) )// || ifWentOtherDirection(this) ) 
+      { this.directions.pop(); getDirections(); }
     // else if ( !ifOnFeature(this) && this.onFeaturesChecked ) 
     //   {  this.directions.pop(); getDirections(); }
     // else if ( this.onFeaturesChecked && (this.rerouteNumberOfComponentsChecked == 3) )
@@ -526,7 +526,7 @@ function success2(pos) {
         router.updateDistance(coordinates2);
         router.checkForNextStep();
         if (!router.reroutePending)
-           router.checkForRerouting();
+          {alert("checking for rerouting"); router.checkForRerouting();}
         router.showNav(); 
 
 
