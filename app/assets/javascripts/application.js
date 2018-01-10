@@ -116,8 +116,13 @@ function ifTurnedAtIntersection( instance ) {
   if (instance.currentIntersectionIndex > -1) {
     var tempDist = getGeodesicDistance(coordinates2,inters[instance.currentIntersectionIndex].location);
     for (var j = 0; j < inters[instance.currentIntersectionIndex].bearings.length; j++) {
-      if ( (tempDist > 25) && ( inters[instance.currentIntersectionIndex].entry[j] != true ) && (instance.lastHeading >= (inters[instance.currentIntersectionIndex].bearings[j] - 5)) && (instance.lastHeading <= (inters[instance.currentIntersectionIndex].bearings[j] + 5)) )
-        {instance.rerouteNumberOfComponentsChecked = 1; return true;}
+      if (tempDist > 25) {
+        var a,b,c;
+        if ( (instance.lastHeading >= 0) && (instance.lastHeading <= 10) ) a = 360 + instance.lastHeading;
+        if ( (inters[instance.currentIntersectionIndex].bearings[j] >= 0 ) && (inters[instance.currentIntersectionIndex].bearings[j] >= 10) ) 
+          {b = 360 - inters[instance.currentIntersectionIndex].bearings[j]; c = 360 + inters[instance.currentIntersectionIndex].bearings[j];}
+        if ( (a >= b) && (a <= c) ) {instance.rerouteNumberOfComponentsChecked = 1; return true;}
+      } // end if (tempDist > 25)
     } // end for (var j = 0; j < inters[i].bearings.length; j++)
     instance.rerouteNumberOfComponentsChecked = 1;
     console.log("in ifTurnedAtIntersection");
