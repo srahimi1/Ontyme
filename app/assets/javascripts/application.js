@@ -121,7 +121,7 @@ function ifTurnedAtIntersection( instance ) {
     for (var j = 0; j < inters.length; j++) {
         var tempDist = getGeodesicDistance(coordinates2,inters[j].location);
         instruction.innerHTML = "" + tempDist + " - " + i + " " + j;
-        if (parseInt(tempDist) < 10) {instance.currentIntersectionIndex = j; alert("at intersection"); atIntersection = 1; break;}
+        if ( parseInt(tempDist) < 10) {instance.currentIntersectionIndex = j; alert("at intersection"); atIntersection = 1; break;}
     } 
     if (atIntersection) {instance.currentIntersection = inters[instance.currentIntersectionIndex]; break;}
   }
