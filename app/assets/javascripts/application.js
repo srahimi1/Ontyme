@@ -115,6 +115,7 @@ function ifTurnedAtIntersection( instance ) {
 
   for (var i = 0; i < inters.length; i++) {
       var tempDist = getGeodesicDistance(coordinates2,inters[i].location);
+      console.log("tempDist " + tempDist);
       instruction.innerHTML = instruction.innerHTML + "<br>" + tempDist;
       if (tempDist < 15) {instance.currentIntersectionIndex = i; alert("at intersection");}
   }
