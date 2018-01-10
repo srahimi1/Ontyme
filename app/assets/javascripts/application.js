@@ -35,6 +35,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.currentDirectionsIndex = this.directions.length - 1;
   this.currentStepIndex = firstStep;
   this.prevStepIndex = firstStep;
+  this.currentIntersectionIndex = -1;
   this.instructionDiv = instructionDivTemp;
   this.distanceDiv = distanceDivTemp;
   this.overview = this.directions[this.currentDirectionsIndex].routes[0].legs[0]; 
@@ -59,6 +60,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
       this.currentDirectionsIndex = this.directions.length - 1;
       this.currentStepIndex = 0;
       this.prevStepIndex = 0;
+      this.currentIntersectionIndex = -1;
       this.overview = this.directions[this.currentDirectionsIndex].routes[0].legs[0]; 
       this.steps = this.overview.steps;
       this.currentStepDistanceRemaining = 9999;
@@ -73,6 +75,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.checkForNextStep = function() { 
     if ( (this.currentStepDistanceRemaining < 35) && (this.currentStepIndex < (this.steps.length - 1)) ) {
       this.currentStepIndex++; 
+      this.currentIntersectionIndex = -1;
       this.prevDistance = 9999;
       this.distanceDiff = 9999;
       var coordsA = null;
@@ -107,16 +110,20 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
 function ifTurnedAtIntersection( instance ) {
   var inters = instance.steps[instance.currentStepIndex].intersections; 
   for (var i = 0; i < inters.length; i++) {
-    var tempDist = getGeodesicDistance(coordinates2,inters[i].location);
-    for (var j = 0; j < inters[i].bearings.length; j++) {
-      if ( (tempDist > 35) && (instance.lastHeading >= (inters[i].bearings[j] - 5)) && (instance.lastHeading <= (inters[i].bearings[j] + 5)) )
+      var tempDist = getGeodesicDistance(coordinates2,inters[i].location);
+      if (tempDist < 15) instance.currentIntersectionIndex = i;
+  }
+  if (instance.currentIntersectionIndex > -1) {
+    var tempDist = getGeodesicDistance(coordinates2,inters[instance.currentIntersectionIndex].location);
+    for (var j = 0; j < inters[instance.currentIntersectionIndex].bearings.length; j++) {
+      if ( (tempDist > 25) && ( inters[instance.currentIntersectionIndex].entry[j] != true ) && (instance.lastHeading >= (inters[instance.currentIntersectionIndex].bearings[j] - 5)) && (instance.lastHeading <= (inters[instance.currentIntersectionIndex].bearings[j] + 5)) )
         {instance.rerouteNumberOfComponentsChecked = 1; return true;}
     } // end for (var j = 0; j < inters[i].bearings.length; j++)
-  } // end for (var i = 0; i < inters.length; i++)
-  instance.rerouteNumberOfComponentsChecked = 1;
-  console.log("in ifTurnedAtIntersection");
-  console.log(instance.rerouteNumberOfComponentsChecked);
-  return false;
+    instance.rerouteNumberOfComponentsChecked = 1;
+    console.log("in ifTurnedAtIntersection");
+    console.log(instance.rerouteNumberOfComponentsChecked);
+    return false;
+  } // end if (instance.currentIntersectionIndex > -1)
 }
 
 function ifWentOtherDirection( instance ) {
