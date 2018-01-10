@@ -121,14 +121,14 @@ function ifTurnedAtIntersection( instance ) {
     for (var j = 0; j < inters.length; j++) {
         var tempDist = getGeodesicDistance(coordinates2,inters[j].location);
         instruction.innerHTML = "" + tempDist + " - " + i + " " + j;
-        if ( tempDist < 10) {instance.currentIntersectionIndex = j; alert("at intersection"); atIntersection = 1; break;}
+        if ( parseInt(tempDist) < 10) {instance.currentIntersectionIndex = j; alert("at intersection"); atIntersection = 1; break;}
     } 
     if (atIntersection) {instance.currentIntersection = inters[instance.currentIntersectionIndex]; break;}
   }
   if (atIntersection) {
     var tempDist = getGeodesicDistance(coordinates2,instance.currentIntersection.location);
     for (var j = 0; j < instance.currentIntersection.bearings.length; j++) {
-      if (tempDist > 10) {
+      if ( parseInt(tempDist) > 10) {
         var a,b,c;
         if ( (instance.lastHeading >= 0) && (instance.lastHeading <= 10) ) a = 360 + instance.lastHeading;
         if ( (inters[instance.currentIntersectionIndex].bearings[j] >= 0 ) && (inters[instance.currentIntersectionIndex].bearings[j] >= 10) ) 
