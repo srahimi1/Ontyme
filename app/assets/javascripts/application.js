@@ -534,7 +534,7 @@ function success2(pos) {
         router.updateDistance(coordinates2);
         router.checkForNextStep();
         if (!router.reroutePending)
-          {alert("checking for rerouting"); router.checkForRerouting();}
+          router.checkForRerouting();
         router.showNav(); 
 
 
