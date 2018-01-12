@@ -123,11 +123,12 @@ function ifTurnedAtIntersection( instance ) {
         testVar = tempDist;
         var xx = parseInt(tempDist);
         instruction.innerHTML = "" + xx + " - " + i + " " + j;
-        if ( xx < 10) {alert("less than");instance.currentIntersectionIndex = j; atIntersection = 1; break;}
+        if ( xx < 10) {alert("less than"); instance.currentIntersectionIndex = j; alert(instance.currentIntersectionIndex); atIntersection = 1; break;}
     } 
-    if (atIntersection) {instance.currentIntersection = inters[instance.currentIntersectionIndex]; break;}
+    if (atIntersection) {alert("at first break"); instance.currentIntersection = inters[instance.currentIntersectionIndex]; alert("inter" + instance.currentIntersection); break;}
   }
   if (atIntersection) {
+    alert("at if at intersection - part 2");
     var tempDist = getGeodesicDistance(coordinates2,instance.currentIntersection.location);
     for (var j = 0; j < instance.currentIntersection.bearings.length; j++) {
       if ( parseInt(tempDist) > 10) {
