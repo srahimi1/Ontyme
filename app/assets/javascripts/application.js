@@ -123,7 +123,7 @@ function ifTurnedAtIntersection( instance ) {
         testVar = tempDist;
         var xx = parseInt(tempDist);
         instruction.innerHTML = "" + xx + " - " + i + " " + j;
-        if ( xx > 10) {alert("greater");instance.currentIntersectionIndex = j; atIntersection = 1; break;}
+        if ( xx < 10) {alert("less than");instance.currentIntersectionIndex = j; atIntersection = 1; break;}
     } 
     if (atIntersection) {instance.currentIntersection = inters[instance.currentIntersectionIndex]; break;}
   }
