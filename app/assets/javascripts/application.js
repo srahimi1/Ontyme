@@ -18,7 +18,7 @@
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
 timeoutID, timeoutID2, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, 
-router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat, testFeat, jax=null, ajaxResponse, testVar;
+router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat, testFeat, jax=null, ajaxResponse, atIntersection = 0, testVar;
 
 var sphere = new ol.Sphere(6378137);
 var coordinates2 = nullCoords;
@@ -111,7 +111,6 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
 
 function ifTurnedAtIntersection( instance ) {
   var inters;
-  var atIntersection = 0;
 
   var instruction = document.getElementById("instruction");
 
@@ -132,11 +131,13 @@ function ifTurnedAtIntersection( instance ) {
     var tempDist = getGeodesicDistance(coordinates2,instance.currentIntersection.location);
     for (var j = 0; j < instance.currentIntersection.bearings.length; j++) {
       if ( parseInt(tempDist) > 10) {
+        alert("In determining if driving in intersection");
         var a,b,c;
         if ( (instance.lastHeading >= 0) && (instance.lastHeading <= 10) ) a = 360 + instance.lastHeading;
-        if ( (inters[instance.currentIntersectionIndex].bearings[j] >= 0 ) && (inters[instance.currentIntersectionIndex].bearings[j] >= 10) ) 
+        if ( (inters[instance.currentIntersectionIndex].bearings[j] >= 0 ) && (inters[instance.currentIntersectionIndex].bearings[j] <= 10) ) 
           {b = 360 - inters[instance.currentIntersectionIndex].bearings[j]; c = 360 + inters[instance.currentIntersectionIndex].bearings[j];}
         if ( (a >= b) && (a <= c) ) {instance.rerouteNumberOfComponentsChecked = 1; return true;}
+        else {alert("reset atIntersection"); atIntersection = 0;}
       } // end if (tempDist > 25)
     } // end for (var j = 0; j < inters[i].bearings.length; j++)
     instance.rerouteNumberOfComponentsChecked = 1;
@@ -453,6 +454,7 @@ function Nav() {
 }
 
 function getDirections() {
+  atIntersection = 0;
   var instruction = document.getElementById("instruction");
   instruction.innerHTML = "<h1>NEW DIRECTIONS</h1>";
 
