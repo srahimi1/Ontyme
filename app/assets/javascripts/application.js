@@ -18,7 +18,7 @@
 var letters = ["O","N","T","Y","M","E"], letterPaths = [], animsCompleted = 0, rotateDeg = 0, rotateAnimID, boxAnimID, boxAnimCounter = 0, boxAnimIncrement = Math.PI / 7,
 currentLetter = 0, car = [], carAnimID, btnHT, btnWT, buttonAnimID, doBtnWT = 0, sliderLeftDim, coordinates = 0, findLatLngCalled = 0, addressList, positionID, map_provider, map_provider_url,
 timeoutID, timeoutID2, webWorker = null, watchID, receivedRequest = 0, audio, nullCoords = {"latitude" : null, "longitude": null}, driverRideRequestData, map, mainLayer, vectorSource, map_on_request, 
-router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat, testFeat, jax=null, ajaxResponse;
+router = null, mainDirections = {}, GPSTrackCounter = 6, tripRequestId, driverMarker, feat, testFeat, jax=null, ajaxResponse, testVar;
 
 var sphere = new ol.Sphere(6378137);
 var coordinates2 = nullCoords;
@@ -120,9 +120,10 @@ function ifTurnedAtIntersection( instance ) {
     console.log("inters - " + inters);
     for (var j = 0; j < inters.length; j++) {
         var tempDist = getGeodesicDistance(coordinates2,inters[j].location);
+        testVar = tempDist;
         var xx = parseInt(tempDist);
         instruction.innerHTML = "" + xx + " - " + i + " " + j;
-        if ( parseInt(tempDist) < 10) {instance.currentIntersectionIndex = j; alert("at intersection"); atIntersection = 1; break;}
+        if ( xx > 10) {alert("greater");instance.currentIntersectionIndex = j; atIntersection = 1; break;}
     } 
     if (atIntersection) {instance.currentIntersection = inters[instance.currentIntersectionIndex]; break;}
   }
