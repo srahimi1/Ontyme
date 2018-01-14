@@ -132,7 +132,7 @@ function ifTurnedAtIntersection( instance ) {
     distance1 = parseInt( getGeodesicDistance(coordinates2,instance.currentIntersectionsArray[instance.currentIntersectionIndex].location) );
     distance2 = parseInt( getGeodesicDistance(coordinates2,instance.nextIntersection.location) );
     if ( (distance1 > 5) && (distance2 > (instance.nextIntersectionDistance+5) ) ) {instance.rerouteNumberOfComponentsChecked = 1; return true;}
-    else ( (distance1 > 5) && (distance2 < (instance.nextIntersectionDistance-5) ) ) {instance.currentIntersectionIndex = null; instance.rerouteNumberOfComponentsChecked = 1; return false;}
+    else if ( (distance1 > 5) && (distance2 < (instance.nextIntersectionDistance-5) ) ) {instance.currentIntersectionIndex = null; instance.rerouteNumberOfComponentsChecked = 1; return false;}
   } // end if ( !!instance.currentIntersectionIndex )
   
   else {instance.rerouteNumberOfComponentsChecked = 1; return false;}
