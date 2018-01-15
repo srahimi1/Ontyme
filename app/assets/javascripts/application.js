@@ -135,9 +135,9 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
 function ifTurnedAtIntersection( instance ) {
   if ( !!instance.currentIntersectionIndex ) {
     var distance1, distance2;    
-    alert("ifturnedatintersection");
     distance1 = parseInt( getGeodesicDistance(coordinates2,instance.currentIntersectionsArray[instance.currentIntersectionIndex].location) );
     distance2 = parseInt( getGeodesicDistance(coordinates2,instance.nextIntersection.location) );
+    instance.instructionDiv.innerHTML = "ifturnedatintersection - " + distance1 + " " + distance2;
     if ( (distance1 > 2) && (distance2 > (instance.nextIntersectionDistance+2) ) ) {alert("turned at intersection");instance.rerouteNumberOfComponentsChecked = 1; console.log("turned at Intersection"); return true;}
     else if ( (distance1 > 5) && (distance2 < (instance.nextIntersectionDistance-5) ) ) {instance.currentIntersectionIndex = null; instance.rerouteNumberOfComponentsChecked = 1; return false;}
   } // end if ( !!instance.currentIntersectionIndex )
