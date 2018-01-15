@@ -63,6 +63,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
     for (var k = 0; k < this.steps.length; k++) {
       for (var j = 0; j < this.steps[k].intersections.length; j++) {this.currentIntersectionsArray.push( this.steps[k].intersections[j] ); console.log(this.currentIntersectionsArray); }
     }; 
+    console.log("finished getintersections");
   }
   this.update = function() {
       this.currentDirectionsIndex = this.directions.length - 1;
