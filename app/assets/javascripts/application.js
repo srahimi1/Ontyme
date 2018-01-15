@@ -449,7 +449,7 @@ function Nav() {
   coordsA = (!!coordinates2.longitude) ? coordinates2 : coordinates;
   router.updateDistance(coordsA);
  // router.checkForNextStep();
- // showOnMap(null,null,null,null);
+  showOnMap(null,null,null,null);
  // setTimeout(function () { router.showNav(); }, 3800);
   console.log("back from showonmap in Nav()");
   router.showNav();
