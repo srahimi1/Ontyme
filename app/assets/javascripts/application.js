@@ -59,6 +59,12 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.rerouteNumberOfComponentsChecked = 0;
   this.onFeaturesChecked = 0;
   this.onFeatureFirstTime = 0;
+  this.getIntersections = function() {
+    var tempArr = []; 
+    for (var i = 0; i < this.steps.length; i++) {
+      for (var j = 0; j < this.steps[i].intersections.length; j++) tempArr.push( this.steps[i].intersections[j] );
+    }; 
+    return tempArr; }
   this.update = function() {
       this.currentDirectionsIndex = this.directions.length - 1;
       this.currentStepIndex = 0;
@@ -66,7 +72,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
       this.overview = this.directions[this.currentDirectionsIndex].routes[0].legs[0]; 
       this.steps = this.overview.steps;
       console.log(this.steps);
-      this.currentIntersectionsArray = function() {var tempArr = []; for (var i = 0; i < this.steps.length; i++) {for (var j = 0; j < this.steps[i].intersections.length; j++) tempArr.push( this.steps[i].intersections[j] );}; return tempArr; } ();
+      this.currentIntersectionsArray = this.getIntersections();
       this.currentIntersectionIndex = null;
       this.currentStepDistanceRemaining = 9999;
       this.prevDistance = 9999;
