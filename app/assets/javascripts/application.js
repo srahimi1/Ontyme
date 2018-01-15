@@ -121,6 +121,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   };
   this.checkForRerouting = function() {
     this.reroutePending = 1;
+    this.instructionDiv.innerHTML = "checkingforrerouting " + Math.random();
     if ( ifTurnedAtIntersection(this) )// || ifWentOtherDirection(this) ) 
       { this.directions.pop(); getDirections(); }
     // else if ( !ifOnFeature(this) && this.onFeaturesChecked ) 
@@ -497,7 +498,7 @@ function startDirections(duration, legs) {
 function showNavigation(instance, step, instructionsDiv, distanceDiv) {  
   var modifier = !!step.maneuver.modifier ? (" " + step.maneuver.modifier) : " ";
   var name = !!step.name ? (" on " + step.name) : " ";
-  instructionsDiv.innerHTML = step.maneuver.type + modifier + name + "<br><span id='headingS'></span>";
+  //instructionsDiv.innerHTML = step.maneuver.type + modifier + name + "<br><span id='headingS'></span>";
   distanceDiv.innerHTML = "In<br>" + instance.currentStepDistanceRemaining + "<br>meters";
   //showOnMap(null, null, step.geometry, router.currentDirectionsLineColor);
   //if (instance.onFeaturesChecked && instance.rerouteNumberOfComponentsChecked == 3) {
