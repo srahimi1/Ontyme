@@ -61,7 +61,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.onFeatureFirstTime = 0;
   this.getIntersections = function(stps) {    
     for (var k = 0; k < stps.length; k++) {
-      for (var j = 0; j < stps[k].intersections.length; j++) this.currentIntersectionsArray.push( stps[k].intersections[j] );
+      for (var j = 0; j < stps[k].intersections.length; j++) {this.currentIntersectionsArray.push( stps[k].intersections[j] ); console.log(this.currentIntersectionsArray); }
     }; 
   }
   this.update = function() {
