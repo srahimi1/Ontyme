@@ -60,11 +60,15 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.onFeaturesChecked = 0;
   this.onFeatureFirstTime = 0;
   this.getIntersections = function(stps) {
-    var tempArr = []; 
+    var tempArr;
+    tempArr = []; 
+    
     for (var k = 0; k < stps.length; k++) {
       for (var j = 0; j < stps[k].intersections.length; j++) tempArr.push( stps[k].intersections[j] );
     }; 
-    return tempArr; }
+    
+    return tempArr; 
+  }
   this.update = function() {
       this.currentDirectionsIndex = this.directions.length - 1;
       this.currentStepIndex = 0;
