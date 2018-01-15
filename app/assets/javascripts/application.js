@@ -45,7 +45,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.mDirections = {};
   this.arrived = 0;
   this.lastHeading;
-  this.currentIntersectionsArray = function() {var tempArr = []; for (var i = 0; i < this.steps.length; i++) {for (var j = 0; j < this.steps[i].intersections.length; j++) tempArr.push( this.steps[i].intersections[j] );}; return tempArr; } ();
+  this.currentIntersectionsArray = null;
   this.currentIntersectionIndex = null;
   this.nextIntersection = null;
   this.nextIntersectionDistance = null;
