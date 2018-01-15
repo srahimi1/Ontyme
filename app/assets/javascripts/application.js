@@ -60,6 +60,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.onFeaturesChecked = 0;
   this.onFeatureFirstTime = 0;
   this.getIntersections = function() {    
+   this.currentIntersectionsArray = [];
     for (var k = 0; k < this.steps.length; k++) {
       for (var j = 0; j < this.steps[k].intersections.length; j++) {this.currentIntersectionsArray.push( this.steps[k].intersections[j] ); console.log(this.currentIntersectionsArray); }
     }; 
@@ -71,7 +72,6 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
       this.prevStepIndex = 0;
       this.overview = this.directions[this.currentDirectionsIndex].routes[0].legs[0]; 
       this.steps = this.overview.steps;
-      this.currentIntersectionsArray = [];
       this.getIntersections();
       this.currentIntersectionIndex = null;
       this.currentStepDistanceRemaining = 9999;
