@@ -66,7 +66,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
     for (var k = 0; k < stps.length; k++) {
       for (var j = 0; j < stps[k].intersections.length; j++) tempArr.push( stps[k].intersections[j] );
     }; 
-    
+    console.log(tempArr);
     return tempArr; 
   }
   this.update = function() {
