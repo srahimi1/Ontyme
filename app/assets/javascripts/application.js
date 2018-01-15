@@ -312,6 +312,7 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
   var useColor = colorTemp;
 
   if (!!extentTemp) {
+    console.log("in extent showonmap");
     var marker1 = new ol.Overlay({
       element: document.getElementById("marker"),
       positioning: 'center-center'    
@@ -369,19 +370,19 @@ function showOnMap(extentTemp, directionsTemp, geometryTemp, colorTemp) {
     router.vectorSource.addFeature(feature);
     map.getLayers().item(1).setSource( router.vectorSource );
     map.updateSize();
-    testFeat = feature;
     //map.updateSize();
   
-  if (router.status == 2) {
-    map.once("postcompose", function(event){
-      Nav(); // setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 200);
-    });
-  } // end if (router.status == 2)
+    if (router.status == 2) {
+      map.once("postcompose", function(event){
+        console.log("in postcompose new222");
+        Nav(); // setTimeout(function () { map.getView().animate({ zoom: zoomA }) }, 200);
+      });
+    } // end if (router.status == 2)
 
   } // end if (router.status == 1) || (router.status == 2) {
 
   else if (router.status == 3) {
-
+    console.log("in showmap router.status = 3");
     map.getLayers().item(1).setSource(null);
     router.vectorSource.clear();
 
