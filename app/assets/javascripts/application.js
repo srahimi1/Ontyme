@@ -83,7 +83,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.checkIfAtIntersection = function(coordinatesTemp) {
     for (var i = 0; i <  this.currentIntersectionsArray.length; i++) {
       var distTemp = parseInt( getGeodesicDistance(coordinatesTemp,this.currentIntersectionsArray[i].location) );
-      if ( distTemp < 10 ) {this.currentIntersectionIndex = i; this.findNextIntersection(); console.log("at intersection"); this.nextIntersectionDistance = parseInt( getGeodesicDistance( coordinatesTemp, this.nextIntersection.location ) ); break;}
+      if ( distTemp < 10 ) {this.currentIntersectionIndex = i; this.findNextIntersection(); alert("at intersection "+this.nextIntersection.location); this.nextIntersectionDistance = parseInt( getGeodesicDistance( coordinatesTemp, this.nextIntersection.location ) ); break;}
      } // end for (var i = 0; i <  this.currentIntersectionsArray.length; i++) {
   } // end this.checkIfAtIntersection = function(coordinatesTemp)
   this.updatePrevDistance = function() { if ( (this.prevDistance == 9999) || (this.prevDistance > this.currentStepDistanceRemaining) ) this.prevDistance = this.currentStepDistanceRemaining; else this.distanceDiff = this.currentStepDistanceRemaining - this.prevDistance;};
@@ -131,7 +131,7 @@ function ifTurnedAtIntersection( instance ) {
 
     distance1 = parseInt( getGeodesicDistance(coordinates2,instance.currentIntersectionsArray[instance.currentIntersectionIndex].location) );
     distance2 = parseInt( getGeodesicDistance(coordinates2,instance.nextIntersection.location) );
-    if ( (distance1 > 5) && (distance2 > (instance.nextIntersectionDistance+5) ) ) {instance.rerouteNumberOfComponentsChecked = 1; console.log("turned at Intersection"); return true;}
+    if ( (distance1 > 2) && (distance2 > (instance.nextIntersectionDistance+2) ) ) {alert("turned at intersection");instance.rerouteNumberOfComponentsChecked = 1; console.log("turned at Intersection"); return true;}
     else if ( (distance1 > 5) && (distance2 < (instance.nextIntersectionDistance-5) ) ) {instance.currentIntersectionIndex = null; instance.rerouteNumberOfComponentsChecked = 1; return false;}
   } // end if ( !!instance.currentIntersectionIndex )
   
@@ -490,7 +490,7 @@ function startDirections(duration, legs) {
 function showNavigation(instance, step, instructionsDiv, distanceDiv) {  
   var modifier = !!step.maneuver.modifier ? (" " + step.maneuver.modifier) : " ";
   var name = !!step.name ? (" on " + step.name) : " ";
-  //instructionsDiv.innerHTML = step.maneuver.type + modifier + name + "<br><span id='headingS'></span>";
+  instructionsDiv.innerHTML = step.maneuver.type + modifier + name + "<br><span id='headingS'></span>";
   distanceDiv.innerHTML = "In<br>" + instance.currentStepDistanceRemaining + "<br>meters";
   //showOnMap(null, null, step.geometry, router.currentDirectionsLineColor);
   //if (instance.onFeaturesChecked && instance.rerouteNumberOfComponentsChecked == 3) {
