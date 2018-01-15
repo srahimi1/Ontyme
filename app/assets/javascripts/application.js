@@ -90,7 +90,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.checkIfAtIntersection = function(coordinatesTemp) {
     for (var i = 0; i <  this.currentIntersectionsArray.length; i++) {
       var distTemp = parseInt( getGeodesicDistance(coordinatesTemp,this.currentIntersectionsArray[i].location) );
-      if ( distTemp < 10 ) {this.currentIntersectionIndex = i; this.findNextIntersection(); alert("at intersection "+this.nextIntersection.location); this.nextIntersectionDistance = parseInt( getGeodesicDistance( coordinatesTemp, this.nextIntersection.location ) ); break;}
+      if ( distTemp < 5 ) {this.currentIntersectionIndex = i; this.findNextIntersection(); this.nextIntersectionDistance = parseInt( getGeodesicDistance( coordinatesTemp, this.nextIntersection.location ) ); break;}
      } // end for (var i = 0; i <  this.currentIntersectionsArray.length; i++) {
   } // end this.checkIfAtIntersection = function(coordinatesTemp)
   this.updatePrevDistance = function() { if ( (this.prevDistance == 9999) || (this.prevDistance > this.currentStepDistanceRemaining) ) this.prevDistance = this.currentStepDistanceRemaining; else this.distanceDiff = this.currentStepDistanceRemaining - this.prevDistance;};
@@ -140,7 +140,7 @@ function ifTurnedAtIntersection( instance ) {
     distance2 = parseInt( getGeodesicDistance(coordinates2,instance.nextIntersection.location) );
     instance.instructionDiv.innerHTML = "ifturnedatintersection - " + distance1 + " " + distance2;
     if ( (distance1 > 2) && (distance2 > (instance.nextIntersectionDistance+2) ) ) {alert("turned at intersection");instance.rerouteNumberOfComponentsChecked = 1; console.log("turned at Intersection"); return true;}
-    else if ( (distance1 > 5) && (distance2 < (instance.nextIntersectionDistance-5) ) ) {instance.currentIntersectionIndex = null; instance.rerouteNumberOfComponentsChecked = 1; return false;}
+    else if ( (distance1 > 2) && (distance2 < (instance.nextIntersectionDistance-2) ) ) {instance.currentIntersectionIndex = null; instance.rerouteNumberOfComponentsChecked = 1; return false;}
   } // end if ( !!instance.currentIntersectionIndex )
   
   else {instance.rerouteNumberOfComponentsChecked = 1; return false;}
