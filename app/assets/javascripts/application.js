@@ -444,6 +444,7 @@ function Nav() {
   router.checkForNextStep();
   showOnMap(null,null,null,null);
  // setTimeout(function () { router.showNav(); }, 3800);
+  console.log("back from showonmap in Nav()");
   router.showNav();
 }
 
