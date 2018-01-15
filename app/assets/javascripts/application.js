@@ -135,7 +135,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
 function ifTurnedAtIntersection( instance ) {
   if ( !!instance.currentIntersectionIndex ) {
     var distance1, distance2;    
-
+    alert("ifturnedatintersection");
     distance1 = parseInt( getGeodesicDistance(coordinates2,instance.currentIntersectionsArray[instance.currentIntersectionIndex].location) );
     distance2 = parseInt( getGeodesicDistance(coordinates2,instance.nextIntersection.location) );
     if ( (distance1 > 2) && (distance2 > (instance.nextIntersectionDistance+2) ) ) {alert("turned at intersection");instance.rerouteNumberOfComponentsChecked = 1; console.log("turned at Intersection"); return true;}
