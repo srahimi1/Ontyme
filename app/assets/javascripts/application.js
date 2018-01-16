@@ -90,7 +90,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
     this.nextIntersectionDistance = getGeodesicDistance(this.currentIntersectionsArray[this.currentIntersectionIndex].location,this.nextIntersection.location);
   }
   this.checkIfAtIntersection = function(coordinatesTemp) {
-    console.log("chkatintersection "+coordinatesTemp);
+    console.log(coordinatesTemp);
     var i;
     for (i = 0; i < this.currentIntersectionsArray.length; i++) {
       var distTemp = parseInt( getGeodesicDistance(coordinatesTemp,this.currentIntersectionsArray[i].location) );
