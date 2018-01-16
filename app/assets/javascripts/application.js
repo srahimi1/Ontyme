@@ -93,10 +93,9 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
     var i;
     for (i = 0; i < this.currentIntersectionsArray.length; i++) {
       var distTemp = parseInt( getGeodesicDistance(coordinatesTemp,this.currentIntersectionsArray[i].location) );
-      if ( (distTemp < 8) && (this.currentIntersectionIndex != i) ) {this.currentIntersectionIndex = i; this.findNextIntersection(); this.instructionDiv.innerHTML = "index : "+this.currentIntersectionIndex+" - "+distTemp+" --- "+ this.currentIntersectionsArray[i].location+ " ?? "+ this.nextIntersection.location + " >> "+this.nextIntersectionDistance; console.log("nextIntersectionDistance "+this.nextIntersectionDistance); break;}
+      if ( (distTemp <= 5) && (this.currentIntersectionIndex != i) ) {this.currentIntersectionIndex = i; this.findNextIntersection(); this.instructionDiv.innerHTML = "at intersection index : "+this.currentIntersectionIndex+" - "+distTemp+" - next intersection distance: "+ this.nextIntersectionDistance; break;}
      } // end for (var i = 0; i <  this.currentIntersectionsArray.length; i++) {
     if (i == this.currentIntersectionsArray.length) this.currentIntersectionIndex = null;
-    console.log("this is i "+i);
   } // end this.checkIfAtIntersection = function(coordinatesTemp)
   this.updatePrevDistance = function() { if ( (this.prevDistance == 9999) || (this.prevDistance > this.currentStepDistanceRemaining) ) this.prevDistance = this.currentStepDistanceRemaining; else this.distanceDiff = this.currentStepDistanceRemaining - this.prevDistance;};
   this.updateDistance = function(currentCoordinates) { this.currentStepDistanceRemaining = parseInt( getGeodesicDistance(currentCoordinates, this.steps[this.currentStepIndex].maneuver.location) ); this.updatePrevDistance(); this.checkIfAtIntersection(currentCoordinates);};
@@ -143,8 +142,7 @@ function ifTurnedAtIntersection( instance ) {
     var distance1, distance2;    
     distance1 = parseInt( getGeodesicDistance(coordinates2,instance.currentIntersectionsArray[instance.currentIntersectionIndex].location) );
     distance2 = parseInt( getGeodesicDistance(coordinates2,instance.nextIntersection.location) );
-    instance.instructionDiv.innerHTML = instance.instructionDiv.innerHTML + "<br>ifturnedatintersection - " + distance1 + " --- " + distance2+ " !!!! " + Math.random();
-    if ( (distance1 >= 5) && (distance2 >= (instance.nextIntersectionDistance+5) ) ) {alert("turned at intersection");instance.rerouteNumberOfComponentsChecked = 1; console.log("turned at Intersection"); return true;}
+    if ( (distance1 > 7) && (distance2 > (instance.nextIntersectionDistance+7) ) ) {instance.rerouteNumberOfComponentsChecked = 1; instance.currentIntersectionIndex = null; return true;}
     else if ( (distance1 >= 5) && (distance2 <= (instance.nextIntersectionDistance-5) ) ) {instance.currentIntersectionIndex = null; instance.rerouteNumberOfComponentsChecked = 1; return false;}
     else {instance.rerouteNumberOfComponentsChecked = 1; return false;}
   } // end if ( !!instance.currentIntersectionIndex )
