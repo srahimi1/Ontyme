@@ -473,11 +473,11 @@ function getDirections() {
     if (this.readyState == 4 && this.status == 200) {
       var directions = JSON.parse(this.responseText);
       router.directions.push(directions);
-      router.onFeatureFirstTime = 0;
+      router.update();
+      //router.onFeatureFirstTime = 0;
       router.status = 2;
       var temp = directions.waypoints[directions.waypoints.length-1].location;
       var extentTemp = [0,0,coordinates2.longitude, coordinates2.latitude, temp[0], temp[1]];
-      router.update();
       router.currentDirectionsLineColor =  [45,125,210,0.8]; //[45,210,125,0.8]
       router.vectorSource.clear();
       instruction.innerHTML = "<h1>NEW FURTHER DIRECTIONS </h1>";
