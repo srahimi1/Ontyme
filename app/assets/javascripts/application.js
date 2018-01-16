@@ -91,7 +91,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
     var i;
     for (i = 0; i < this.currentIntersectionsArray.length; i++) {
       var distTemp = parseInt( getGeodesicDistance(coordinatesTemp,this.currentIntersectionsArray[i].location) );
-      if ( distTemp < 8 ) {this.currentIntersectionIndex = i; this.findNextIntersection(); this.nextIntersectionDistance = parseInt( getGeodesicDistance( this.currentIntersectionsArray[i].location , this.nextIntersection.location ) ); break;}
+      if ( (distTemp < 8) && (this.currentIntersectionIndex != i) ) {this.currentIntersectionIndex = i; this.findNextIntersection(); this.nextIntersectionDistance = parseInt( getGeodesicDistance( this.currentIntersectionsArray[i].location , this.nextIntersection.location ) ); break;}
      } // end for (var i = 0; i <  this.currentIntersectionsArray.length; i++) {
     if (i == this.currentIntersectionsArray.length) this.currentIntersectionIndex = null;
     console.log("this is i "+i);
@@ -124,7 +124,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   };
   this.checkForRerouting = function() {
     this.reroutePending = 1;
-    this.instructionDiv.innerHTML = "checkingforrerouting " + Math.random();
+    //this.instructionDiv.innerHTML = "checkingforrerouting " + Math.random();
     if ( ifTurnedAtIntersection(this) )// || ifWentOtherDirection(this) ) 
       { this.directions.pop(); getDirections(); }
     // else if ( !ifOnFeature(this) && this.onFeaturesChecked ) 
