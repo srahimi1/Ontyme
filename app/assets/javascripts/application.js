@@ -86,14 +86,14 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
     if ( (this.currentIntersectionIndex + 1) <= this.currentIntersectionsArray.length ) nextIntersectionTemp = this.currentIntersectionsArray[this.currentIntersectionIndex + 1];
     else nextIntersectionTemp = this.steps[this.currentStepIndex].maneuver;
     this.nextIntersection = nextIntersectionTemp;
-    alert("findnex "+typeof this.currentIntersectionsArray[this.currentIntersectionIndex].location+" -- "+typeof this.nextIntersection.location);
+    alert("findnex "+this.currentIntersectionsArray[this.currentIntersectionIndex].location[0]+" -- "+this.nextIntersection.location[0]);
     this.nextIntersectionDistance = getGeodesicDistance(this.currentIntersectionsArray[this.currentIntersectionIndex].location,this.nextIntersection.location);
   }
   this.checkIfAtIntersection = function(coordinatesTemp) {
     var i;
     for (i = 0; i < this.currentIntersectionsArray.length; i++) {
       var distTemp = parseInt( getGeodesicDistance(coordinatesTemp,this.currentIntersectionsArray[i].location) );
-      if ( (distTemp < 8) && (this.currentIntersectionIndex != i) ) {this.currentIntersectionIndex = i; this.findNextIntersection(); this.instructionDiv.innerHTML = "index : "+this.currentIntersectionIndex+" - "+distTemp+" --- "+ this.currentIntersectionsArray[i].location+ " ?? "+ this.nextIntersection.location + " >> "+this.nextIntersectionDistance; console.log("nextIntersectionDistance "+this.nextIntersectionDistance); break;}
+      if ( (distTemp < 40) && (this.currentIntersectionIndex != i) ) {this.currentIntersectionIndex = i; this.findNextIntersection(); this.instructionDiv.innerHTML = "index : "+this.currentIntersectionIndex+" - "+distTemp+" --- "+ this.currentIntersectionsArray[i].location+ " ?? "+ this.nextIntersection.location + " >> "+this.nextIntersectionDistance; console.log("nextIntersectionDistance "+this.nextIntersectionDistance); break;}
      } // end for (var i = 0; i <  this.currentIntersectionsArray.length; i++) {
     if (i == this.currentIntersectionsArray.length) this.currentIntersectionIndex = null;
     console.log("this is i "+i);
