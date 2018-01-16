@@ -144,8 +144,8 @@ function ifTurnedAtIntersection( instance ) {
     distance1 = parseInt( getGeodesicDistance(coordinates2,instance.currentIntersectionsArray[instance.currentIntersectionIndex].location) );
     distance2 = parseInt( getGeodesicDistance(coordinates2,instance.nextIntersection.location) );
     instance.instructionDiv.innerHTML = instance.instructionDiv.innerHTML + "<br>ifturnedatintersection - " + distance1 + " --- " + distance2+ " !!!! " + Math.random();
-    if ( (distance1 > 1) && (distance2 > (instance.nextIntersectionDistance+1) ) ) {alert("turned at intersection");instance.rerouteNumberOfComponentsChecked = 1; console.log("turned at Intersection"); return true;}
-    else if ( (distance1 > 3) && (distance2 < (instance.nextIntersectionDistance-3) ) ) {instance.currentIntersectionIndex = null; instance.rerouteNumberOfComponentsChecked = 1; return false;}
+    if ( (distance1 >= 5) && (distance2 >= (instance.nextIntersectionDistance+5) ) ) {alert("turned at intersection");instance.rerouteNumberOfComponentsChecked = 1; console.log("turned at Intersection"); return true;}
+    else if ( (distance1 >= 5) && (distance2 <= (instance.nextIntersectionDistance-5) ) ) {instance.currentIntersectionIndex = null; instance.rerouteNumberOfComponentsChecked = 1; return false;}
     else {instance.rerouteNumberOfComponentsChecked = 1; return false;}
   } // end if ( !!instance.currentIntersectionIndex )
   
