@@ -91,7 +91,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
     var i;
     for (i = 0; i < this.currentIntersectionsArray.length; i++) {
       var distTemp = parseInt( getGeodesicDistance(coordinatesTemp,this.currentIntersectionsArray[i].location) );
-      if ( (distTemp < 8) && (this.currentIntersectionIndex != i) ) {this.currentIntersectionIndex = i; this.findNextIntersection(); this.nextIntersectionDistance = parseInt( getGeodesicDistance( this.currentIntersectionsArray[i].location , this.nextIntersection.location ) ); break;}
+      if ( (distTemp < 8) && (this.currentIntersectionIndex != i) ) {this.currentIntersectionIndex = i; this.findNextIntersection(); this.nextIntersectionDistance = parseInt( getGeodesicDistance( this.currentIntersectionsArray[i].location , this.nextIntersection.location ) ); this.instructionDiv.innerHTML = "index : "+this.currentIntersectionIndex+" - "+distTemp+" --- "+ this.nextIntersectionDistance; break;}
      } // end for (var i = 0; i <  this.currentIntersectionsArray.length; i++) {
     if (i == this.currentIntersectionsArray.length) this.currentIntersectionIndex = null;
     console.log("this is i "+i);
@@ -141,7 +141,7 @@ function ifTurnedAtIntersection( instance ) {
     var distance1, distance2;    
     distance1 = parseInt( getGeodesicDistance(coordinates2,instance.currentIntersectionsArray[instance.currentIntersectionIndex].location) );
     distance2 = parseInt( getGeodesicDistance(coordinates2,instance.nextIntersection.location) );
-    instance.instructionDiv.innerHTML = "ifturnedatintersection - " + distance1 + " --- " + distance2+ " !!!! " + Math.random();
+    instance.instructionDiv.innerHTML = instance.instructionDiv.innerHTML + "<br>ifturnedatintersection - " + distance1 + " --- " + distance2+ " !!!! " + Math.random();
     if ( (distance1 > 1) && (distance2 > (instance.nextIntersectionDistance+1) ) ) {alert("turned at intersection");instance.rerouteNumberOfComponentsChecked = 1; console.log("turned at Intersection"); return true;}
     else if ( (distance1 > 3) && (distance2 < (instance.nextIntersectionDistance-3) ) ) {instance.currentIntersectionIndex = null; instance.rerouteNumberOfComponentsChecked = 1; return false;}
     else {instance.rerouteNumberOfComponentsChecked = 1; return false;}
