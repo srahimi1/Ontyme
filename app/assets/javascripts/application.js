@@ -91,7 +91,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
     var i;
     for (i = 0; i < this.currentIntersectionsArray.length; i++) {
       var distTemp = parseInt( getGeodesicDistance(coordinatesTemp,this.currentIntersectionsArray[i].location) );
-      if ( (distTemp < 8) && (this.currentIntersectionIndex != i) ) {this.currentIntersectionIndex = i; this.findNextIntersection(); this.nextIntersectionDistance = parseInt( getGeodesicDistance( this.currentIntersectionsArray[i].location,this.nextIntersection.location ) ); this.instructionDiv.innerHTML = "index : "+this.currentIntersectionIndex+" - "+distTemp+" --- "+ this.currentIntersectionsArray[i].location+ " ?? "+ this.nextIntersection.location + " >> "+this.nextIntersectionDistance; break;}
+      if ( (distTemp < 8) && (this.currentIntersectionIndex != i) ) {this.currentIntersectionIndex = i; this.findNextIntersection(); this.nextIntersectionDistance = parseInt( getGeodesicDistance( this.currentIntersectionsArray[i].location,this.nextIntersection.location ) ); this.instructionDiv.innerHTML = "index : "+this.currentIntersectionIndex+" - "+distTemp+" --- "+ this.currentIntersectionsArray[i].location+ " ?? "+ this.nextIntersection.location + " >> "+this.nextIntersectionDistance; console.log("nextIntersectionDistance "+this.nextIntersectionDistance); break;}
      } // end for (var i = 0; i <  this.currentIntersectionsArray.length; i++) {
     if (i == this.currentIntersectionsArray.length) this.currentIntersectionIndex = null;
     console.log("this is i "+i);
