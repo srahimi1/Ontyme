@@ -461,6 +461,7 @@ function Nav() {
 }
 
 function getDirections() {
+  console.log("in get directions");
   var instruction = document.getElementById("instruction");
   instruction.innerHTML = "<h1>NEW DIRECTIONS</h1>";
 
@@ -592,6 +593,8 @@ function checkForRideRequests() {
       webWorker.postMessage([{"longitude" : coordinates.longitude , "latitude" : coordinates.latitude},0,0]);
     webWorker.onmessage = function(event) {
       var data2 = event.data;
+      console.log("data reveiced for do map ");
+      console.log(data2);
       if (receivedRequest == 0) showDriverRideRequestModal(data2[0], data2[1], data2[2]);
     }; // end webWorker.onmessage = function(event)
   
