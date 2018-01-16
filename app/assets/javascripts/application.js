@@ -87,7 +87,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
     else nextIntersectionTemp = this.steps[this.currentStepIndex].maneuver;
     this.nextIntersection = nextIntersectionTemp;
     alert("findnex "+this.currentIntersectionsArray[this.currentIntersectionIndex].location+" -- "+this.nextIntersection.location);
-    this.nextIntersectionDistance = getGeodesicDistance(this.currentIntersectionsArray[this.currentIntersectionIndex].location,this.nextIntersection.location);
+    this.nextIntersectionDistance = getGeodesicDistance(this.nextIntersection.location,this.currentIntersectionsArray[this.currentIntersectionIndex].location);
   }
   this.checkIfAtIntersection = function(coordinatesTemp) {
     var i;
