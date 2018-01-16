@@ -86,7 +86,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
     if ( (this.currentIntersectionIndex + 1) <= this.currentIntersectionsArray.length ) nextIntersectionTemp = this.currentIntersectionsArray[this.currentIntersectionIndex + 1];
     else nextIntersectionTemp = this.steps[this.currentStepIndex].maneuver;
     this.nextIntersection = nextIntersectionTemp;
-    this.nextIntersectionDistance = getGeodesicDistance({longitude: this.currentIntersectionsArray[this.currentIntersectionIndex].location[0], latitude: this.currentIntersectionsArray[this.currentIntersectionIndex].location[1]},this.nextIntersection.location);
+    this.nextIntersectionDistance = parseInt( getGeodesicDistance({longitude: this.currentIntersectionsArray[this.currentIntersectionIndex].location[0], latitude: this.currentIntersectionsArray[this.currentIntersectionIndex].location[1]},this.nextIntersection.location) );
   }
   this.checkIfAtIntersection = function(coordinatesTemp) {
     console.log(coordinatesTemp);
@@ -99,7 +99,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
     console.log("this is i "+i);
   } // end this.checkIfAtIntersection = function(coordinatesTemp)
   this.updatePrevDistance = function() { if ( (this.prevDistance == 9999) || (this.prevDistance > this.currentStepDistanceRemaining) ) this.prevDistance = this.currentStepDistanceRemaining; else this.distanceDiff = this.currentStepDistanceRemaining - this.prevDistance;};
-  this.updateDistance = function(currentCoordinates) { this.currentStepDistanceRemaining = getGeodesicDistance(currentCoordinates, this.steps[this.currentStepIndex].maneuver.location); this.updatePrevDistance(); this.checkIfAtIntersection(currentCoordinates);};
+  this.updateDistance = function(currentCoordinates) { this.currentStepDistanceRemaining = parseInt( getGeodesicDistance(currentCoordinates, this.steps[this.currentStepIndex].maneuver.location) ); this.updatePrevDistance(); this.checkIfAtIntersection(currentCoordinates);};
   this.checkForNextStep = function() { 
     if ( (this.currentStepDistanceRemaining < 15) && (this.currentStepIndex < (this.steps.length - 1)) ) {
       this.currentStepIndex++; 
