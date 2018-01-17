@@ -89,11 +89,10 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
     this.nextIntersectionDistance = parseInt( getGeodesicDistance({longitude: this.currentIntersectionsArray[this.currentIntersectionIndex].location[0], latitude: this.currentIntersectionsArray[this.currentIntersectionIndex].location[1]},this.nextIntersection.location) );
   }
   this.checkIfAtIntersection = function(coordinatesTemp) {
-    console.log(coordinatesTemp);
     var i;
     for (i = 0; i < this.currentIntersectionsArray.length; i++) {
       var distTemp = parseInt( getGeodesicDistance(coordinatesTemp,this.currentIntersectionsArray[i].location) );
-      if ( (distTemp <= 5) && (this.currentIntersectionIndex != i) ) {this.currentIntersectionIndex = i; this.findNextIntersection(); this.instructionDiv.innerHTML = "at intersection index : "+this.currentIntersectionIndex+" - "+distTemp+" - next intersection distance: "+ this.nextIntersectionDistance; break;}
+      if ( (distTemp <= 6) && (this.currentIntersectionIndex != i) ) {this.currentIntersectionIndex = i; this.findNextIntersection(); this.instructionDiv.innerHTML = "at intersection index : "+this.currentIntersectionIndex+" - "+distTemp+" - next intersection distance: "+ this.nextIntersectionDistance; break;}
      } // end for (var i = 0; i <  this.currentIntersectionsArray.length; i++) {
     if (i == this.currentIntersectionsArray.length) this.currentIntersectionIndex = null;
   } // end this.checkIfAtIntersection = function(coordinatesTemp)
@@ -142,11 +141,10 @@ function ifTurnedAtIntersection( instance ) {
     var distance1, distance2;    
     distance1 = parseInt( getGeodesicDistance(coordinates2,instance.currentIntersectionsArray[instance.currentIntersectionIndex].location) );
     distance2 = parseInt( getGeodesicDistance(coordinates2,instance.nextIntersection.location) );
-    if ( (distance1 > 7) && (distance2 > (instance.nextIntersectionDistance+7) ) ) {instance.rerouteNumberOfComponentsChecked = 1; instance.currentIntersectionIndex = null; return true;}
+    if ( (distance1 >= 8) && (distance2 > (instance.nextIntersectionDistance-distance1) ) ) {alert("turned at intersection");instance.rerouteNumberOfComponentsChecked = 1; instance.currentIntersectionIndex = null; return true;}
     else if ( (distance1 >= 5) && (distance2 <= (instance.nextIntersectionDistance-5) ) ) {instance.currentIntersectionIndex = null; instance.rerouteNumberOfComponentsChecked = 1; return false;}
     else {instance.rerouteNumberOfComponentsChecked = 1; return false;}
   } // end if ( !!instance.currentIntersectionIndex )
-  
   else {instance.rerouteNumberOfComponentsChecked = 1; return false;}
 } // end function ifTurnedAtIntersection( instance )
 
