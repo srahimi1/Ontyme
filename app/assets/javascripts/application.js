@@ -47,6 +47,7 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
   this.lastHeading;
   this.currentIntersectionsArray = [];
   this.currentIntersectionIndex = null;
+  this.currentIntersectionDistance = null;
   this.nextIntersection = null;
   this.nextIntersectionDistance = null;
   this.driverCurrentCoordinatesProjected;
@@ -81,18 +82,19 @@ var RouteNavigator = function(firstStep,instructionDivTemp,distanceDivTemp, Dire
       this.arrived = 0;
       this.status = 0;
   };
-  this.findNextIntersection = function() {
+  this.findNextIntersection = function(coordinatesTemp) {
     var nextIntersectionTemp;
     if ( (this.currentIntersectionIndex + 1) <= this.currentIntersectionsArray.length ) nextIntersectionTemp = this.currentIntersectionsArray[this.currentIntersectionIndex + 1];
     else nextIntersectionTemp = this.steps[this.currentStepIndex].maneuver;
     this.nextIntersection = nextIntersectionTemp;
-    this.nextIntersectionDistance = parseInt( getGeodesicDistance({longitude: this.currentIntersectionsArray[this.currentIntersectionIndex].location[0], latitude: this.currentIntersectionsArray[this.currentIntersectionIndex].location[1]},this.nextIntersection.location) );
+   // this.nextIntersectionDistance = parseInt( getGeodesicDistance({longitude: this.currentIntersectionsArray[this.currentIntersectionIndex].location[0], latitude: this.currentIntersectionsArray[this.currentIntersectionIndex].location[1]},this.nextIntersection.location) );
+    this.nextIntersectionDistance = parseInt( getGeodesicDistance( coordinatesTemp,this.nextIntersection.location) );
   }
   this.checkIfAtIntersection = function(coordinatesTemp) {
     var i;
     for (i = 0; i < this.currentIntersectionsArray.length; i++) {
       var distTemp = parseInt( getGeodesicDistance(coordinatesTemp,this.currentIntersectionsArray[i].location) );
-      if ( (distTemp <= 6) && (this.currentIntersectionIndex != i) ) {this.currentIntersectionIndex = i; this.findNextIntersection(); this.instructionDiv.innerHTML = "at intersection index : "+this.currentIntersectionIndex+" - "+distTemp+" - next intersection distance: "+ this.nextIntersectionDistance; break;}
+      if ( (distTemp <= 6) && (this.currentIntersectionIndex != i) ) {this.currentIntersectionIndex = i; this.currentIntersectionDistance = distTemp; this.findNextIntersection(coordinatesTemp); this.instructionDiv.innerHTML = "at intersection index : "+this.currentIntersectionIndex+" - current intersection distance: "+ this.currentIntersectionDistance +" - next intersection distance: "+ this.nextIntersectionDistance; break;}
      } // end for (var i = 0; i <  this.currentIntersectionsArray.length; i++) {
     if (i == this.currentIntersectionsArray.length) this.currentIntersectionIndex = null;
   } // end this.checkIfAtIntersection = function(coordinatesTemp)
@@ -141,8 +143,8 @@ function ifTurnedAtIntersection( instance ) {
     var distance1, distance2;    
     distance1 = parseInt( getGeodesicDistance(coordinates2,instance.currentIntersectionsArray[instance.currentIntersectionIndex].location) );
     distance2 = parseInt( getGeodesicDistance(coordinates2,instance.nextIntersection.location) );
-    this.instructionDiv.innerHTML = this.instructionDiv.innerHTML + "<br>new distances: "+distance1+" - "+distance2+" - "+(instance.nextIntersectionDistance-distance1);
-    if ( (distance1 >= 8) && (distance2 > (instance.nextIntersectionDistance-distance1) ) ) {alert("turned at intersection");instance.rerouteNumberOfComponentsChecked = 1; instance.currentIntersectionIndex = null; return true;}
+    this.instructionDiv.innerHTML = this.instructionDiv.innerHTML + "<br>new distances: current intersection distance: "+distance1+" - next intersection distance: "+distance2+"<br>difference: "+(instance.nextIntersectionDistance-distance1);
+    if ( (distance1 >= instance.currentIntersectionDistance) && (distance2 > (instance.nextIntersectionDistance-distance1) ) ) {alert("turned at intersection");instance.rerouteNumberOfComponentsChecked = 1; instance.currentIntersectionIndex = null; return true;}
     else if ( (distance1 >= 5) && (distance2 <= (instance.nextIntersectionDistance-5) ) ) {instance.currentIntersectionIndex = null; instance.rerouteNumberOfComponentsChecked = 1; return false;}
     else {instance.rerouteNumberOfComponentsChecked = 1; return false;}
   } // end if ( !!instance.currentIntersectionIndex )
@@ -535,7 +537,7 @@ function success2(pos) {
   else {
     coordinates2 = pos.coords;
     if (!!router) {
-      if (!!coordinates2.heading) router.lastHeading = coordinates2.heading;  
+      if (!!coordinates2.heading) {router.lastHeading = coordinates2.heading; router.instructionDiv.innerHTML = router.instructionDiv.innerHTML +"<br><h2>heading: "+ router.lastHeading +"</h2>";}  
       if (!router.arrived && (router.status == 4)) {
         router.driverCurrentCoordinatesProjected = ol.proj.fromLonLat([coordinates2.longitude, coordinates2.latitude]);
         map.getView().setCenter( router.driverCurrentCoordinatesProjected );
