@@ -1,30 +1,5 @@
-# AirportRun
+# OnTyme
 
-Hotels need people to take their clients to airports and far-distances.  
+A web-based progressive ride-share app exclusively for female drivers and female passengers.
 
-The front desk people need transportation providers to take their clients to these locations. 
-
-This app provides hotel front desk workers an easy way to request a driver for their clients.
-
-<br>
-<br>
-User stories:
-
-As a driver:
-
-1. I want to to be able to sign in and hit an active button to let local hotel workers know I'm available to pickup customers
-
-2. I want to receive a pickup request milliseconds after it is sent out by the worker.
-
-3. I want to know the destination of the passenger and the hotel they are at when I receive the request.
-
-4. i want to know how much I owe each worker and how much I have paid each worker.
-
-
-As a front-desk worker:
-
-1. I want to be able to sign up quickly without enternig a password, only a username and choosing an icon, no password
-
-2. I want to be able to make sure no one else has my icon or username
-
-3. I want to see how many driver requests I've made and how many I've been paid for.
+The app is written primarily in plain JavaScript, with the OpenLayers JavaScript library used for navigation map display using OpenStreetMaps map data as the mapping tiles source.
