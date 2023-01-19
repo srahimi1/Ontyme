@@ -48,6 +48,7 @@ GEM
       popper_js (>= 1.12.3, < 2)
       sass (>= 3.5.2)
     builder (3.2.3)
+    byebug (11.1.3)
     coderay (1.1.2)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
@@ -56,14 +57,15 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.0.5)
+    concurrent-ruby (1.1.10)
     crass (1.0.3)
     erubis (2.7.0)
     execjs (2.7.0)
+    ffi (1.9.18)
     ffi (1.9.18-x86-mingw32)
-    globalid (0.4.1)
-      activesupport (>= 4.2.0)
-    i18n (0.9.1)
+    globalid (1.0.1)
+      activesupport (>= 5.0)
+    i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
@@ -85,11 +87,14 @@ GEM
     method_source (0.8.2)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
-    minitest (5.11.1)
+    minitest (5.17.0)
     multi_json (1.13.1)
     nio4r (2.2.0)
+    nokogiri (1.8.1)
+      mini_portile2 (~> 2.3.0)
     nokogiri (1.8.1-x86-mingw32)
       mini_portile2 (~> 2.3.0)
+    pg (0.21.0)
     pg (0.21.0-x86-mingw32)
     popper_js (1.12.9)
     pry (0.10.4)
@@ -158,13 +163,12 @@ GEM
     turbolinks (5.1.0)
       turbolinks-source (~> 5.1)
     turbolinks-source (5.1.0)
-    tzinfo (1.2.4)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     tzinfo-data (1.2017.3)
       tzinfo (>= 1.0.0)
     uglifier (4.1.3)
       execjs (>= 0.3.0, < 3)
-    wdm (0.1.1)
     web-console (3.5.1)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -175,6 +179,7 @@ GEM
     websocket-extensions (0.1.3)
 
 PLATFORMS
+  ruby
   x86-mingw32
 
 DEPENDENCIES
@@ -197,7 +202,6 @@ DEPENDENCIES
   turbolinks (~> 5)
   tzinfo-data
   uglifier (>= 1.3.0)
-  wdm (>= 0.1.0)
   web-console
 
 BUNDLED WITH
